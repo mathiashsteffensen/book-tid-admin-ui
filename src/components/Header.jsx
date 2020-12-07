@@ -116,6 +116,7 @@ export default function Header({firstName})
                 <div className="flex flex-row-reverse w-full sm:w-1/4 sm:flex-row items-center justify-between">
                     <Link href="/kalender">
                         <IconButton>
+                            <Logo className="w-32 h-12" /> 
                         </IconButton>
                     </Link>
 
