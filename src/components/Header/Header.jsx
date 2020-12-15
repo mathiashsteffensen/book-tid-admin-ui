@@ -8,7 +8,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import HelpIcon from '@material-ui/icons/HelpOutlineRounded'
-
+// TODO: Add help page / FAQ
 export default function Header() 
 {
     const [toggleDropdown, setToggleDropdown] = useState(false)
