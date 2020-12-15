@@ -15,6 +15,7 @@
     "autoprefixer": "^10.0.4",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
+    "bryntum-calendar": "file:../../../../calendar-4.0.5-trial/build",
     "dayjs": "^1.9.4",
     "next": "10.0.3",
     "react": "17.0.1",
