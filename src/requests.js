@@ -297,13 +297,22 @@ const deleteCustomer = async (apiKey, customerID) => await axios.delete(API_URI 
 
 const updateCustomer = async (apiKey, customer, customerID) => await axios.post(API_URI + `/admin/customer/update/${apiKey}`, {customerID: customerID, new: customer}).catch((err) => {throw new Error(err.response.data.msg)})
 
-const getAppointmentsByDay = async(apiKey, date, abortController) => await axios.get(API_URI + `/admin/appointment/on-day/${apiKey}/${date}`, {cancelToken: abortController.token})
+const getAppointmentsByDay = async (apiKey, date, abortController) => await axios.get(API_URI + `/admin/appointment/on-day/${apiKey}/${date}`, {cancelToken: abortController.token})
 .then((res) => res.data)
 .catch((err) => {
     if (axios.isCancel(err))
     {
         throw new Error(err)
-    } else throw new Error(err)
+    } else throw new Error(err.response.data.msg)
+})
+
+const getAppointmentsByMonth = async (apiKey, date, abortController) => await axios.get(API_URI + `/admin/appointment/in-month/${apiKey}/${date}`, {cancelToken: abortController.token})
+.then((res) => res.data)
+.catch((err) => {
+    if (axios.isCancel(err))
+    {
+        throw new Error(err)
+    } else throw new Error(err.response.data.msg)
 })
 
 const createAppointment = async(apiKey, calendarID, customerID, service, startTime, endTime) => await axios.post(API_URI + `/admin/appointment/create/${apiKey}/${calendarID}`, {
@@ -312,6 +321,12 @@ const createAppointment = async(apiKey, calendarID, customerID, service, startTi
     startTime,
     endTime,
 })
+.catch((err) => {
+    throw new Error(err.response.data.msg)
+})
+
+const deleteAppointment = async (apiKey, appointmentID) => await axios.delete(API_URI + `/admin/appointment/${apiKey}/${appointmentID}`)
+.then(res => res.data)
 .catch((err) => {
     throw new Error(err.response.data.msg)
 })
@@ -346,5 +361,7 @@ export {
     deleteCustomer,
     updateCustomer,
     getAppointmentsByDay,
-    createAppointment
+    getAppointmentsByMonth,
+    createAppointment,
+    deleteAppointment
 }

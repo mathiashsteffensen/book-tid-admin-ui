@@ -1,3 +1,7 @@
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+dayjs.extend(utc)
+
 const API_URI = process.env.NODE_ENV === 'development' ? "http://api.a.localhost:4000" : "https://api.booktid.net"
 
 function numberToMonth(month)
@@ -168,7 +172,81 @@ const geometry = {
     radiansToDegrees: (radians) => radians * (180 / Math.PI),
 }
 
+let getWeeklyScheduleByDate = (schedule, date) =>
+{
+    let thisWeeksSchedule = false;
+    let thisWeek = dayjs.utc(date).week()
+    let thisYear = dayjs.utc(date).year()
+    switch(schedule.scheduleType)
+    {
+        case 'weekly':
+            thisWeeksSchedule = schedule.weeklySchedule
+            break;
+        case 'biWeekly':
+            if (thisWeek % 2 === 0) thisWeeksSchedule = schedule.biWeeklySchedule.evenWeek
+            else thisWeeksSchedule = schedule.biWeeklySchedule.unevenWeek
+            break;
+        default:
+    }
+    schedule.specialWeek.forEach((week) =>
+    {
+        if (week.week === thisWeek && week.year === thisYear)
+        {
+            thisWeeksSchedule = week.schedule
+        }
+    })
+    return thisWeeksSchedule
+}
 
+let getCalendarOpeningHoursByDate = (schedule, date) =>
+{
+    let openingHours;
+    let thisWeeksSchedule = getWeeklyScheduleByDate(schedule, date)
+    let dayOfWeek = dayjs.utc(date).day()
+    thisWeeksSchedule.forEach((day) =>
+    {
+        if (day.day === dayOfWeek) openingHours = day.schedule;
+    })
+
+    return openingHours
+}
+
+let getWeeklyOpeningHoursByDate = (calendars, date) =>
+{
+    const schedulesClosingSort = calendars.map((calendar) => getWeeklyScheduleByDate(calendar.schedule, date)).map(schedule => {
+        const newSchedule = schedule.map((dailySchedule) =>
+        {
+            return {
+                day: dailySchedule.day,
+                opening: dailySchedule.schedule.startOfWork.hour + (dailySchedule.schedule.startOfWork.minute/60),
+                closing: dailySchedule.schedule.endOfWork.hour + (dailySchedule.schedule.endOfWork.minute/60)
+            }
+        })
+        newSchedule.sort((a, b) => b.closing-a.closing)
+        return newSchedule[0]
+    })
+    const closing = Math.ceil(schedulesClosingSort.sort((a, b) => b.closing-a.closing)[0].closing)
+
+    const schedulesOpeningSort = calendars.map((calendar) => getWeeklyScheduleByDate(calendar.schedule, date)).map(schedule => {
+        const newSchedule = schedule.map((dailySchedule) =>
+        {
+            return {
+                day: dailySchedule.day,
+                opening: dailySchedule.schedule.startOfWork.hour + (dailySchedule.schedule.startOfWork.minute/60),
+                closing: dailySchedule.schedule.endOfWork.hour + (dailySchedule.schedule.endOfWork.minute/60)
+            }
+        })
+        newSchedule.sort((a, b) => a.opening-b.opening)
+        return newSchedule[0]
+    })
+
+    const opening = Math.floor(schedulesClosingSort.sort((a, b) => a.opening-b.opening)[0].opening)
+
+    return {
+        closing: closing,
+        opening: opening
+    }
+}
 export {
     API_URI,
     numberToDay,
@@ -178,5 +256,6 @@ export {
     numbersToInputTime,
     inputTimeToObj,
     getSettingLabelFromKey,
-    geometry
+    geometry,
+    getWeeklyOpeningHoursByDate
 }
