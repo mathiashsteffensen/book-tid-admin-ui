@@ -45,6 +45,19 @@ body {
   }
 }
 
+a:hover {
+  text-decoration: none;
+}
+
+#basic-nav-dropdown {
+  @apply flex flex-row justify-center items-center 
+}
+
+#basic-nav-dropdown:hover {
+  text-decoration: none;
+  color: white;
+}
+
 .animate-fade-out {
   animation: fadeOut 2.5s linear;
 }

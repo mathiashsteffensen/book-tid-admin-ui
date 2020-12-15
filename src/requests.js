@@ -281,10 +281,7 @@ const getTotalCustomers = async (apiKey, abortController) => await axios.get(API
 const customerSearch = async (apiKey, searchTerm, offset, sortBy, limit, abortController) => await axios.get(API_URI + `/admin/customer/list/search/${apiKey}?searchTerm=${searchTerm}&offset=${offset}&sortBy=${sortBy}&limit=${limit}`, {cancelToken: abortController.token})
 .then((res) => res.data)
 .catch((err) => {
-    if (axios.isCancel(err))
-    {
-        throw new Error(err)
-    } else throw new Error(err.response.data.msg)
+    console.log(err)
 })
 
 const createCustomer = async (apiKey, customerData) => await axios.post(API_URI + `/admin/customer/create/${apiKey}`, customerData)
@@ -306,7 +303,7 @@ const getAppointmentsByDay = async(apiKey, date, abortController) => await axios
     if (axios.isCancel(err))
     {
         throw new Error(err)
-    } else throw new Error(err.response.data.msg)
+    } else throw new Error(err)
 })
 
 const createAppointment = async(apiKey, calendarID, customerID, service, startTime, endTime) => await axios.post(API_URI + `/admin/appointment/create/${apiKey}/${calendarID}`, {

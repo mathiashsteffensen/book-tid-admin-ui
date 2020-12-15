@@ -110,7 +110,7 @@ export default function Kunder(props)
         if (!state.firstRender)
         {
             const abortController = axios.CancelToken.source()
-            fetchCustomers(abortController)
+            fetchCustomers(abortController).catch((err)  => console.log(err))
             return () => abortController.cancel()  
         } else 
         {
@@ -196,15 +196,16 @@ export default function Kunder(props)
 
 export async function getServerSideProps({req}) {
     let apiKey = req.cookies.apiKey
+    console.log(apiKey)
     const abortController = axios.CancelToken.source()
-    let totalCustomers = await getTotalCustomers(apiKey, abortController).catch((err) => console.log(err))
+    let totalCustomers = await getTotalCustomers(apiKey, abortController).catch((err) => console.log(err.message))
 
-    let customerList = await customerSearch(apiKey, '', 0, '+name', 20, abortController)
+    let customerList = await customerSearch(apiKey, '', 0, '+name', 20, abortController).catch((err) => console.log(err.message))
 
     return {
       props: {
-          customerList: customerList,
-          totalCustomers: totalCustomers,
+          customerList: customerList ? customerList : [],
+          totalCustomers: totalCustomers ? totalCustomers : 0,
       },
     }
 }
