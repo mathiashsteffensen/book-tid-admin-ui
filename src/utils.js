@@ -240,7 +240,33 @@ let getWeeklyOpeningHoursByDate = (calendars, date) =>
         return newSchedule[0]
     })
 
-    const opening = Math.floor(schedulesClosingSort.sort((a, b) => a.opening-b.opening)[0].opening)
+    const opening = Math.floor(schedulesOpeningSort.sort((a, b) => a.opening-b.opening)[0].opening)
+
+    return {
+        closing: closing,
+        opening: opening
+    }
+}
+
+let getDailyOpeningHoursByDate = (calendars, date) =>
+{
+    let day = dayjs(date).day()
+    const daySort = calendars.map((calendar) => getWeeklyScheduleByDate(calendar.schedule, date)).map((schedules) =>
+    {
+        console.log(schedules)
+        return schedules.filter(schedule => schedule.day === day).map((dailySchedule) =>
+        {
+            return {
+                day: dailySchedule.day,
+                opening: dailySchedule.schedule.startOfWork.hour + (dailySchedule.schedule.startOfWork.minute/60),
+                closing: dailySchedule.schedule.endOfWork.hour + (dailySchedule.schedule.endOfWork.minute/60)
+            }
+        })[0]
+    })
+    console.log(daySort[0].closing, daySort[1].closing)
+    const closing = Math.ceil(daySort.sort((a, b) => b.closing-a.closing)[0].closing)
+    console.log(daySort[0].opening, daySort[1].opening)
+    const opening = Math.floor(daySort.sort((a, b) => a.opening-b.opening)[0].opening)
 
     return {
         closing: closing,
@@ -257,5 +283,6 @@ export {
     inputTimeToObj,
     getSettingLabelFromKey,
     geometry,
-    getWeeklyOpeningHoursByDate
+    getWeeklyOpeningHoursByDate,
+    getDailyOpeningHoursByDate
 }

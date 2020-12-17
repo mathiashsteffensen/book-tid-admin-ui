@@ -250,6 +250,7 @@ export default function OnlineBooking({bookingSettings}) {
     )
 }
 
+// TODO: Add API key authentication to all serverside pages instead of doing it client side, not secure enough you doofus
 export async function getServerSideProps({req, res}) {
     let bookingSettings = await getBookingSettings(req.cookies.apiKey).catch((err) => {
         console.log(err.message)

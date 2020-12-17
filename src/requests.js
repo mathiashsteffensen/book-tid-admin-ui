@@ -1,4 +1,5 @@
 import axios from 'axios'
+import dayjs from 'dayjs'
 
 const API_URI = "https://api.booktid.net"
 
@@ -306,6 +307,15 @@ const getAppointmentsByDay = async (apiKey, date, abortController) => await axio
     } else throw new Error(err.response.data.msg)
 })
 
+const getAppointmentsByWeek = async (apiKey, date, abortController) => await axios.get(API_URI + `/admin/appointment/in-week/${apiKey}/${date}`, {cancelToken: abortController.token})
+.then((res) => res.data)
+.catch((err) => {
+    if (axios.isCancel(err))
+    {
+        throw new Error(err)
+    } else throw new Error(err.response.data.msg)
+})
+
 const getAppointmentsByMonth = async (apiKey, date, abortController) => await axios.get(API_URI + `/admin/appointment/in-month/${apiKey}/${date}`, {cancelToken: abortController.token})
 .then((res) => res.data)
 .catch((err) => {
@@ -314,6 +324,19 @@ const getAppointmentsByMonth = async (apiKey, date, abortController) => await ax
         throw new Error(err)
     } else throw new Error(err.response.data.msg)
 })
+
+const getAppointmentsByCalendarMonth = async (apiKey, date, abortController) =>
+{
+    return await Promise.all([
+        // Gets appointments for the month itself
+        getAppointmentsByMonth(apiKey, date, abortController),
+        // Gets appointments for the 1 month before the month in view
+        getAppointmentsByMonth(apiKey, dayjs(date).subtract(1, 'month').toJSON(), abortController),
+        // Gets appointments for the 1 month after the month in view
+        getAppointmentsByMonth(apiKey, dayjs(date).add(1, 'month').toJSON(), abortController),
+        
+    ])
+}
 
 const createAppointment = async(apiKey, calendarID, customerID, service, startTime, endTime) => await axios.post(API_URI + `/admin/appointment/create/${apiKey}/${calendarID}`, {
     customerID,
@@ -361,7 +384,9 @@ export {
     deleteCustomer,
     updateCustomer,
     getAppointmentsByDay,
+    getAppointmentsByWeek,
     getAppointmentsByMonth,
+    getAppointmentsByCalendarMonth,
     createAppointment,
     deleteAppointment
 }
