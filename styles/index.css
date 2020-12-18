@@ -103,3 +103,7 @@ a:hover {
 .MuiGridListTileBar-root {
   height: 20px;
 }
+
+label {
+  margin-bottom: 0;
+}

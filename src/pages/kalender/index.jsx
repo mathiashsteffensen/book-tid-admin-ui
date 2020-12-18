@@ -7,7 +7,7 @@ dayjs.extend(utc)
 
 import Main from '../../components/Main'
 import Form from '../../components/forms/Form'
-import Calendar from '../../components/Calendar2/Calendar'
+import Calendar from '../../components/Calendar/Calendar'
 import {
     getAllCalendars,
 } from '../../requests'
@@ -43,7 +43,6 @@ export default function Kalender({calendars})
         setFormProps({})
         update()
     }
-
 
     return (
         <Main

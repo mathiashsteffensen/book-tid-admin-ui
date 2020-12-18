@@ -1,7 +1,6 @@
 import React from 'react'
 import {AppointmentTooltip} from '@devexpress/dx-react-scheduler-material-ui'
 import TooltipHeader from './TooltipHeader'
-import TooltipContent from './TooltipContent'
 
 export default function MyAppointmentTooltip({handleAddAppointmentForm, setDate, selectedDate, setShowTooltip, visible, onVisibilityChange}) 
 {
@@ -11,7 +10,6 @@ export default function MyAppointmentTooltip({handleAddAppointmentForm, setDate,
             visible={visible}
             onVisibilityChange={onVisibilityChange}
             headerComponent={Header}
-            contentComponent={TooltipContent}
         >
             
         </AppointmentTooltip>
