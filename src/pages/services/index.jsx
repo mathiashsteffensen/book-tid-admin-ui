@@ -11,19 +11,22 @@ import {getCatsAndServices} from '../../requests'
 import CatAndServices from '../../components/CatAndServices/CatAndServices'
 
 
-export default function Services() 
+export default function Services({initialCatsAndServices}) 
 {
     // Change this state value to force an update
     const [shouldUpdate, setUpdate] = useState(true)
     const update = () => setUpdate(!shouldUpdate)
 
     // Holds the category and services information
-    const [catsAndServices, setCatsAndServices] = useState(undefined)
+    const [catsAndServices, setCatsAndServices] = useState(initialCatsAndServices)
 
     // State for handling pop up forms
     const [showForm, setShowForm] = useState(false)
     const [formType, setFormType]  = useState('')
     const [formProps, setFormProps]  = useState('')
+
+    // Makes sure not to fetch categories and services on the first render since it has been fetched server side
+    const [firstRender, setFirstRender] = useState(true)
 
     let handleCreateCatForm = () =>
     {
@@ -65,19 +68,26 @@ export default function Services()
 
     useEffect(() =>
     {
-        const abortController = axios.CancelToken.source()
-
-        let fetchCatsAndServices = async () =>
+        if (!firstRender)
         {
-            let response = await getCatsAndServices(localStorage.getItem('apiKey'), abortController).catch(err => console.log(err))
-            setCatsAndServices(response)
-        }
+            const abortController = axios.CancelToken.source()
 
-        fetchCatsAndServices()
+            let fetchCatsAndServices = async () =>
+            {
+                let response = await getCatsAndServices(localStorage.getItem('apiKey'), abortController).catch(err => console.log(err))
+                setCatsAndServices(response)
+            }
 
-        return () => {
-            abortController.cancel()
+            fetchCatsAndServices()
+
+            return () => {
+                abortController.cancel()
+            } 
+        } else
+        {
+            setFirstRender(false)
         }
+        
     }, [shouldUpdate])
 
     return (
@@ -105,7 +115,7 @@ export default function Services()
             }
         >
             <div className="w-11/12">
-                {catsAndServices && catsAndServices.map((catAndServices, i) => (
+                {catsAndServices.map((catAndServices, i) => (
                     <CatAndServices 
                         handleUpdateServiceForm={handleUpdateServiceForm} 
                         handleUpdateCatForm={handleUpdateCatForm} 
@@ -124,4 +134,15 @@ export default function Services()
     )
 }
 
-//TODO: Add server side rendering for this page, fetch catsAndServices then to prevent blank page on load
+export async function getServerSideProps({req})
+{
+    const abortController = axios.CancelToken.source()
+
+    let catsAndServices = await getCatsAndServices(req.cookies.apiKey, abortController).catch(err => console.log(err))
+
+    return {
+        props: {
+            initialCatsAndServices: catsAndServices
+        }
+    }
+}

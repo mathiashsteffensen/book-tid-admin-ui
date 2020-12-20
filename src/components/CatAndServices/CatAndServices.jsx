@@ -19,7 +19,7 @@ export default function CatsAndServices({data, update, handleUpdateCatForm, hand
         >
             <ListGroup as="ul">
                 {services.length > 0
-                ? services.map(service => <Service handleUpdateForm={handleUpdateServiceForm} update={update} service={service} />)
+                ? services.map((service, i) => <Service key={i} handleUpdateForm={handleUpdateServiceForm} update={update} service={service} />)
                 : <p>Ingen services i denne kategori</p>}
             </ListGroup>
             
