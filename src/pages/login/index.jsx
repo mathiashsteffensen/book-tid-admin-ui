@@ -1,8 +1,8 @@
 import React ,{useState} from 'react'
 import Link from 'next/link'
 
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 
 import {login, verifyApiKey} from '../../requests'
 
@@ -19,22 +19,57 @@ export default function Login()
     }
     
     return (
-        <main className="w-screen h-screen bg-opaque flex justify-center items-center">
-            <form className="px-12 py-8 bg-gray-200 rounded-lg shadow-lg">
-                <div className="w-full flex justify-center items-center flex-col">
-                    <h3 className="text-2xl font-medium pb-8">Log ind</h3>
-
-                    <TextField value={email} margin="normal" className="w-full" onChange={(e) => setEmail(e.target.value)} color="primary" id="outlined-basic" label="E-Mail" type="email" required variant="outlined"/>
-                    
-                    <TextField value={password} margin="normal" className="w-full" onChange={(e) => setPassword(e.target.value)} color="primary" id="outlined-basic" label="Kodeord" type="password" required variant="outlined"/>
-
-                    <Button margin="normal" variant="contained" color="primary" onClick={handleLogin}>
-                        Log Ind
-                    </Button>
-                    {message !== '' ? <p style={{color: 'red', fontSize: '12px', marginBottom: 0, marginTop: '0.5rem'}}>{message}</p> : null}
-                    <Link href="/opret-bruger"><a>Har du ikke en bruger? <span className="hover:text-purple-700 text-blue-700 underline">Opret dig her</span></a></Link>
+        <main className="w-screen h-screen bg-gray-900 bg-opaque flex justify-center items-center">
+            <header className="absolute top-0 w-screen bg-gray-200 py-3 flex justify-center items-center">
+                <div className="w-1/2 text-2xl">
+                    <button onClick={() => window.location = 'https://booktid.net'}>
+                        <h1>BOOKTID.NET</h1>
+                    </button>
+                    <h2 className="font-medium">ONLINE BOOKINGSYSTEM</h2>
                 </div>
-            </form>
+            </header>
+            <Form className="bg-gray-100 overflow-hidden rounded shadow">
+                <div className="w-full">
+                    <div className="w-full bg-gray-700">
+                        <h3 className="text-2xl text-gray-100 px-16 py-6 font-semibold">Log ind</h3>
+                    </div>
+                    
+                    <div className="px-16 py-4 flex justify-center items-center flex-col">
+                        <Form.Group controlId="login-email">
+                            <Form.Label>E-Mail</Form.Label>
+                            <Form.Control 
+                                type="email"
+                                onChange={(e) => setEmail(e.target.value)} 
+                                value={email}
+                                autoComplete="email"
+                                required
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId="login-password">
+                            <Form.Label>Adgangskode</Form.Label>
+                            <Form.Control 
+                                type="password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
+                                required
+                            />
+                        </Form.Group>
+
+                        <Button onClick={handleLogin}>
+                            Log Ind
+                        </Button>
+
+                        {message !== '' ? <p style={{color: 'red', fontSize: '12px', marginBottom: 0, marginTop: '0.5rem'}}>{message}</p> : null}
+
+                        <div className="mt-2">
+                            Har du ikke en bruger? <Link href="/opret-bruger"><a><span className="hover:text-blue-800 text-blue-700 underline">Opret dig her</span></a></Link>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </Form>
         </main>
         
     )

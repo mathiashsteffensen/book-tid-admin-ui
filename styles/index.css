@@ -16,6 +16,8 @@
 /* Stop purging. */
 
 /* Your own custom utilities */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap');
+
 .diagonal-divider::after {
   content: '';
   width: 100%;
@@ -30,6 +32,11 @@ html {
   font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Raleway', sans-serif;
+}
+
 body {
   position: absolute;
   margin: 0;
