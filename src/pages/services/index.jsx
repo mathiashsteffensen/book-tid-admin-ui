@@ -1,24 +1,21 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 
-import Category from '../../components/Category'
 import Form from '../../components/forms/Form'
 import Main from '../../components/Main'
 
-import {Button} from '@material-ui/core'
+import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
 import {getCatsAndServices} from '../../requests'
+import CatAndServices from '../../components/CatAndServices/CatAndServices'
 
 
 export default function Services() 
 {
     // Change this state value to force an update
     const [shouldUpdate, setUpdate] = useState(true)
-
-    const update = () =>
-    {
-        setUpdate(!shouldUpdate)
-    }
+    const update = () => setUpdate(!shouldUpdate)
 
     // Holds the category and services information
     const [catsAndServices, setCatsAndServices] = useState(undefined)
@@ -27,8 +24,6 @@ export default function Services()
     const [showForm, setShowForm] = useState(false)
     const [formType, setFormType]  = useState('')
     const [formProps, setFormProps]  = useState('')
-
-    const abortController = axios.CancelToken.source()
 
     let handleCreateCatForm = () =>
     {
@@ -70,6 +65,8 @@ export default function Services()
 
     useEffect(() =>
     {
+        const abortController = axios.CancelToken.source()
+
         let fetchCatsAndServices = async () =>
         {
             let response = await getCatsAndServices(localStorage.getItem('apiKey'), abortController).catch(err => console.log(err))
@@ -89,26 +86,42 @@ export default function Services()
             subtitle="Rediger i dine services og kategorier"
             CTAs={
                 <div className="flex justify-evenly items-center">
-                     <Button 
-                        size="medium"
-                        onClick={handleCreateCatForm}
-                    >
-                        Tilføj Kategori
-                    </Button>
-                    <Button 
-                        size="medium"
-                        color="primary"
-                        onClick={handleCreateServiceForm}
-                    >
-                        Tilføj Service
-                    </Button>
+                    <ButtonGroup>
+                        <Button 
+                            variant="outline-primary"
+                            onClick={handleCreateCatForm}
+                        >
+                            Tilføj Kategori
+                        </Button>
+                        <Button
+                            variant="outline-primary"
+                            onClick={handleCreateServiceForm}
+                        >
+                            Tilføj Service
+                        </Button>
+                    </ButtonGroup>
+                    
                 </div>
             }
         >
-            {catsAndServices ? catsAndServices.map((catAndServices, i) => <Category handleUpdateServiceForm={handleUpdateServiceForm} handleUpdateCatForm={handleUpdateCatForm} update={update} catAndServices={catAndServices} key={i} />) : null}
+            <div className="w-11/12">
+                {catsAndServices && catsAndServices.map((catAndServices, i) => (
+                    <CatAndServices 
+                        handleUpdateServiceForm={handleUpdateServiceForm} 
+                        handleUpdateCatForm={handleUpdateCatForm} 
+                        update={update} 
+                        data={catAndServices} 
+                        key={i} 
+                    />
+                ))}
+            </div>
+            
+            
 
             {showForm ? <Form isOpen={showForm} handleClose={handleCloseForm} formType={formType} formProps={formProps} /> : null}
 
         </Main>
     )
 }
+
+//TODO: Add server side rendering for this page, fetch catsAndServices then to prevent blank page on load

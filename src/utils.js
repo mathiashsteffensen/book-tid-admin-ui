@@ -263,9 +263,9 @@ let getDailyOpeningHoursByDate = (calendars, date) =>
             }
         })[0]
     })
-    console.log(daySort[0].closing, daySort[1].closing)
+    
     const closing = Math.ceil(daySort.sort((a, b) => b.closing-a.closing)[0].closing)
-    console.log(daySort[0].opening, daySort[1].opening)
+
     const opening = Math.floor(daySort.sort((a, b) => a.opening-b.opening)[0].opening)
 
     return {

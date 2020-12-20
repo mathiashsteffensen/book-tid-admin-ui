@@ -11,9 +11,9 @@ export default function MyToolbarContent({calendars, checkedCalendars, handleCha
             className="flex justify-center items-center w-full ml-0 mr-auto px-4"
         >
             <div
-                className="flex justify-center items-center flex-row"
+                className="flex justify-center items-center flex-col sm:flex-row"
             >
-                {calendars.map(calendar => <FormControlLabel className="pr-3 mr-4 rounded-sm" style={{backgroundColor: calendar.standardColor}} label={calendar.name} control={
+                {calendars.map(calendar => <FormControlLabel key={calendar.calendarID} className="pr-3 mx-auto sm:mr-4 rounded-sm" style={{backgroundColor: calendar.standardColor}} label={calendar.name} control={
                     <Checkbox 
                         checked={checkedCalendars.indexOf(calendar.calendarID) !== -1}
                         onChange={() => handleChange(calendar.calendarID)}
