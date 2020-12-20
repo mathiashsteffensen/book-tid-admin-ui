@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
-import {Button, TextField} from '@material-ui/core'
+import Button from 'react-bootstrap/Button'
+import {TextField} from '@material-ui/core'
 
 import Main from '../../components/Main'
 import Form from '../../components/forms/Form'
-import CustomerRow from '../../components/CustomerRow'
-import {getTotalCustomers, customerSearch} from '../../requests'
-import LabelledSelect from '../../components/forms/inputs/LabelledSelect'
+import CustomerList from '../../components/CustomerList/CustomerList'
 import Pagination from '../../components/Pagination'
+import CustomerSearch from '../../components/CustomerSearch'
+
+import {getTotalCustomers, customerSearch} from '../../requests'
 
 export default function Kunder(props) 
 {
@@ -97,14 +99,16 @@ export default function Kunder(props)
         let totalCustomers = await getTotalCustomers(apiKey, abortController).catch((err) => console.log(err))
 
         let customerList = await customerSearch(apiKey, state.searchTerm, state.offset, state.sortBy, state.limit, abortController).catch((err) => console.log(err))
-        console.log(totalCustomers, customerList)
+ 
         let newState = state
         newState.totalCustomers = totalCustomers
         newState.customerList = customerList
+        newState.pages = Math.ceil(totalCustomers/state.limit)
 
         setState(newState)
         update()
     }
+
     useEffect(() =>
     {
         if (!state.firstRender)
@@ -118,7 +122,6 @@ export default function Kunder(props)
             newState.firstRender = false
             setState(newState)
         }
-        
     }, [state.limit, state.offset, state.sortBy, state.searchTerm, shouldUpdateFetch])
 
     return (
@@ -127,54 +130,30 @@ export default function Kunder(props)
             subtitle="Søg i og rediger dine kunder"
             CTAs={
                 <Button
-                    variant="contained"
-                    color="primary"
                     onClick={handleCreateCustomerForm}
                 >
                     Ny Kunde
                 </Button>
             }
         >
-            <div className=" w-11/12 rounded-xl pb-2 overflow-hidden flex flex-col justify-center items-center border-gray-200 border-2">
-                <div className="w-full bg-gray-200 p-4">
-                    <div className="grid grid-cols-8">
-                        <div className="col-span-4 sm:col-span-2 sm:block flex justify-center items-center">
-                            <LabelledSelect
-                                onChange={(e) => handleChange('limit', e.target.value)}
-                                value={state.limit}
-                                label="Vis:"
-                                options={[{value: 5, text: '5'}, {value: 10, text: '10'}, {value: 20, text: '20'}, {value: 50, text: '50'}]}
-                            />
-                        </div>
+            <div className=" w-11/12 bg-gray-100 rounded-xl shadow-md px-4 overflow-hidden flex flex-col justify-center items-center">
+                <CustomerSearch
+                    limit={state.limit}
+                    sortBy={state.sortBy}
+                    searchTerm={state.searchTerm}
+                    handleChange={handleChange}
+                /> 
 
-                        <div className="col-span-4 sm:col-span-2 sm:block flex justify-center items-center">
-                            <LabelledSelect
-                                onChange={(e) => handleChange('sortBy', e.target.value)}
-                                value={state.sortBy}
-                                label="Sorter efter:"
-                                options={[{value: '+name', text: 'Navn (A-Z)'}, {value: '-name', text: 'Navn (Z-A)'}, {value: '+email', text: 'E-Mail (A-Z)'}, {value: '-email', text: 'E-Mail (Z-A)'}]}
-                            />
-                        </div>
-
-                        <div className="col-span-8 mt-4 sm:mt-0 sm:col-span-4 my-auto sm:block flex justify-center items-center">
-                            <TextField
-                                size="small" 
-                                variant="outlined"
-                                label="Søg:"
-                                onChange={(e) => handleChange('searchTerm', e.target.value)}
-                                value={state.searchTerm}
-                            />
-                        </div>
-                    </div>
-                </div>  
-
-                <div className="w-11/12 flex flex-col justify-center items-center my-4 divide-y-2 divide-blue-200">
-                    { (state.customerList && state.customerList.length > 0) 
-                        ? state.customerList.map((customer, i) => <CustomerRow handleUpdateCustomerForm={handleUpdateCustomerForm} update={updateFetch} index={i+1} key={customer._id} customer={customer} />) 
-                        : <span><h5>Ingen kunder fundet</h5></span>
-                    }
-                </div>
-                <div className="w-11/12 h-12">
+                { (state.customerList && state.customerList.length > 0) 
+                    ? <CustomerList 
+                        data={state.customerList}
+                        update={updateFetch}
+                        handleUpdateCustomerForm={handleUpdateCustomerForm}
+                        offset={state.offset} 
+                    /> 
+                    : <span><h5>Ingen kunder fundet</h5></span>
+                }
+                <div className="w-11/12 h-12 py-4">
                     <div className="float-left h-full flex items-center text-sm font-medium text-gray-800">
                         <p>Side {state.currentPage} af {state.pages}</p>
                     </div>
