@@ -8,7 +8,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 export default function MyToolbarContent({calendars, checkedCalendars, handleChange}) {
     return (
         <Toolbar.FlexibleSpace
-            className="flex justify-center items-center w-full ml-0 mr-auto px-4"
+            className="flex justify-center items-center px-4 ml-0 mr-auto"
         >
             <div
                 className="flex justify-center items-center flex-col sm:flex-row"

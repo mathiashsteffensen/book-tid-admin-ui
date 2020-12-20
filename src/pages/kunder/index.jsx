@@ -9,7 +9,7 @@ import CustomerList from '../../components/CustomerList/CustomerList'
 import Pagination from '../../components/Pagination'
 import CustomerSearch from '../../components/CustomerSearch'
 
-import {getTotalCustomers, customerSearch} from '../../requests'
+import {getTotalCustomers, customerSearch, verifyApiKey} from '../../requests'
 
 export default function Kunder(props) 
 {
@@ -175,17 +175,30 @@ export default function Kunder(props)
 
 // TODO: Add API key authentication to all serverside pages instead of doing it client side, not secure enough you doofus
 export async function getServerSideProps({req}) {
-    let apiKey = req.cookies.apiKey
+    const apiKey = req.cookies.apiKey
 
-    const abortController = axios.CancelToken.source()
-    let totalCustomers = await getTotalCustomers(apiKey, abortController).catch((err) => console.log(err.message))
+    const isValid = await verifyApiKey(apiKey).catch(err => console.log(err))
 
-    let customerList = await customerSearch(apiKey, '', 0, '+name', 20, abortController).catch((err) => console.log(err.message))
+    if (isValid)
+    {
+        const abortController = axios.CancelToken.source()
+        let totalCustomers = await getTotalCustomers(apiKey, abortController).catch((err) => console.log(err.message))
 
-    return {
-      props: {
-          customerList: customerList ? customerList : [],
-          totalCustomers: totalCustomers ? totalCustomers : 0,
-      },
+        let customerList = await customerSearch(apiKey, '', 0, '+name', 20, abortController).catch((err) => console.log(err.message))
+
+        return {
+            props: {
+                valid: Boolean(isValid),
+                customerList: customerList ? customerList : [],
+                totalCustomers: totalCustomers ? totalCustomers : 0,
+            }
+        }
+    } else return {
+        redirect: {
+            permanent: false,
+            destination: '/login'
+        }
     }
+
+    
 }

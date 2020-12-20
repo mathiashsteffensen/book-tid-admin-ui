@@ -6,43 +6,13 @@ import '../../styles/index.css'
 import Footer from '../components/Footer'
 import Header from '../components/Header/Header'
 
-function MyApp({ Component, pageProps }) {
-
-  let router = useRouter()
-  const [user, setUser] = useState(false)
-
-  let verifyAPIKey = async () =>
-  {
-    let currentPath = router.pathname
-
-    let isValid = await verifyApiKey(localStorage.getItem('apiKey')).catch(() => false)
-    if (!isValid) 
-    {
-      if (currentPath !== '/login' && currentPath !== '/opret-bruger')
-      {
-        router.push('/login')
-        localStorage.removeItem('apiKey')
-      } 
-    }
-
-    if (isValid)
-    {
-      setUser(isValid)
-      if (currentPath === '/') router.push('/kalender')
-      if (currentPath === '/login' || currentPath === '/opret-bruger') router.push('/kalender')
-    }
-  }
-
-  useEffect(() =>
-  {
-    verifyAPIKey()
-  }, [])
-
-  if (user)
+function MyApp({ Component, pageProps }) 
+{
+  if (pageProps.valid)
   {
     return (
       <div>
-        <Header subscriptionType={user.subscriptionType} firstName={user.firstName} />
+        <Header />
         <Component {...pageProps} />
 
       </div>

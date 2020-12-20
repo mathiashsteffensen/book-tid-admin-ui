@@ -136,13 +136,26 @@ export default function Services({initialCatsAndServices})
 
 export async function getServerSideProps({req})
 {
-    const abortController = axios.CancelToken.source()
+    const apiKey = req.cookies.apiKey
 
-    let catsAndServices = await getCatsAndServices(req.cookies.apiKey, abortController).catch(err => console.log(err))
+    const isValid = await verifyApiKey(apiKey).catch(err => console.log(err))
 
-    return {
-        props: {
-            initialCatsAndServices: catsAndServices
+    if (isValid)
+    {
+        const abortController = axios.CancelToken.source()
+
+        let catsAndServices = await getCatsAndServices(apiKey, abortController).catch(err => console.log(err))
+
+        return {
+            props: {
+                valid: Boolean(isValid),
+                initialCatsAndServices: catsAndServices
+            }
+        }
+    } else return {
+        redirect: {
+            permanent: false,
+            destination: '/login'
         }
     }
 }

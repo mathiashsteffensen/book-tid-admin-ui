@@ -9,7 +9,7 @@ import Main from '../../components/Main'
 import Form from '../../components/forms/Form'
 import Calendar from '../../components/Calendar/Calendar'
 import {
-    getAllCalendars,
+    getAllCalendars, verifyApiKey,
 } from '../../requests'
 
 import Button from 'react-bootstrap/Button'
@@ -75,16 +75,27 @@ export async function getServerSideProps({req})
 {
     let apiKey = req.cookies.apiKey
 
-    const abortController = axios.CancelToken.source()
-    const calendars = await getAllCalendars(apiKey, abortController)
-    .catch((err) =>
-    {
-        console.log(err)
-    })
+    const isValid = await verifyApiKey(apiKey).catch(err => console.log(err))
 
-    return {
-        props: {
-            calendars
+    if (isValid)
+    {
+        const abortController = axios.CancelToken.source()
+        const calendars = await getAllCalendars(apiKey, abortController)
+        .catch((err) =>
+        {
+            console.log(err)
+        })
+
+        return {
+            props: {
+                valid: Boolean(isValid),
+                calendars
+            }
+        }
+    } else return {
+        redirect: {
+            permanent: false,
+            destination: '/login'
         }
     }
 }

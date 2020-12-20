@@ -136,3 +136,25 @@ export default function SignUp()
     )
 }
 
+export async function getServerSideProps({req})
+{
+
+    const isValid = await verifyApiKey(req.cookies.apiKey).catch(err => console.log(err))
+
+    if (isValid)
+    {
+        return {
+            redirect: {
+                permanent: false,
+                destination: '/kalender'
+            }
+        }
+    } else
+    {
+        return {
+            props: {
+                valid: false
+            }
+        }
+    }
+}

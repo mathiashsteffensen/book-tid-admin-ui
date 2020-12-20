@@ -8,7 +8,13 @@ import CalendarSettings from '../../components/CalendarSettings'
 import {Button, Snackbar, IconButton} from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
-import {getMaxCalendars, getAllCalendars, updateCalendar, createCalendar} from '../../requests'
+import {
+    getMaxCalendars, 
+    getAllCalendars, 
+    updateCalendar, 
+    createCalendar,
+    verifyApiKey
+} from '../../requests'
 
 export default function CalendarSettingsPage()
 {
@@ -27,7 +33,7 @@ export default function CalendarSettingsPage()
     const abortController = axios.CancelToken.source()
 
     
-
+    // TODO: Move to SSR
     useEffect(() =>
     {
         const apiKey = localStorage.getItem('apiKey')
@@ -123,5 +129,24 @@ export default function CalendarSettingsPage()
     )
 }
 
+export async function getServerSideProps({req})
+{
+    const apiKey = req.cookies.apiKey
 
-// TODO: Add API key authentication to all serverside pages instead of doing it client side, not secure enough you doofus
+    const isValid = await verifyApiKey(apiKey).catch(err => console.log(err))
+
+    if (isValid)
+    {
+        
+        return {
+            props: {
+                valid: Boolean(isValid),
+            }
+        }
+    } else return {
+        redirect: {
+            permanent: false,
+            destination: '/login'
+        }
+    }
+}

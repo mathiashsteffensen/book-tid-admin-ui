@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import {getBookingSettings, updateBookingSettings} from '../../requests'
+import {getBookingSettings, updateBookingSettings, verifyApiKey} from '../../requests'
 import {getSettingLabelFromKey} from '../../utils'
 
 import Main from '../../components/Main'
@@ -16,7 +16,6 @@ export default function OnlineBooking({bookingSettings}) {
     })
 
     const [openSucces, setOpenSuccess] = useState(false)
-    console.log(bookingSettings)
 
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const update = () => setShouldUpdate(!shouldUpdate)
@@ -250,13 +249,24 @@ export default function OnlineBooking({bookingSettings}) {
     )
 }
 
-// TODO: Add API key authentication to all serverside pages instead of doing it client side, not secure enough you doofus
-export async function getServerSideProps({req, res}) {
-    let bookingSettings = await getBookingSettings(req.cookies.apiKey).catch((err) => {
-        console.log(err.message)
-        res.redirect('/500')
-    })
-    return {
-      props: {bookingSettings: bookingSettings},
+export async function getServerSideProps({req, res}) 
+{
+    const apiKey = req.cookies.apiKey
+    const isValid = await verifyApiKey(apiKey).catch(err => console.log(err))
+
+    if (isValid)
+    {
+        let bookingSettings = await getBookingSettings(req.cookies.apiKey).catch((err) => console.log(err.message))
+        return {
+            props: {
+                valid: Boolean(isValid),
+                bookingSettings
+            },
+        }
+    } else return {
+        redirect: {
+            permanent: false,
+            destination: '/login'
+        }
     }
-  }
+}

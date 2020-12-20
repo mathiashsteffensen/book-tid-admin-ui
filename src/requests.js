@@ -7,12 +7,13 @@ const verifyApiKey = async (apiKey) =>
 {
     return await axios.get(API_URI + '/admin/auth/verify-key/' + apiKey)
       .then((res) => {
+          console.log(res.data)
           if(res.status === 200) return res.data
           else return false
       })
       .catch((err) =>
       {
-        throw new Error(err.msg)
+        throw new Error(err.response.data.msg)
       })
 }
 

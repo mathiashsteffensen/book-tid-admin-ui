@@ -4,7 +4,7 @@ import Link from 'next/link'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
-import {login} from '../../requests'
+import {login, verifyApiKey} from '../../requests'
 
 export default function Login()
 {
@@ -38,4 +38,27 @@ export default function Login()
         </main>
         
     )
+}
+
+export async function getServerSideProps({req})
+{
+
+    const isValid = await verifyApiKey(req.cookies.apiKey).catch(err => console.log(err))
+
+    if (isValid)
+    {
+        return {
+            redirect: {
+                permanent: false,
+                destination: '/kalender'
+            }
+        }
+    } else
+    {
+        return {
+            props: {
+                valid: false
+            }
+        }
+    }
 }
