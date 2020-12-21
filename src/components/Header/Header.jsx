@@ -9,12 +9,13 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import HelpIcon from '@material-ui/icons/HelpOutlineRounded'
 // TODO: Add help page / FAQ
+// TODO: Add account/profile settings
 export default function Header() 
 {
     const [toggleDropdown, setToggleDropdown] = useState(false)
     return (
         <Navbar onSelect={() => setToggleDropdown(false)} onToggle={() => setToggleDropdown(!toggleDropdown)} expanded={toggleDropdown} fixed="top" className="px-16 py-2 justify-center" bg="dark" variant="dark" expand="md">
-            <Link href="/kalender"><Navbar.Brand>BOOKTID.NET</Navbar.Brand></Link>
+            <Link href="/kalender"><Navbar.Brand><h1>BOOKTID.NET</h1></Navbar.Brand></Link>
             <Navbar.Toggle aria-controls="navbar"/>
             <Navbar.Collapse className="flex flex-col md:flex-row md:justify-between py-2 md:py-0" id="navbar">
                 <Nav className="md:float-left">

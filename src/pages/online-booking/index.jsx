@@ -6,8 +6,13 @@ import {getSettingLabelFromKey} from '../../utils'
 import Main from '../../components/Main'
 import FullPageInput from '../../components/FullPageInput'
 
-import {Button, Snackbar, IconButton, TextField, Select, MenuItem, Switch} from '@material-ui/core'
+import {Snackbar, IconButton} from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
+
+import InputGroup from 'react-bootstrap/InputGroup'
+import FormControl from 'react-bootstrap/FormControl'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 export default function OnlineBooking({bookingSettings}) {
     const [state, setState] = useState({
@@ -35,8 +40,6 @@ export default function OnlineBooking({bookingSettings}) {
             CTAs={
                 <div>
                     <Button
-                        color="primary"
-                        variant="contained"
                         onClick={() => updateBookingSettings(localStorage.getItem('apiKey'), state.bookingSettings).then(() => setOpenSuccess(true))}
                     >
                         Gem
@@ -49,16 +52,19 @@ export default function OnlineBooking({bookingSettings}) {
                     title={getSettingLabelFromKey("domainPrefix").title}
                     subtitle={getSettingLabelFromKey("domainPrefix").subtitle}
                     input={
-                        <div className="flex justify-center items-center w-full">
-                            <TextField
-                                className="w-full text-xs md:text-base"
-                                style={{marginLeft: '0.5rem'}}
-                                disabled={!state.editDomain} 
-                                inputProps={{style: {textAlign: 'right', paddingRight: 0, width: '100%'}}}
-                                value={state.bookingSettings.domainPrefix}
-                                onChange={(e) => handleChange('domainPrefix', e.target.value)}
-                            />
-                            <span style={{fontSize: '16px'}}>.booktid.net</span>
+                        <div className="flex ml-2 justify-center items-center w-full">
+                            <InputGroup>
+                                <FormControl
+                                    className="text-right"
+                                    value={state.bookingSettings.domainPrefix}
+                                    onChange={(e) => handleChange('domainPrefix', e.target.value)}
+                                    readOnly={!state.editDomain}
+                                />
+                                <InputGroup.Append>
+                                    <InputGroup.Text>.booktid.net</InputGroup.Text>
+                                </InputGroup.Append>
+                            </InputGroup>
+                            
                             <p 
                                 onClick={() => setState({...state, ...{editDomain: !state.editDomain}})} 
                                 className="ml-4 cursor-pointer underline text-center text-2xs text-blue-700 font-medium"
@@ -77,51 +83,50 @@ export default function OnlineBooking({bookingSettings}) {
                     subtitle={getSettingLabelFromKey("latestBookingBefore").subtitle}
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Select
+                            <FormControl as="select"
                                 value={state.bookingSettings.latestBookingBefore}
                                 onChange={(e) => handleChange('latestBookingBefore', e.target.value)}
-                                style={{width: '100%'}}
-                                variant="outlined"
+                                className="w-full"
+                                custom
                             >
-                                <MenuItem value={30}>30 min</MenuItem>
-                                <MenuItem value={60}>1 time (standard)</MenuItem>
-                                <MenuItem value={120}>2 timer</MenuItem>
-                                <MenuItem value={180}>3 timer</MenuItem>
-                                <MenuItem value={240}>4 timer</MenuItem>
-                                <MenuItem value={300}>5 timer</MenuItem>
-                                <MenuItem value={360}>6 timer</MenuItem>
-                                <MenuItem value={720}>12 timer</MenuItem>
-                                <MenuItem value={1440}>1 dag</MenuItem>
-                                <MenuItem value={2880}>2 dage</MenuItem>
-                                <MenuItem value={4320}>3 dage</MenuItem>
-                            </Select>
+                                <option value={30}>30 min</option>
+                                <option value={60}>1 time (standard)</option>
+                                <option value={120}>2 timer</option>
+                                <option value={180}>3 timer</option>
+                                <option value={240}>4 timer</option>
+                                <option value={300}>5 timer</option>
+                                <option value={360}>6 timer</option>
+                                <option value={720}>12 timer</option>
+                                <option value={1440}>1 dag</option>
+                                <option value={2880}>2 dage</option>
+                                <option value={4320}>3 dage</option>
+                            </FormControl>
                         </div>
                     }
                 />
 
-                <FullPageInput 
+                <FullPageInput
                     title={getSettingLabelFromKey("latestCancelbefore").title}
                     subtitle={getSettingLabelFromKey("latestCancelbefore").subtitle}
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Select
+                            <FormControl as="select" custom
                                 value={state.bookingSettings.latestCancelbefore}
                                 onChange={(e) => handleChange('latestCancelbefore', e.target.value)}
                                 style={{width: '100%'}}
-                                variant="outlined"
                             >
-                                <MenuItem value={30}>30 min</MenuItem>
-                                <MenuItem value={60}>1 time</MenuItem>
-                                <MenuItem value={120}>2 timer</MenuItem>
-                                <MenuItem value={180}>3 timer</MenuItem>
-                                <MenuItem value={240}>4 timer</MenuItem>
-                                <MenuItem value={300}>5 timer</MenuItem>
-                                <MenuItem value={360}>6 timer</MenuItem>
-                                <MenuItem value={720}>12 timer (standard)</MenuItem>
-                                <MenuItem value={1440}>1 dag</MenuItem>
-                                <MenuItem value={2880}>2 dage</MenuItem>
-                                <MenuItem value={4320}>3 dage</MenuItem>
-                            </Select>
+                                <option value={30}>30 min</option>
+                                <option value={60}>1 time</option>
+                                <option value={120}>2 timer</option>
+                                <option value={180}>3 timer</option>
+                                <option value={240}>4 timer</option>
+                                <option value={300}>5 timer</option>
+                                <option value={360}>6 timer</option>
+                                <option value={720}>12 timer (standard)</option>
+                                <option value={1440}>1 dag</option>
+                                <option value={2880}>2 dage</option>
+                                <option value={4320}>3 dage</option>
+                            </FormControl>
                         </div>
                     }
                 />
@@ -131,29 +136,28 @@ export default function OnlineBooking({bookingSettings}) {
                     subtitle={getSettingLabelFromKey("maxDaysBookAhead").subtitle}
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Select
+                            <FormControl as="select" custom
                                 value={state.bookingSettings.maxDaysBookAhead}
                                 onChange={(e) => handleChange('maxDaysBookAhead', e.target.value)}
                                 style={{width: '100%'}}
-                                variant="outlined"
                             >
-                                <MenuItem value={7}>1 uge</MenuItem>
-                                <MenuItem value={14}>2 uger</MenuItem>
-                                <MenuItem value={30}>1 måned</MenuItem>
-                                <MenuItem value={60}>2 måneder</MenuItem>
-                                <MenuItem value={90}>3 måneder</MenuItem>
-                                <MenuItem value={120}>4 måneder</MenuItem>
-                                <MenuItem value={150}>5 måneder</MenuItem>
-                                <MenuItem value={180}>6 måneder</MenuItem>
-                                <MenuItem value={210}>7 måneder</MenuItem>
-                                <MenuItem value={240}>8 måneder</MenuItem>
-                                <MenuItem value={270}>9 måneder</MenuItem>
-                                <MenuItem value={300}>10 måneder</MenuItem>
-                                <MenuItem value={330}>11 måneder</MenuItem>
-                                <MenuItem value={364}>1 år</MenuItem>
-                                <MenuItem value={728}>2 år</MenuItem>
-                                <MenuItem value={1092}>3 år (standard)</MenuItem>
-                            </Select>
+                                <option value={7}>1 uge</option>
+                                <option value={14}>2 uger</option>
+                                <option value={30}>1 måned</option>
+                                <option value={60}>2 måneder</option>
+                                <option value={90}>3 måneder</option>
+                                <option value={120}>4 måneder</option>
+                                <option value={150}>5 måneder</option>
+                                <option value={180}>6 måneder</option>
+                                <option value={210}>7 måneder</option>
+                                <option value={240}>8 måneder</option>
+                                <option value={270}>9 måneder</option>
+                                <option value={300}>10 måneder</option>
+                                <option value={330}>11 måneder</option>
+                                <option value={364}>1 år</option>
+                                <option value={728}>2 år</option>
+                                <option value={1092}>3 år (standard)</option>
+                            </FormControl>
                         </div>
                     }
                 />
@@ -163,7 +167,8 @@ export default function OnlineBooking({bookingSettings}) {
                     subtitle={getSettingLabelFromKey("requireCustomerAddress").subtitle}
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Switch 
+                            <Form.Switch 
+                                id="requireCustomerAddress"
                                 checked={state.bookingSettings.requireCustomerAddress}
                                 onChange={(e) => handleChange('requireCustomerAddress', e.target.checked)}
                                 color="primary"
@@ -177,7 +182,9 @@ export default function OnlineBooking({bookingSettings}) {
                     subtitle={getSettingLabelFromKey("hideCustomerCommentSection").subtitle}
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Switch 
+                            <Form.Switch
+                                id="hideCustomerCommentSection"
+                                className="cursor-pointer" 
                                 checked={state.bookingSettings.hideCustomerCommentSection}
                                 onChange={(e) => handleChange('hideCustomerCommentSection', e.target.checked)}
                                 color="primary"
@@ -191,7 +198,8 @@ export default function OnlineBooking({bookingSettings}) {
                     subtitle={getSettingLabelFromKey("hideServiceDuration").subtitle}
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Switch 
+                            <Form.Switch 
+                                id="hideServiceDuration"
                                 checked={state.bookingSettings.hideServiceDuration}
                                 onChange={(e) => handleChange('hideServiceDuration', e.target.checked)}
                                 color="primary"
@@ -205,7 +213,8 @@ export default function OnlineBooking({bookingSettings}) {
                     subtitle={getSettingLabelFromKey("hideServicePrice").subtitle}
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Switch 
+                            <Form.Switch 
+                                id="hideServicePrice"
                                 checked={state.bookingSettings.hideServicePrice}
                                 onChange={(e) => handleChange('hideServicePrice', e.target.checked)}
                                 color="primary"
@@ -219,7 +228,8 @@ export default function OnlineBooking({bookingSettings}) {
                     subtitle={getSettingLabelFromKey("hideContactInfo").subtitle}
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Switch 
+                            <Form.Switch 
+                                id="hideContactInfo"
                                 checked={state.bookingSettings.hideContactInfo}
                                 onChange={(e) => handleChange('hideContactInfo', e.target.checked)}
                                 color="primary"
