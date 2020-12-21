@@ -21,7 +21,6 @@ const signup  = (data) =>
 {
     return new Promise((resolve, reject) =>
     {
-        console.log(API_URI + '/admin/auth/signup/free')
         axios.post(API_URI + '/admin/auth/signup/free', data).then(async (res) =>
         {
             let data = res.data

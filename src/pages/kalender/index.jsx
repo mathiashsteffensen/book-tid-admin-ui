@@ -70,7 +70,6 @@ export default function Kalender({calendars})
     )
 }
 
-// TODO: Add API key authentication to all serverside pages instead of doing it client side, not secure enough you doofus
 export async function getServerSideProps({req})
 {
     let apiKey = req.cookies.apiKey
