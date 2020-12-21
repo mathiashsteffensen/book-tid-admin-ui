@@ -354,6 +354,17 @@ const deleteAppointment = async (apiKey, appointmentID) => await axios.delete(AP
     throw new Error(err.response.data.msg)
 })
 
+const getProductsAndPrices = async () => await axios.get(API_URI + '/admin/products/products-and-prices')
+.then(res => 
+    {
+        console.log(res)
+        return res.data
+    })
+.catch((err) => {
+    console.log(err.message)
+    throw new Error(err.response.data.msg)
+})
+
 export {
     login,
     signup,
@@ -388,5 +399,6 @@ export {
     getAppointmentsByMonth,
     getAppointmentsByCalendarMonth,
     createAppointment,
-    deleteAppointment
+    deleteAppointment,
+    getProductsAndPrices
 }

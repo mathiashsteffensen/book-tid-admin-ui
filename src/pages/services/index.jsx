@@ -7,7 +7,7 @@ import Main from '../../components/Main'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
-import {getCatsAndServices} from '../../requests'
+import {getCatsAndServices, verifyApiKey} from '../../requests'
 import CatAndServices from '../../components/CatAndServices/CatAndServices'
 
 
