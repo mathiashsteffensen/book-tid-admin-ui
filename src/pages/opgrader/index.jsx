@@ -2,25 +2,54 @@ import React, { useState } from 'react'
 
 import Link from 'next/link'
 
-import { CardElement } from '@stripe/react-stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
+// Component library imports
+import CardDeck from 'react-bootstrap/CardDeck'
+
+// Stripe elements
+import { Elements } from '@stripe/react-stripe-js/';
 import { loadStripe } from '@stripe/stripe-js';
 
-import Form from 'react-bootstrap/Form'
+// Custom component imports
+import ProductTemplate from '../../components/ProductTemplate/ProductTemplate';
+import PaymentForm from '../../components/PaymentForm/PaymentForm';
 
-import { getProductsAndPrices } from '../../requests'
+// Icon imports
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+
+// HTTP Request imports
+import { getProductsAndPrices, verifyApiKey } from '../../requests'
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe('pk_test_JJ1eMdKN0Hp4UFJ6kWXWO4ix00jtXzq5XG');
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
-const Upgrade = () => 
+const Upgrade = ({products, user}) => 
 {
+    console.log(user);
     const [showPaymentForm, setShowPaymentForm] = useState(false)
+
+    const [selectedProduct, setSelectedProduct] = useState(null)
+
+    const handleProductSelect = (product) =>
+    {
+        console.log(product)
+        setSelectedProduct(product)
+        setShowPaymentForm(true)
+    }
+
     return (
         <Elements stripe={stripePromise}>
-            <main className="w-screen h-screen bg-gray-900 bg-opaque flex flex-col justify-center items-center">
-                <header className="w-screen absolute top-0 bg-gray-200 py-3 flex justify-center items-center">
+            <main className="w-screen min-h-screen bg-gray-900 bg-opaque flex flex-col just items-center">
+                <header className="w-screen h-24 relative top-0 bg-gray-200 py-3 flex justify-center items-center">
+                    <div className="absolute left-0">
+                        <Link href="/kalender">
+                            <a className="flex justify-center items-center">
+                                <NavigateBeforeIcon className="text-secondary" style={{fontSize: '3rem'}} />
+                                <h4 className="hidden md:block">Tilbage til min kalender</h4>
+                            </a>
+                        </Link> 
+                    </div>
+
                     <div className="w-1/2 text-lg md:text-2xl">
                         <button onClick={() => window.location = 'https://booktid.net'}>
                             <h1>BOOKTID.NET</h1>
@@ -29,32 +58,52 @@ const Upgrade = () =>
                     </div>
                 </header>
 
-                {showPaymentForm && <Form className="bg-gray-100 overflow-hidden rounded shadow mt-4">
-                    <div className="w-full bg-gray-700">
-                        <h3 className="text-2xl text-gray-100 px-16 py-6 font-semibold">Opgrader til premium</h3>
-                    </div>
-                    <CardElement
-                        className="form-control"
-                    /> 
-                </Form>}
-
-                <div className="mt-2">
-                    Har du ikke en bruger? <Link href="/opret-bruger"><a><span className="hover:text-purple-700 text-blue-700 underline">Opret dig her</span></a></Link> 
+                <div className="relative mt-3 md:mt-0 top-0 sm:top-6 md:mx-32 mx-6">
+                    {showPaymentForm 
+                    ? <PaymentForm customerId={user.stripeCustomerID} setShowPaymentForm={setShowPaymentForm} product={selectedProduct} />
+                    : <CardDeck>
+                        <ProductTemplate
+                            handleProductSelect={handleProductSelect} 
+                            product={products.basic}
+                        />
+                        <ProductTemplate 
+                            handleProductSelect={handleProductSelect} 
+                            product={products.premium}
+                        />
+                    </CardDeck>
+                    }
                 </div>
+
+                
             </main>
-        </Elements>
+        </Elements>    
     )
 }
 
 export default Upgrade
 
-export async function getServerSideProps()
+export async function getServerSideProps({req})
 {
-    const products = await getProductsAndPrices()
-    console.log(products)
-    return {
-        props: {
+    const apiKey = req.cookies.apiKey
+    const isValid = await verifyApiKey(apiKey).catch(err => console.log(err))
+    console.log(isValid);
+    if (isValid)
+    {
+        const products = await getProductsAndPrices()
+        products.basic = products.basic[0]
+        products.premium = products.premium[0]
 
+        return {
+            props: {
+                valid: false,
+                user: isValid,
+                products
+            }
+        }
+    } else return {
+        redirect: {
+            permanent: false,
+            destination: '/login'
         }
     }
 }

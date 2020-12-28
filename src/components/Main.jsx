@@ -3,7 +3,7 @@ import React from 'react'
 export default function Main({title, subtitle, CTAs, children}) 
 {
     return (
-        <main className="w-full mt-24 md:mt-22 mb-2 flex justify-center items-center">
+        <main className="w-full mt-4 md:mt-22 mb-2 flex justify-center items-center">
             <div className="w-full mx-2 md:w-11/12 rounded-lg md:px-4 pb-4 border-opacity-50 border-blue-400 border-solid border-2 flex items-center justify-center flex-col">
                 <div className="w-full px-4 py-2 flex flex-col md:flex-row justify-between items-center">
                     <div>

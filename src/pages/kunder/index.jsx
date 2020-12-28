@@ -188,6 +188,7 @@ export async function getServerSideProps({req}) {
         return {
             props: {
                 valid: Boolean(isValid),
+                user: isValid,
                 customerList: customerList ? customerList : [],
                 totalCustomers: totalCustomers ? totalCustomers : 0,
             }

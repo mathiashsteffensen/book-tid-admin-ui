@@ -1,14 +1,13 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
 
-const API_URI = "https://api.booktid.net"
+const API_URI = process.env.NODE_ENV === 'production' ? "https://api.booktid.net" : "http://localhost:4000"
 
 const verifyApiKey = async (apiKey) =>
 {
     return await axios.get(API_URI + '/admin/auth/verify-key/' + apiKey)
       .then((res) => {
-          console.log(res.data)
-          if(res.status === 200) return res.data
+          if(res.status === 200 && res.data) return res.data
           else return false
       })
       .catch((err) =>
@@ -354,16 +353,45 @@ const deleteAppointment = async (apiKey, appointmentID) => await axios.delete(AP
     throw new Error(err.response.data.msg)
 })
 
-const getProductsAndPrices = async () => await axios.get(API_URI + '/admin/products/products-and-prices')
+const getProductsAndPrices = async () => await axios.get(API_URI + '/admin/products/products-and-prices/')
 .then(res => 
     {
-        console.log(res)
+        console.log(res.data)
         return res.data
     })
 .catch((err) => {
     console.log(err.message)
     throw new Error(err.response.data.msg)
 })
+
+const createSubscription = async (customerId, paymentMethodId, priceId, quantity, apiKey) => 
+{
+    return await axios.post(API_URI + `/admin/pay/create-subscription/${apiKey}`, {
+        customerId, 
+        paymentMethodId, 
+        priceId, 
+        quantity
+    })
+    .then(res => res.data) 
+    .then((result) => {
+        if (result.error) {
+            // The card had an error when trying to attach it to a customer.
+            throw new Error(result.error.message)
+        }
+        return result;
+    })
+    .then((result) => {
+        return {
+            paymentMethodId: paymentMethodId,
+            priceId: priceId,
+            subscription: result,
+        };
+    })
+    .catch((err) => {
+        console.log(err.response)
+        throw new Error(err.response.data.error.message)
+    })
+}
 
 export {
     login,
@@ -400,5 +428,6 @@ export {
     getAppointmentsByCalendarMonth,
     createAppointment,
     deleteAppointment,
-    getProductsAndPrices
+    getProductsAndPrices,
+    createSubscription
 }

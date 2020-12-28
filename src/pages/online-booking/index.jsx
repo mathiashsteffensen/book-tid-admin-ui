@@ -270,6 +270,7 @@ export async function getServerSideProps({req, res})
         return {
             props: {
                 valid: Boolean(isValid),
+                user: isValid,
                 bookingSettings
             },
         }

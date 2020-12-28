@@ -141,6 +141,7 @@ export async function getServerSideProps({req})
         return {
             props: {
                 valid: Boolean(isValid),
+                user: isValid,
             }
         }
     } else return {

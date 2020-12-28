@@ -5,13 +5,19 @@ module.exports = {
       animation: {
         'spin-slow': 'spin 2s linear infinite',
       },
+      margin: {
+        '80': '20rem'
+      },
       width: {
         'border': '0.05rem',
         'extend-50': '150%',
         'extend-27': '130%',
+        '92': '23rem',
         '100': '100rem',
       },
       height: {
+        '80': '20rem',
+        '92': '23rem',
         'border': '0.05rem',
         '3/5-screen': '64vh',
       },
@@ -28,10 +34,12 @@ module.exports = {
         'micro': '0.125rem'
       },
       colors: {
-        'primary': '#3f51b5'
+        'primary': '#007BFF',
+        'secondary': '#181D26'
       },
       inset: {
-        '20': '20%'
+        '20': '20%',
+        '6': '6rem'
       },
       fontSize: {
         '2xs': '0.675rem',
@@ -42,7 +50,10 @@ module.exports = {
       },
       gridTemplateRows: {
         'table': '35px repeat(6, 1fr)'
-    },
+      },
+      screens: {
+        'xs': '200px', 
+      },
     },
   },
   variants: {},

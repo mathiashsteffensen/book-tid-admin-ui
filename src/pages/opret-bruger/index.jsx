@@ -171,7 +171,7 @@ function PartTwo({setPartOne, companyName, city, zip, street, number, submit})
 
 export default function SignUp() 
 {
-    const [showPartOne, setShowPartOne] = useState(false)
+    const [showPartOne, setShowPartOne] = useState(true)
     const [message, setMessage] = useState('')
 
     // Part one state
@@ -305,6 +305,8 @@ export async function getServerSideProps({req})
         }
     } else
     {
+
+
         return {
             props: {
                 valid: false

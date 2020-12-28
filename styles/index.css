@@ -1,22 +1,15 @@
 @tailwind base;
 
-/* Write your own custom base styles here */
-
 /* Start purging... */
 @tailwind components;
 /* Stop purging. */
-
-/* Write your own custom component styles here */
-.btn-blue {
-  @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
-}
 
 /* Start purging... */
 @tailwind utilities;
 /* Stop purging. */
 
-/* Your own custom utilities */
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap');
+
 
 .diagonal-divider::after {
   content: '';
@@ -25,32 +18,29 @@
   color: black;
 }
 
-html {
-  max-width: 100vw;
-  min-width: 100vw;
-  min-height: 100vh;
-  font-family: 'Roboto', sans-serif;
-  box-sizing: border-box;
+html, body{
+  padding: 0;
+  margin: 0;
+}
+
+html{
+  min-height: 100%;
+}
+
+body{
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  overflow-x: hidden;
+  font-size: 16px;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Raleway', sans-serif;
 }
 
-body {
-  position: absolute;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  font-size: 16px;
-}
-
-@media (max-width: 960px) {
-  body {
-    font-size: 12px;
-  }
-}
 
 a:hover {
   text-decoration: none;
