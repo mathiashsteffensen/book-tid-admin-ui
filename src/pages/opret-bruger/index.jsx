@@ -2,14 +2,13 @@ import React, { useState, useRef } from 'react'
 
 import Link from 'next/link'
 
-import TextField from '@material-ui/core/TextField'
-
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
 import {signup, verifyApiKey} from '../../requests'
 
+import AltHeader from '../../components/Header/AltHeader'
 
 function PartOne({firstName, lastName, email, phoneNumber, password, handleNext})
 {
@@ -243,14 +242,7 @@ export default function SignUp()
 
     return (
         <main className="w-screen h-screen bg-gray-900 bg-opaque flex flex-col justify-start items-center">
-            <header className="w-screen bg-gray-200 py-3 flex justify-center items-center">
-                <div className="w-1/2 text-lg md:text-2xl">
-                    <button onClick={() => window.location = 'https://booktid.net'}>
-                        <h1>BOOKTID.NET</h1>
-                    </button>
-                    <h2 className="font-medium">ONLINE BOOKINGSYSTEM</h2>
-                </div>
-            </header>
+            <AltHeader />
 
             <Form ref={formRef} noValidate validated={validated} className="bg-gray-100 overflow-hidden rounded shadow mt-4">
                 <div className="w-full bg-gray-700">

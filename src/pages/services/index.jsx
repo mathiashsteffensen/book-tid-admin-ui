@@ -97,13 +97,15 @@ export default function Services({initialCatsAndServices})
             CTAs={
                 <div className="flex justify-evenly items-center">
                     <ButtonGroup>
-                        <Button 
+                        <Button
+                            size="lg" 
                             variant="outline-primary"
                             onClick={handleCreateCatForm}
                         >
                             Tilføj Kategori
                         </Button>
                         <Button
+                            size="lg"
                             variant="outline-primary"
                             onClick={handleCreateServiceForm}
                         >

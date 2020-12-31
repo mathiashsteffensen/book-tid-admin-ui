@@ -11,69 +11,23 @@ import Row from 'react-bootstrap/Row'
 
 // API Request Imports
 import {
-    createSubscription
+    createSubscription,
+    retryInvoiceWithNewPaymentMethod
 } from '../../requests'
 
-export default function PaymentForm({product, setShowPaymentForm, customerId}) 
+// Stripe imports
+
+import {
+  handlePaymentThatRequiresCustomerAction,
+  handleRequiresPaymentMethod
+} from '../../stripe'
+
+export default function PaymentForm({product, title, setShowPaymentForm, showBackLink = false,customerId, isRetry = false, latestInvoice}) 
 {
     const stripe = useStripe();
     const elements = useElements();
 
     const [errorMsg, setError] = useState('')
-
-    function handlePaymentThatRequiresCustomerAction({
-        subscription,
-        invoice,
-        priceId,
-        paymentMethodId,
-        isRetry,
-      }) {
-        if (subscription && subscription.status === 'active') {
-          // Subscription is active, no customer actions required.
-          return { subscription, priceId, paymentMethodId };
-        }
-      
-        // If it's a first payment attempt, the payment intent is on the subscription latest invoice.
-        // If it's a retry, the payment intent will be on the invoice itself.
-        let paymentIntent = invoice ? invoice.payment_intent : subscription.latest_invoice.payment_intent;
-      
-        if (
-          paymentIntent.status === 'requires_action' ||
-          (isRetry === true && paymentIntent.status === 'requires_payment_method')
-        ) {
-          return stripe
-            .confirmCardPayment(paymentIntent.client_secret, {
-              payment_method: paymentMethodId,
-            })
-            .then((result) => {
-              if (result.error) {
-                // Start code flow to handle updating the payment details.
-                // Display error message in your UI.
-                // The card was declined (i.e. insufficient funds, card has expired, etc).
-                throw result;
-              } else {
-                if (result.paymentIntent.status === 'succeeded') {
-                  // Show a success message to your customer.
-                  // There's a risk of the customer closing the window before the callback.
-                  // We recommend setting up webhook endpoints later in this guide.
-                  return {
-                    priceId: priceId,
-                    subscription: subscription,
-                    invoice: invoice,
-                    paymentMethodId: paymentMethodId,
-                  };
-                }
-              }
-            })
-            .catch((error) => 
-            {
-              setError(error.message);
-            });
-        } else {
-          // No customer action needed.
-          return { subscription, priceId, paymentMethodId };
-        }
-      }
 
     const handleSubmit = async (event) => 
     {
@@ -95,23 +49,28 @@ export default function PaymentForm({product, setShowPaymentForm, customerId})
             card: cardElement,
         });
 
-        if (error) 
-        {
-            console.log('[error]', error);
-            setError(error.message)
-        } else 
+        if (error) setError(error.message)
+        else 
         {
             setError('')
             console.log('[PaymentMethod]', paymentMethod);
             console.log(product.priceId)
-            createSubscription(customerId, paymentMethod.id, product.priceId, product.unitAmount, localStorage.getItem('apiKey'))
-            .then(handlePaymentThatRequiresCustomerAction)
-            .then(res => console.log(res))
-            .catch((err) =>
-            {
-                console.log(err);
-                setError(err.message)
-            })
+            !isRetry 
+            ? createSubscription(customerId, paymentMethod.id, product.priceId, product.unitAmount, localStorage.getItem('apiKey'))
+              .then(handlePaymentThatRequiresCustomerAction)
+              .then(handleRequiresPaymentMethod)
+              .then(res => console.log(res))
+              .catch((err) =>
+              {
+                  console.log(err);
+                  setError(err.message)
+              })
+            : retryInvoiceWithNewPaymentMethod(customerId, paymentMethod.id, latestInvoice.id, product.priceId, localStorage.getItem('apiKey'))
+              .catch((err) =>
+              {
+                  console.log(err);
+                  setError(err.message)
+              })
         }
     };
 
@@ -120,20 +79,20 @@ export default function PaymentForm({product, setShowPaymentForm, customerId})
             <Row className="divide-x-2 h-80 divide-primary">
                 <Col className="pr-0 h-full" md={8}>
                     <div className="w-full bg-gray-700 h-24 flex justify-center items-center">
-                        <h3 className="text-2xl text-gray-100 font-semibold">Opgrader til <span className="font-normal underline">BOOKTID {product.name}</span></h3>
+                        <h3 className="text-2xl text-gray-100 font-semibold">{title} <span className="font-normal underline">BOOKTID {product.name}</span></h3>
                     </div>
                     <div className="w-full h-56 px-12 py-4 flex justify-center items-center flex-col">
-                        {errorMsg !== '' && <div className="w-2/3 text-center text-red-500">
-                            {errorMsg}
-                        </div>}
-
                         <CardElement
                             className="form-control w-92"
                         />
 
+                        {errorMsg !== '' && <div className="w-2/3 text-center text-red-500">
+                            {errorMsg}
+                        </div>}
+                        
                         <Button type="submit" className="my-3">Opgrader</Button> 
 
-                        <div onClick={() => setShowPaymentForm(false)} className="pt-2 hover:opacity-75 hover:underline text-secondary cursor-pointer">Vælg en anden plan</div>
+                       {showBackLink && <div onClick={() => setShowPaymentForm(false)} className="pt-2 hover:opacity-75 hover:underline text-secondary cursor-pointer">Vælg en anden plan</div>}
                         
                     </div>
                 </Col>

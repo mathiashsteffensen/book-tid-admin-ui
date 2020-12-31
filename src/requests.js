@@ -1,6 +1,8 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
 
+import {handlePaymentThatRequiresCustomerAction, handleRequiresPaymentMethod} from './stripe'
+
 const API_URI = process.env.NODE_ENV === 'production' ? "https://api.booktid.net" : "http://localhost:4000"
 
 const verifyApiKey = async (apiKey) =>
@@ -353,14 +355,30 @@ const deleteAppointment = async (apiKey, appointmentID) => await axios.delete(AP
     throw new Error(err.response.data.msg)
 })
 
-const getProductsAndPrices = async () => await axios.get(API_URI + '/admin/products/products-and-prices/')
+const getProfileSettings = async (apiKey) => await axios.get(API_URI + '/admin/settings/profile/' + apiKey)
 .then(res => 
     {
-        console.log(res.data)
         return res.data
     })
 .catch((err) => {
-    console.log(err.message)
+    throw new Error(err.response.data.msg)
+})
+
+const getProductsAndPrices = async () => await axios.get(API_URI + '/admin/products/products-and-prices/')
+.then(res => res.data)
+.catch((err) => {
+    throw new Error(err.response.data.msg)
+})
+
+const getProduct = async (productID, apiKey) => await axios.get(API_URI + `/admin/products/${productID}/${apiKey}`)
+.then(res => res.data)
+.catch((err) => {
+    throw new Error(err.response.data.msg)
+})
+
+const getLatestInvoice = async (subscriptionId, apiKey) => await axios.get(API_URI + `/admin/pay/latestInvoice/${subscriptionId}/${apiKey}`)
+.then(res => res.data)
+.catch((err) => {
     throw new Error(err.response.data.msg)
 })
 
@@ -387,11 +405,40 @@ const createSubscription = async (customerId, paymentMethodId, priceId, quantity
             subscription: result,
         };
     })
-    .catch((err) => {
-        console.log(err.response)
-        throw new Error(err.response.data.error.message)
-    })
 }
+
+const cancelSubscription = async (apiKey) => await axios.post(API_URI + `/admin/pay/cancel-subscription/${apiKey}`)
+.then(res => res.data)
+.catch((err) => {
+    throw new Error(err.response.data.msg)
+})
+
+const retryInvoiceWithNewPaymentMethod = (customerId, paymentMethodId, invoiceId, priceId, apiKey) => axios.post(API_URI + `/admin/pay/retry-invoice/${apiKey}`, {
+    customerId: customerId,
+    paymentMethodId: paymentMethodId,
+    invoiceId: invoiceId,
+})
+.then((res) => res.data)
+.then((result) => {
+    if (result.error) {
+      // The card had an error when trying to attach it to a customer.
+      throw new Error(result.error.message);
+    }
+    return result;
+})
+.then((result) => {
+    // Normalize the result to contain the object returned by Stripe.
+    // Add the additional details we need.
+    return {
+      invoice: result,
+      paymentMethodId: paymentMethodId,
+      priceId: priceId,
+      isRetry: true,
+    };
+    
+})
+.then(handlePaymentThatRequiresCustomerAction)
+.then(handleRequiresPaymentMethod)
 
 export {
     login,
@@ -428,6 +475,11 @@ export {
     getAppointmentsByCalendarMonth,
     createAppointment,
     deleteAppointment,
+    getProfileSettings,
+    getProduct,
     getProductsAndPrices,
-    createSubscription
+    getLatestInvoice,
+    createSubscription,
+    cancelSubscription,
+    retryInvoiceWithNewPaymentMethod
 }

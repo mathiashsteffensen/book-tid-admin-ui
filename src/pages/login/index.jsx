@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 
 import {login, verifyApiKey} from '../../requests'
+import AltHeader from '../../components/Header/AltHeader'
 
 export default function Login()
 {
@@ -20,14 +21,7 @@ export default function Login()
     
     return (
         <main className="w-screen h-screen bg-gray-900 bg-opaque flex justify-center items-center">
-            <header className="absolute top-0 w-screen bg-gray-200 py-3 flex justify-center items-center">
-                <div className="w-1/2 text-2xl">
-                    <button onClick={() => window.location = 'https://booktid.net'}>
-                        <h1>BOOKTID.NET</h1>
-                    </button>
-                    <h2 className="font-medium">ONLINE BOOKINGSYSTEM</h2>
-                </div>
-            </header>
+            <AltHeader />
             <Form className="bg-gray-100 overflow-hidden rounded shadow">
                 <div className="w-full">
                     <div className="w-full bg-gray-700">

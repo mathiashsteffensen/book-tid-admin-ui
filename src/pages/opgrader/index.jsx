@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 
-import Link from 'next/link'
-
 // Component library imports
 import CardDeck from 'react-bootstrap/CardDeck'
 
@@ -12,9 +10,8 @@ import { loadStripe } from '@stripe/stripe-js';
 // Custom component imports
 import ProductTemplate from '../../components/ProductTemplate/ProductTemplate';
 import PaymentForm from '../../components/PaymentForm/PaymentForm';
-
-// Icon imports
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import AltHeader from '../../components/Header/AltHeader';
+import Footer from '../../components/Footer';
 
 // HTTP Request imports
 import { getProductsAndPrices, verifyApiKey } from '../../requests'
@@ -39,42 +36,28 @@ const Upgrade = ({products, user}) =>
 
     return (
         <Elements stripe={stripePromise}>
-            <main className="w-screen min-h-screen bg-gray-900 bg-opaque flex flex-col just items-center">
-                <header className="w-screen h-24 relative top-0 bg-gray-200 py-3 flex justify-center items-center">
-                    <div className="absolute left-0">
-                        <Link href="/kalender">
-                            <a className="flex justify-center items-center">
-                                <NavigateBeforeIcon className="text-secondary" style={{fontSize: '3rem'}} />
-                                <h4 className="hidden md:block">Tilbage til min kalender</h4>
-                            </a>
-                        </Link> 
-                    </div>
+            <main className="w-screen min-h-screen bg-gray-900 bg-opaque flex flex-col">
+                <AltHeader showBackLink/>
 
-                    <div className="w-1/2 text-lg md:text-2xl">
-                        <button onClick={() => window.location = 'https://booktid.net'}>
-                            <h1>BOOKTID.NET</h1>
-                        </button>
-                        <h2 className="font-medium">ONLINE BOOKINGSYSTEM</h2>
+                <div className="md:mx-32 my-auto mx-6">
+                    <div className="flex justify-center items-center">
+                        {showPaymentForm 
+                        ?   <PaymentForm title="Opgrader til" showBackLink customerId={user.stripeCustomerID} setShowPaymentForm={setShowPaymentForm} product={selectedProduct} />
+                        :   <CardDeck>
+                                <ProductTemplate
+                                    handleProductSelect={handleProductSelect} 
+                                    product={products.basic}
+                                />
+                                <ProductTemplate 
+                                    handleProductSelect={handleProductSelect} 
+                                    product={products.premium}
+                                />
+                            </CardDeck>
+                        } 
                     </div>
-                </header>
-
-                <div className="relative mt-3 md:mt-0 top-0 sm:top-6 md:mx-32 mx-6">
-                    {showPaymentForm 
-                    ? <PaymentForm customerId={user.stripeCustomerID} setShowPaymentForm={setShowPaymentForm} product={selectedProduct} />
-                    : <CardDeck>
-                        <ProductTemplate
-                            handleProductSelect={handleProductSelect} 
-                            product={products.basic}
-                        />
-                        <ProductTemplate 
-                            handleProductSelect={handleProductSelect} 
-                            product={products.premium}
-                        />
-                    </CardDeck>
-                    }
                 </div>
 
-                
+                <Footer />
             </main>
         </Elements>    
     )

@@ -50,6 +50,7 @@ export default function Kalender({calendars})
             CTAs={
                 <div>
                     <Button
+                        size="lg"
                         variant="primary"
                         onClick={handleAddAppointmentForm}
                     >

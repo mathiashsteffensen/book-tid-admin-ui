@@ -41,6 +41,7 @@ export default function OnlineBooking({bookingSettings}) {
                 <div>
                     <Button
                         onClick={() => updateBookingSettings(localStorage.getItem('apiKey'), state.bookingSettings).then(() => setOpenSuccess(true))}
+                        size="lg"
                     >
                         Gem
                     </Button> 

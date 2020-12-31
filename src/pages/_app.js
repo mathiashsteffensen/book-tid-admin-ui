@@ -11,11 +11,14 @@ import Button from 'react-bootstrap/Button'
 
 function MyApp({ Component, pageProps }) 
 {
+  const {
+    user
+  } = pageProps
   if (pageProps.valid)
   {
     return (
       <div>
-        {pageProps.user.subscriptionType === 'free' && (
+        {user.subscriptionType === 'free' && (
           <div className="w-full bg-gray-100 flex justify-center items-center py-3">
             <Link href="/opgrader">
               <a>
@@ -27,6 +30,21 @@ function MyApp({ Component, pageProps })
             
           </div>
         )}
+
+        {(user.subscriptionType !== 'free' && user.invoiceStatus === 'open' && user.status !== 'active') && (
+          <div className="w-full bg-gray-100 flex justify-center items-center py-3">
+            <p>
+              Der skete en fejl med din betaling 
+              <Link href="/ny-betalingsmetode">
+                <a className="px-1 link">
+                  klik her 
+                </a>
+              </Link>
+               for at tilføje en ny betalingsmetode
+            </p>
+          </div>
+        )}
+
         <Header />
         <Component {...pageProps} />
         <Footer />
@@ -37,7 +55,6 @@ function MyApp({ Component, pageProps })
   return (
     <div>
       <Component {...pageProps} />
-      <Footer />
     </div>
   )
 }

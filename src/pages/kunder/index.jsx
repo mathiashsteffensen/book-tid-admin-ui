@@ -131,6 +131,7 @@ export default function Kunder(props)
             CTAs={
                 <Button
                     onClick={handleCreateCustomerForm}
+                    size="lg"
                 >
                     Ny Kunde
                 </Button>
