@@ -1,7 +1,4 @@
-import {useEffect, useState} from 'react'
-import {useRouter} from 'next/router'
 import Link from 'next/link'
-import {verifyApiKey} from '../requests'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/index.css'
 import Footer from '../components/Footer'
@@ -14,11 +11,12 @@ function MyApp({ Component, pageProps })
   const {
     user
   } = pageProps
+  process.env.NODE_ENV === 'development' && console.log(user);
   if (pageProps.valid)
   {
     return (
       <div>
-        {user.subscriptionType === 'free' && (
+        {((user.subscriptionType === 'free' && user.status === 'active') || (user.subscriptionType === 'free' && user.invoiceStatus === 'void')) && (
           <div className="w-full bg-gray-100 flex justify-center items-center py-3">
             <Link href="/opgrader">
               <a>
@@ -31,7 +29,7 @@ function MyApp({ Component, pageProps })
           </div>
         )}
 
-        {(user.subscriptionType !== 'free' && user.invoiceStatus === 'open' && user.status !== 'active') && (
+        {(user.invoiceStatus === 'open' && user.status !== 'active') && (
           <div className="w-full bg-gray-100 flex justify-center items-center py-3">
             <p>
               Der skete en fejl med din betaling 

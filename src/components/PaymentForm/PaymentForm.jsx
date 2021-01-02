@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 
+// NextJS Imports
+import { useRouter } from 'next/router'
+
 // Stripe elements
 import { CardElement, PaymentRequestButtonElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
@@ -8,32 +11,79 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+import Spinner from 'react-bootstrap/Spinner'
+
+// Icon imports
+import CompleteIcon from '@material-ui/icons/CheckCircleOutline';
 
 // API Request Imports
 import {
     createSubscription,
-    retryInvoiceWithNewPaymentMethod
+    retryInvoiceWithNewPaymentMethod,
+    onSubscriptionComplete
 } from '../../requests'
-
-// Stripe imports
-
-import {
-  handlePaymentThatRequiresCustomerAction,
-  handleRequiresPaymentMethod
-} from '../../stripe'
 
 export default function PaymentForm({product, title, setShowPaymentForm, showBackLink = false,customerId, isRetry = false, latestInvoice}) 
 {
     const stripe = useStripe();
     const elements = useElements();
 
+    const router = useRouter()
+
     const [errorMsg, setError] = useState('')
+
+    const [loading, setLoading] = useState(false)
+    const [complete, setComplete] = useState(false)
+
+    async function handlePaymentThatRequiresCustomerAction({
+        subscription,
+        invoice,
+        priceId,
+        paymentMethodId,
+        isRetry,
+      }) {
+        if (subscription && subscription.status === 'active') {
+          // Subscription is active, no customer actions required.
+          return localStorage.getItem('apiKey')
+        }
+      
+        // If it's a first payment attempt, the payment intent is on the subscription latest invoice.
+        // If it's a retry, the payment intent will be on the invoice itself.
+        let paymentIntent = invoice ? invoice.payment_intent : subscription.latest_invoice.payment_intent;
+      
+        if (
+          paymentIntent.status === 'requires_action' ||
+          (isRetry === true && paymentIntent.status === 'requires_payment_method')
+        ) {
+          return await stripe
+            .confirmCardPayment(paymentIntent.client_secret, {
+              payment_method: paymentMethodId,
+            })
+            .then((result) => {
+              if (result.error) {
+                // Start code flow to handle updating the payment details.
+                // Display error message in your UI.
+                // The card was declined (i.e. insufficient funds, card has expired, etc).
+                throw new Error(result.error.message);
+              } else {
+                if (result.paymentIntent.status === 'succeeded') {
+                  // No customer action needed
+                  return localStorage.getItem('apiKey')
+                }
+              }
+            })
+        } else {
+          // No customer action needed.
+          return localStorage.getItem('apiKey')
+        }
+    }
 
     const handleSubmit = async (event) => 
     {
+        setLoading(true)
         // Block native form submission.
         event.preventDefault();
-        console.log('submitting')
+
         if (!stripe || !elements) 
         {
             // Stripe.js has not loaded yet. Disabling form submission.
@@ -53,24 +103,35 @@ export default function PaymentForm({product, title, setShowPaymentForm, showBac
         else 
         {
             setError('')
-            console.log('[PaymentMethod]', paymentMethod);
-            console.log(product.priceId)
             !isRetry 
             ? createSubscription(customerId, paymentMethod.id, product.priceId, product.unitAmount, localStorage.getItem('apiKey'))
               .then(handlePaymentThatRequiresCustomerAction)
-              .then(handleRequiresPaymentMethod)
-              .then(res => console.log(res))
+              .then(onSubscriptionComplete)
+              .then(() => 
+              {
+                setComplete(true)
+                setTimeout(() => router.push('/tak'), 75)
+              })
               .catch((err) =>
               {
-                  console.log(err);
+                  setComplete(false)
                   setError(err.message)
               })
+              .finally(() => setLoading(false))
             : retryInvoiceWithNewPaymentMethod(customerId, paymentMethod.id, latestInvoice.id, product.priceId, localStorage.getItem('apiKey'))
+              .then(handlePaymentThatRequiresCustomerAction)
+              .then(onSubscriptionComplete)
+              .then(() => 
+              {
+                setComplete(true)
+                setTimeout(() => router.push('/tak'), 75)
+              })
               .catch((err) =>
               {
-                  console.log(err);
+                  setComplete(false)
                   setError(err.message)
               })
+              .finally(() => setLoading(false))
         }
     };
 
@@ -90,7 +151,11 @@ export default function PaymentForm({product, title, setShowPaymentForm, showBac
                             {errorMsg}
                         </div>}
                         
-                        <Button type="submit" className="my-3">Opgrader</Button> 
+                        { (!loading && !complete) && <Button type="submit" className="my-3">Opgrader</Button> }
+
+                        { (!loading && complete) && <Button className="my-3"><CompleteIcon size="lg" /></Button> }
+
+                        { loading && <Button className="my-3"><Spinner role="status" animation="border"><span className="sr-only">Loading...</span></Spinner></Button> }
 
                        {showBackLink && <div onClick={() => setShowPaymentForm(false)} className="pt-2 hover:opacity-75 hover:underline text-secondary cursor-pointer">Vælg en anden plan</div>}
                         

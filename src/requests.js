@@ -1,12 +1,11 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
 
-import {handlePaymentThatRequiresCustomerAction, handleRequiresPaymentMethod} from './stripe'
-
 const API_URI = process.env.NODE_ENV === 'production' ? "https://api.booktid.net" : "http://localhost:4000"
 
 const verifyApiKey = async (apiKey) =>
 {
+    if (!apiKey) return false
     return await axios.get(API_URI + '/admin/auth/verify-key/' + apiKey)
       .then((res) => {
           if(res.status === 200 && res.data) return res.data
@@ -14,7 +13,7 @@ const verifyApiKey = async (apiKey) =>
       })
       .catch((err) =>
       {
-        throw new Error(err.response.data.msg)
+        return false
       })
 }
 
@@ -27,7 +26,6 @@ const signup  = (data) =>
             let data = res.data
             if (res.status === 200)
             {
-                window.location.pathname = '/login'
                 resolve()
             } else if (data)
             {
@@ -43,32 +41,29 @@ const signup  = (data) =>
     })
 }
 
-const login = (email, password) =>
+const login = async (email, password) =>
 {
-    return new Promise((resolve, reject) =>
-    {
-        axios.post(API_URI + '/admin/auth/login', {
+    return await axios.post(API_URI + '/admin/auth/login', {
             email: email,
             password: password
         }).then(async (res) =>
         {
+            if (!res) throw new Error('res undefined')
             let data = res.data
-            if (res.status === 200)
+            if (res.status === 200 && window)
             {
                 localStorage.setItem('apiKey', data.apiKey)
                 document.cookie = `apiKey=${data.apiKey}`
                 window.location.pathname = '/'
-                resolve()
+                return;
             } else
             {
-                reject(data.msg)
+                throw new Error(data.msg)
             }
         }).catch((err) =>
         {
-            console.log(err)
-            reject(err.response.data.msg)
+            throw new Error(err.response.data.msg)
         })  
-    }) 
 }
 
 const getCatsAndServices = async (apiKey, abortController) =>
@@ -434,11 +429,20 @@ const retryInvoiceWithNewPaymentMethod = (customerId, paymentMethodId, invoiceId
       paymentMethodId: paymentMethodId,
       priceId: priceId,
       isRetry: true,
-    };
-    
+    }; 
 })
-.then(handlePaymentThatRequiresCustomerAction)
-.then(handleRequiresPaymentMethod)
+.catch(err => 
+{
+    throw new Error(err.response.data.error)
+})
+
+const onSubscriptionComplete = (apiKey) => axios.post(API_URI + `/admin/pay/subscription-complete/${apiKey}`)
+.then(res => res.data)
+.catch(err =>
+{
+    throw new Error(err.response.data.msg)
+})
+
 
 export {
     login,
@@ -481,5 +485,6 @@ export {
     getLatestInvoice,
     createSubscription,
     cancelSubscription,
+    onSubscriptionComplete,
     retryInvoiceWithNewPaymentMethod
 }

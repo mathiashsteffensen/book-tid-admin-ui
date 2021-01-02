@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import Link from 'next/link'
+
 import dayjs from 'dayjs'
 
 import Main from '../../components/Main'
@@ -211,9 +213,10 @@ export default function Profile({initProfileSettings, currentProduct, user})
                             <Col md={12} className="mt-2">
                                 <div>BOOKTID {currentProduct.name} Abonnement</div>
                                 <div className="text-sm">{initProfileSettings.maxNumberOfCalendars} &#215; {currentProduct.metadata.unit_name}</div>
-                                <div className="text-sm text-muted mt-2">Sidste betaling var {new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(initProfileSettings.lastMonthPaid/100)}</div>
-                                {!user.cancelAtPeriodEnd 
-                                ?<div>
+
+                                {user.subscriptionType !== 'free' && <div className="text-sm text-muted mt-2">Sidste betaling var {new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(initProfileSettings.lastMonthPaid/100)}</div>}
+                                
+                                {(!user.cancelAtPeriodEnd && user.subscriptionType !== 'free') && <div>
                                     <div className="text-sm text-muted">Næste betaling på {new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(initProfileSettings.nextMonthPay/100)} forfalder {dayjs(initProfileSettings.currentPeriodEnd).format('DD/MM/YYYY')}</div>
                                     <br/>
                                     <div className="text-sm font-semibold flex justify-start items-center"> 
@@ -221,9 +224,60 @@ export default function Profile({initProfileSettings, currentProduct, user})
                                             Opsig abonnement <ArrowRightAltIcon className="ml-1" />
                                         </Button>
                                     </div>
+                                </div>}
+                                
+                                <div className="mt-2">
+                                    {user.cancelAtPeriodEnd && <Alert variant="danger">Du har opsagt dit abonnement gældende fra {dayjs(initProfileSettings.currentPeriodEnd).format('DD/MM/YYYY')}</Alert>}
+                                    
+                                    {(user.subscriptionType === 'free' && user.status === 'active') && (
+                                        <div className="w-full bg-gray-100 flex justify-center items-center py-3">
+                                            <Link href="/opgrader">
+                                                <a>
+                                                    <Button>
+                                                        {'Opgrader til premium'.toUpperCase()}
+                                                    </Button>
+                                                </a>
+                                            </Link>
+                                        </div>
+                                    )}
+                                    
+                                    {(user.status !== 'active' && user.invoiceStatus === 'open' && user.subscriptionType !== 'free') && 
+                                        <Alert variant="warning">
+                                            Der skete en fejl med din betaling 
+                                            <Link href="/ny-betalingsmetode">
+                                                <a className="px-1 link">
+                                                    klik her 
+                                                </a>
+                                            </Link>
+                                            for at tilføje en ny betalingsmetode
+                                        </Alert>
+                                    }
+
+                                    {(user.status !== 'active' && user.invoiceStatus === 'open' && user.subscriptionType === 'free') && 
+                                        <div className="w-full">
+                                            <Alert variant="warning">
+                                                Der skete en fejl med din betaling da du forsøgte at opgradere
+                                                <Link href="/ny-betalingsmetode">
+                                                    <a className="px-1 link">
+                                                        klik her 
+                                                    </a>
+                                                </Link>
+                                                for at tilføje en ny betalingsmetode og fuldføre opgraderingen
+                                            </Alert>
+
+                                            <Alert variant="info">
+                                                Vil du vælge en ny plan? 
+                                                <Link href="/opgrader">
+                                                    <a className="px-1 link">
+                                                        klik her 
+                                                    </a>
+                                                </Link>
+                                            </Alert>
+                                        </div>
+                                    } 
                                 </div>
-                                : <Alert variant="danger">Du har opsagt dit abonnement gældende fra {dayjs(initProfileSettings.currentPeriodEnd).format('DD/MM/YYYY')}</Alert>
-                                }
+                                
+                                
                             </Col>
                         </Row>
                     </Col>
@@ -238,19 +292,22 @@ export async function getServerSideProps({req})
     const apiKey = req.cookies.apiKey
     const isValid = await verifyApiKey(apiKey).catch(err => console.log(err))
 
-    const profileSettings = await getProfileSettings(apiKey).catch(err => console.log(err))
-    
-    const currentProduct = profileSettings.subscriptionType !== 'free' 
-        ? await getProduct(profileSettings.subscriptionType, apiKey).catch(err => console.log(err)) 
-        : {
-            name: 'Free',
-            unitName: 'Medarbejderkalender'
-        }
-
-    console.log(currentProduct);
-
     if (isValid)
     {
+        const profileSettings = await getProfileSettings(apiKey).catch(err => console.log(err))
+        
+        const currentProduct = profileSettings.subscriptionType !== 'free' 
+            ? await getProduct(profileSettings.subscriptionType, apiKey).catch(err => console.log(err)) 
+            : {
+                name: 'Free',
+                unitName: 'Medarbejderkalender',
+                metadata: {
+                    unit_name: 'Medarbejderkalender'
+                }
+            }
+
+        console.log(currentProduct);
+
         return {
             props: {
                 valid: Boolean(isValid),

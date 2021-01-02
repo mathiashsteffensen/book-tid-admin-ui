@@ -39,7 +39,7 @@ const Upgrade = ({products, user}) =>
             <main className="w-screen min-h-screen bg-gray-900 bg-opaque flex flex-col">
                 <AltHeader showBackLink/>
 
-                <div className="md:mx-32 my-auto mx-6">
+                <div className="md:mx-32 py-4 my-auto mx-6">
                     <div className="flex justify-center items-center">
                         {showPaymentForm 
                         ?   <PaymentForm title="Opgrader til" showBackLink customerId={user.stripeCustomerID} setShowPaymentForm={setShowPaymentForm} product={selectedProduct} />

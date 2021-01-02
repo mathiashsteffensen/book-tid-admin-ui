@@ -1,14 +1,20 @@
 import React, { useState, useRef } from 'react'
 
+import {useRouter} from 'next/router'
+
 import Link from 'next/link'
 
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
+
+import CompleteIcon from '@material-ui/icons/CheckCircleOutline';
 
 import {signup, verifyApiKey} from '../../requests'
 
 import AltHeader from '../../components/Header/AltHeader'
+import Footer from '../../components/Footer'
 
 function PartOne({firstName, lastName, email, phoneNumber, password, handleNext})
 {
@@ -87,7 +93,7 @@ function PartOne({firstName, lastName, email, phoneNumber, password, handleNext}
     )
 }
 
-function PartTwo({setPartOne, companyName, city, zip, street, number, submit})
+function PartTwo({setPartOne, companyName, city, zip, street, number, submit, loading, complete})
 {
     return (
         <div className="flex justify-center items-cetner flex-col">
@@ -151,13 +157,26 @@ function PartTwo({setPartOne, companyName, city, zip, street, number, submit})
                 </Form.Group>
             </Form.Row>
 
-            <Button 
-            variant="primary"
-            onClick={submit}>
+            {(!loading && !complete) && <Button 
+                variant="primary"
+                onClick={submit}
+            >
   
                 Opret
-            </Button>
-            <span className="w-full h-8"></span>
+            </Button>}
+
+            {(!loading && complete) && <Button>
+                <CompleteIcon size="lg" color="white" />
+            </Button>}
+
+            {loading && <Button>
+                <Spinner role="status" animation="border">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            </Button>}
+
+            <span className="w-full h-4"></span>
+
             <Button 
                 variant="secondary"
                 onClick={() => setPartOne(true)}
@@ -170,6 +189,8 @@ function PartTwo({setPartOne, companyName, city, zip, street, number, submit})
 
 export default function SignUp() 
 {
+    const router = useRouter()
+
     const [showPartOne, setShowPartOne] = useState(true)
     const [message, setMessage] = useState('')
 
@@ -190,6 +211,10 @@ export default function SignUp()
     const [validated, setValidated] = useState(false)
     const formRef = useRef(null)
 
+    // Submit state
+    const [loading, setLoading] = useState(false)
+    const [complete, setComplete] = useState(false)
+
     const handleSubmit = (e) =>
     {
         const form = formRef.current
@@ -199,6 +224,7 @@ export default function SignUp()
             setValidated(true);
         } else 
         {
+            setLoading(true)
             setValidated(false)
             e.preventDefault()
             let data = {
@@ -219,7 +245,18 @@ export default function SignUp()
                     }
                 },
             }
-            signup(data).catch((err) => setMessage(err))
+            signup(data)
+            .then(() => 
+            {
+                setComplete(true)
+                setTimeout(() => router.push('/login'), 75)
+            })
+            .catch((err) => setMessage(err.message))
+            .finally(() => 
+            {
+                setLoading(false)
+                
+            })
         }
         
     }
@@ -241,10 +278,10 @@ export default function SignUp()
     }
 
     return (
-        <main className="w-screen h-screen bg-gray-900 bg-opaque flex flex-col justify-start items-center">
+        <main className="w-screen min-h-screen bg-gray-900 bg-opaque flex flex-col justify-start items-center">
             <AltHeader />
 
-            <Form ref={formRef} noValidate validated={validated} className="bg-gray-100 overflow-hidden rounded shadow mt-4">
+            <Form ref={formRef} noValidate validated={validated} className="bg-gray-100 overflow-hidden rounded shadow my-4">
                 <div className="w-full bg-gray-700">
                     <h3 className="text-2xl text-gray-100 px-16 py-6 font-semibold">Opret en bruger</h3>
                 </div>
@@ -268,7 +305,11 @@ export default function SignUp()
                             street={{value: street, update: setStreet}} 
                             number={{value: number, update: setNumber}} 
                             setPartOne={setShowPartOne}
-                            submit={handleSubmit} />
+                            submit={handleSubmit} 
+                            loading={loading}
+                            complete={complete}
+                        />
+                            
                     }
 
                     {message !== '' ? <p style={{color: 'red', fontSize: '12px', marginBottom: 0, marginTop: '0.5rem'}}>{message}</p> : null}
@@ -278,6 +319,8 @@ export default function SignUp()
                     </div>
                 </div>
             </Form>
+
+            <Footer />
         </main>
     )
 }

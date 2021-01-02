@@ -1,5 +1,8 @@
 import React from 'react'
 
+// NextJS utility imports
+import { useRouter } from 'next/router'
+
 // Stripe elements
 import { Elements } from '@stripe/react-stripe-js/';
 import { loadStripe } from '@stripe/stripe-js';
@@ -19,6 +22,12 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 export default function NewPaymentMethod({latestInvoice, latestLineItems, product, user}) 
 {
     console.log(latestLineItems);
+    const router = useRouter()
+
+    const setShowPaymentForm = (bool) =>
+    {
+        if (!bool) router.push('/opgrader')
+    }
     return (
         <Elements stripe={stripePromise}>
             <main className="w-screen min-h-screen bg-gray-900 bg-opaque flex flex-col">
@@ -36,7 +45,9 @@ export default function NewPaymentMethod({latestInvoice, latestLineItems, produc
                                 salesPrice: new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format((latestLineItems[0].amount + latestLineItems[1].amount) / 100)
                             }}
                             isRetry
-                            latestInvoice={latestInvoice} 
+                            latestInvoice={latestInvoice}
+                            setShowPaymentForm={setShowPaymentForm}
+                            showBackLink={user.subscriptionType === 'free'} 
                         />
                     </div>
                 </div>
@@ -60,6 +71,13 @@ export async function getServerSideProps({req})
         const latestLineItems = latestInvoice.lines.data
 
         const product = await getProduct(latestLineItems[0].plan.product, apiKey).catch(err => console.log(err))
+
+        if (latestInvoice.status === 'void') return {
+            redirect: {
+                permanent: false,
+                destination: '/opgrader'
+            }
+        }
 
         return {
             props: {

@@ -1,9 +1,4 @@
 import React, {useState} from 'react'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import 'dayjs/locale/da'
-dayjs.locale('da')
-dayjs.extend(utc)
 
 import Main from '../../components/Main'
 import Form from '../../components/forms/Form'
