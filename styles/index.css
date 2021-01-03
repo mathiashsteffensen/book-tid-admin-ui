@@ -11,7 +11,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap');
 
 :root {
-  font-size: 16sspx;
+  @apply text-gray-900
 }
 
 .diagonal-divider::after {
@@ -122,4 +122,8 @@ label {
 
 .link {
   @apply text-primary underline
+}
+
+.link-muted {
+  @apply text-gray-300 underline opacity-50
 }
