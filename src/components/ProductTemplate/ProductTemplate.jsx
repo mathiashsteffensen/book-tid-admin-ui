@@ -6,7 +6,7 @@ import PhoneIcon from '@material-ui/icons/AddToHomeScreen';
 import FeatureList from './FeatureList/FeatureList';
 import UnitCounter from './UnitCounter';
 
-const ProductTemplate = ({product, handleProductSelect}) => 
+const ProductTemplate = ({product, handleProductSelect, showFeatures = true, isSelected = false, currentProduct, selectedProduct}) => 
 {
     const {
         price,
@@ -40,7 +40,7 @@ const ProductTemplate = ({product, handleProductSelect}) =>
         }
     ]
 
-    const [unitAmount, setUnitAmount] = useState(1)
+    const [unitAmount, setUnitAmount] = useState(currentProduct ? currentProduct.quantity : 1)
     const [salesPrice, setSalesPrice] = useState(new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(startPrice))
 
     const onIncrement = () =>
@@ -63,11 +63,11 @@ const ProductTemplate = ({product, handleProductSelect}) =>
         <Card className="text-gray-700">
             <Card.Header className="flex justify-center items-center"><h3 className="text-xl font-medium">{salesPrice} per måned</h3></Card.Header>
             <Card.Body>
-                <Card.Title>{name.toUpperCase()}</Card.Title>
+                <Card.Title>{name.toUpperCase()} <span className="text-sm text-muted">- {unitAmount} &#215; {unitName}</span></Card.Title>
 
-                <Card.Text className="mb-3">{description}</Card.Text>
+                { showFeatures && <Card.Text className="mb-3">{description}</Card.Text> }
 
-                {isTiered && <div className="w-2/3 m-auto">
+                {isTiered && <div className="w-9/10 m-auto">
                     <UnitCounter
                         onDecrement={onDecrement}
                         onIncrement={onIncrement}
@@ -77,9 +77,9 @@ const ProductTemplate = ({product, handleProductSelect}) =>
                 </div>}
 
                 <div className="w-full mt-3 flex flex-col justify-center items-center">
-                    <FeatureList features={features} />
+                    { showFeatures && <FeatureList features={features} /> }
 
-                    <Button 
+                    <Button
                         className="mx-auto mt-3"
                         onClick={() => handleProductSelect({
                             name,
@@ -90,8 +90,9 @@ const ProductTemplate = ({product, handleProductSelect}) =>
                             priceId: price.id
                         })}
                     >
-                        Vælg Plan
-                    </Button> 
+                        { (!isSelected || selectedProduct.unitAmount !== unitAmount) ? 'Vælg Plan' : 'Plan valgt'}
+                    </Button>
+
                 </div>
             </Card.Body>
         </Card>

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Head from 'next/head'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/index.css'
 import Footer from '../components/Footer'
@@ -43,6 +44,10 @@ function MyApp({ Component, pageProps })
           </div>
         )}
 
+        <Head>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+            <title>Book Tid - Admin</title>
+        </Head>
         <Header />
         <Component {...pageProps} />
         <Footer />
@@ -52,6 +57,10 @@ function MyApp({ Component, pageProps })
 
   return (
     <div>
+      <Head>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+            <title>Book Tid - Admin</title>
+      </Head>
       <Component {...pageProps} />
     </div>
   )

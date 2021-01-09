@@ -443,6 +443,33 @@ const onSubscriptionComplete = (apiKey) => axios.post(API_URI + `/admin/pay/subs
     throw new Error(err.response.data.msg)
 })
 
+const retrieveUpcomingInvoice = async (newPriceId, quantity, apiKey) =>
+{
+    return axios.post(API_URI + '/admin/pay/retrieve-upcoming-invoice' + apiKey, {
+        newPriceId: newPriceId,
+        quantity: quantity
+    })
+    .then((response) => {
+        return response.data;
+    })
+    .then((invoice) => {
+        return invoice;
+    });
+}
+
+const updateSubscription = async (priceId, quantity, apiKey) =>
+{
+    return axios.post(API_URI + '/update-subscription' + apiKey, {
+        newPriceId: priceId,
+        quantity: quantity
+    })
+    .then((response) => {
+        return response.json();
+    })
+    .then((response) => {
+        return response;
+    });
+}
 
 export {
     login,
@@ -486,5 +513,7 @@ export {
     createSubscription,
     cancelSubscription,
     onSubscriptionComplete,
-    retryInvoiceWithNewPaymentMethod
+    retryInvoiceWithNewPaymentMethod,
+    retrieveUpcomingInvoice,
+    updateSubscription
 }

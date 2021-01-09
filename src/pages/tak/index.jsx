@@ -24,7 +24,7 @@ export default function Thanks({productPurchased}) {
             <main className="w-full h-full flex flex-col justify-center items-center">
                 <div className="p-4 m-2 text-gray-100 bg-secondary text-center rounded-sm shadow-xs">
                     <p>Vi har modtaget din betaling for BOOKTID {productPurchased.name} Abonnement på {new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(productPurchased.paymentOf/100)}</p>
-                    <p>Næste betaling vil blive opkrævet den {dayjs(productPurchased.nextPaymentAt).format('D. MMMM YYYY')}</p>
+                    <p>Næste betaling vil blive opkrævet den {dayjs(productPurchased.nextPaymentAt).format('D. MMM YYYY')}</p>
                 </div>
 
                 <div className="p-4 m-2 text-gray-100 bg-secondary text-center text-lg rounded-sm shadow-xs">

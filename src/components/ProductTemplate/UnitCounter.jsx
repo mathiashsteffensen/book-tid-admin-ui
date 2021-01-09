@@ -10,27 +10,27 @@ import RemoveIcon from '@material-ui/icons/Remove';
 export default function UnitCounter({value, unitName, onIncrement, onDecrement}) 
 {
     return (
-        <Row>
-            <Col className="flex justify-center items-center">
-                <Button onClick={onDecrement}>
+        <div className="w-full flex justify-evenly">
+            <div className="flex justify-center items-center">
+                <Button size="sm" onClick={onDecrement}>
                     <RemoveIcon />
                 </Button>
-            </Col>
+            </div>
 
-            <Col className="flex flex-col justify-center items-center">
-                <div className="text-3xl font-bold text-primary">
+            <div className="flex flex-col justify-center items-center">
+                <div className="text-2xl font-bold text-primary">
                     {value} &#215;
                 </div>
-                <div>
+                <div className="text-sm">
                     {unitName}
                 </div>
-            </Col>
+            </div>
 
-            <Col className="flex justify-center items-center">
-                <Button onClick={onIncrement}>
+            <div className="flex justify-center items-center">
+                <Button size="sm" onClick={onIncrement}>
                     <AddIcon />
                 </Button>
-            </Col>
-        </Row>
+            </div>
+        </div>
     )
 }

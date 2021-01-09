@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Link from 'next/link'
 
@@ -12,20 +12,26 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Form from 'react-bootstrap/Form'
 import Alert from 'react-bootstrap/Alert'
+import Collapse from 'react-bootstrap/Collapse'
 
 import EditIcon from '@material-ui/icons/Edit';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import ArrowDownAltIcon from '@material-ui/icons/ArrowDownward';
 
 import {
     verifyApiKey, 
     getProfileSettings,
     getProduct,
+    getProductsAndPrices,
     cancelSubscription
 } from '../../requests'
+
+import InlineUpgrade from '../../components/InlineUpgrade/InlineUpgrade'
 
 export default function Profile({initProfileSettings, currentProduct, user}) 
 {
     console.log(initProfileSettings);
+    currentProduct.quantity = initProfileSettings.maxNumberOfCalendars
     const [profileSettings, setProfileSettings] = useState({
         name: initProfileSettings.name,
         email: initProfileSettings.email,
@@ -34,6 +40,23 @@ export default function Profile({initProfileSettings, currentProduct, user})
     })
     
     const [editing, setEditing] = useState(false)
+
+    const [changingSubscription, setChangingSubscription] = useState(false)
+
+    const [products, setProducts] = useState({})
+
+    const [productsReady, setProductsReady] = useState(false)
+
+    useEffect(() => {
+        getProductsAndPrices().then(res =>
+            {
+                const products = res
+                products.basic = res.basic[0]
+                products.premium = res.premium[0]
+                setProducts(products)
+                setProductsReady(true)
+            })
+    }, [])
 
     const handleSubscriptionCancellation = () =>
     {
@@ -52,7 +75,7 @@ export default function Profile({initProfileSettings, currentProduct, user})
         >
             <Container fluid>
                 <Row>
-                    <Col sm={6}>
+                    <Col sm={5}>
                         <Row>
                             <Col className="full-underline text-lg" md={12}>
                                 Personlig Information
@@ -219,18 +242,36 @@ export default function Profile({initProfileSettings, currentProduct, user})
                                 {(!user.cancelAtPeriodEnd && user.subscriptionType !== 'free') && <div>
                                     <div className="text-sm text-muted">Næste betaling på {new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(initProfileSettings.nextMonthPay/100)} forfalder {dayjs(initProfileSettings.currentPeriodEnd).format('DD/MM/YYYY')}</div>
                                     <br/>
+
+                                    { (!user.cancelAtPeriodEnd && user.subscriptionType !== 'free' && user.status === 'active' && user.invoiceStatus === 'paid') && (
+                                        <div className="text-sm font-semibold flex justify-start items-center"> 
+                                            <Button disabled={!productsReady} onClick={() => setChangingSubscription(!changingSubscription)} size="sm" variant="outline-danger">
+                                                Ændr din plan { !changingSubscription ? <ArrowRightAltIcon className="ml-1" /> : <ArrowDownAltIcon className="ml-1" /> } 
+                                            </Button>
+                                        </div>
+                                    ) }
+
+                                    { (changingSubscription && products) && (
+                                        <InlineUpgrade salesPrice={initProfileSettings.nextMonthPay} quantity={initProfileSettings.maxNumberOfCalendars} currentProduct={currentProduct.name === 'Basic' ? products.basic : products.premium} products={products} />
+                                    ) }
+                                    
+                                    <br />
                                     <div className="text-sm font-semibold flex justify-start items-center"> 
                                         <Button onClick={handleSubscriptionCancellation} size="sm" variant="outline-danger">
                                             Opsig abonnement <ArrowRightAltIcon className="ml-1" />
                                         </Button>
                                     </div>
                                 </div>}
+
+                                
                                 
                                 <div className="mt-2">
                                     {user.cancelAtPeriodEnd && <Alert variant="danger">Du har opsagt dit abonnement gældende fra {dayjs(initProfileSettings.currentPeriodEnd).format('DD/MM/YYYY')}</Alert>}
+
+                                    {user.cancelAtPeriodEnd && <div className="w-full"></div>}
                                     
                                     {(user.subscriptionType === 'free' && user.status === 'active') && (
-                                        <div className="w-full bg-gray-100 flex justify-center items-center py-3">
+                                        <div className="w-full flex justify-center items-center py-3">
                                             <Link href="/opgrader">
                                                 <a>
                                                     <Button>
@@ -276,9 +317,11 @@ export default function Profile({initProfileSettings, currentProduct, user})
                                         </div>
                                     } 
                                 </div>
-                                
-                                
                             </Col>
+                        </Row>
+
+                        <Row>
+
                         </Row>
                     </Col>
                 </Row> 
@@ -305,8 +348,6 @@ export async function getServerSideProps({req})
                     unit_name: 'Medarbejderkalender'
                 }
             }
-
-        console.log(currentProduct);
 
         return {
             props: {

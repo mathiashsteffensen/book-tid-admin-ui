@@ -56,7 +56,6 @@ const Upgrade = ({products, user}) =>
                         } 
                     </div>
                 </div>
-
                 <Footer />
             </main>
         </Elements>    
@@ -72,6 +71,7 @@ export async function getServerSideProps({req})
     console.log(isValid);
     if (isValid)
     {
+
         const products = await getProductsAndPrices()
         products.basic = products.basic[0]
         products.premium = products.premium[0]
