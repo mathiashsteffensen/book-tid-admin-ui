@@ -1,12 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import {useRouter} from 'next/router'
+import dayjs from 'dayjs'
 
 import CardDeck from 'react-bootstrap/CardDeck'
 import Card from 'react-bootstrap/Card'
+import Spinner from 'react-bootstrap/Spinner'
+import Button from 'react-bootstrap/Button'
 
 import ProductTemplate from '../ProductTemplate/ProductTemplate'
 
-export default function InlineUpgrade({products, currentProduct, quantity, salesPrice}) 
+import {
+    retrieveUpcomingInvoice,
+    updateSubscription,
+    onSubscriptionComplete
+} from '../../requests'
+
+export default function InlineUpgrade({products, currentProduct, quantity, salesPrice, periodEnd, hide}) 
 {
+    const router = useRouter()
+
     currentProduct.quantity = quantity
 
     const [newProduct, setNewProduct] = useState({
@@ -17,6 +29,48 @@ export default function InlineUpgrade({products, currentProduct, quantity, sales
         unitName: currentProduct.metadata.unit_name,
         priceId: currentProduct.price.id
     })
+
+    const [dueToday, setDueToday] = useState(false)
+    const [dueAtPeriodEnd, setDueAtPeriodEnd] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState(false)
+
+    const [submitLoading, setSubmitLoading] = useState(false)
+    
+    useEffect(() => {
+        setIsLoading(true)
+        retrieveUpcomingInvoice(newProduct.priceId, newProduct.unitAmount, localStorage.getItem('apiKey'))
+            .then(res => 
+                {
+                    console.log(res)
+                    setDueAtPeriodEnd(res.next_invoice_sum)
+                    setDueToday(res.immediate_total)
+                    setIsLoading(false)
+                })
+            .catch(err => 
+                {
+                    console.log(err)
+                    setError(true)
+                })
+    }, [newProduct])
+
+    const handleConfirmChange = () =>
+    {
+        setSubmitLoading(true)
+        const apiKey = localStorage.getItem('apiKey')
+        updateSubscription(newProduct.priceId, newProduct.unitAmount, apiKey)
+            .then(() =>
+            {
+                onSubscriptionComplete(apiKey)
+                    .then(() =>
+                    {
+                        setSubmitLoading(false)
+                        location.reload()
+                    })
+                    .catch(err => console.log(err))
+            })
+            .catch(err => console.log(err))
+    }
 
     return (
         <div className="w-full min-h-full my-4">
@@ -43,7 +97,42 @@ export default function InlineUpgrade({products, currentProduct, quantity, sales
             || (currentProduct.name === 'Premium' && newProduct.name === 'Basic')) && (
                 <Card className="mt-2">
                     <Card.Body>
-                        Hey
+                        { error && <>
+                            Der skete en fejl, genindlæs venligst siden
+                        </> }
+
+                        { isLoading && <div className="flex justify-center items-center">
+                            <Spinner variant="primary" animation="border" />
+                        </div> }
+
+                        { !isLoading && <>
+                            { (newProduct.name === 'Premium') && <>
+                                <p>Ændring til <strong>Premium</strong> planen med <strong>{newProduct.unitAmount}</strong> medarbejderkalendere</p>
+                                { dueToday > 0 && <p>Der vil blive trukket <strong>{new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(dueToday / 100)}</strong> i dag</p>}
+                                { dueToday < 0 && <p>Du vil blive refunderet <strong>{new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(dueToday / -100)}</strong> i dag</p>}
+
+                                <p>Næste betaling på <strong>{new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(dueAtPeriodEnd / 100)}</strong> vil forfalde {dayjs(periodEnd).format('D/M/YYYY')}</p>
+                            </> }
+
+                            { (currentProduct.name === 'Premium' && newProduct.name === 'Basic') && <>
+                                Ændring til Basic planen med 1 medarbejderkalender
+                                { dueToday > 0 && <p>Der vil blive trukket <strong>{new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(dueToday / 100)}</strong> i dag</p>}
+                                { dueToday < 0 && <p>Du vil blive refunderet <strong>{new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(dueToday / -100)}</strong> i dag</p>}
+                                
+                                <p>Næste betaling på <strong>{new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(dueAtPeriodEnd / 100)}</strong> vil forfalde {dayjs(periodEnd).format('D/M/YYYY')}</p>
+                            </> }
+                            <div className="mt-2">
+                                <Button onClick={handleConfirmChange} variant={ dueToday < 0 ? "secondary" : "primary"} className="mr-2">
+                                    {submitLoading ? <Spinner animation="border" size="sm" /> : 'Bekræft Ændring'}
+                                </Button>
+                                <Button onClick={hide} variant={ dueToday > 0 ? "secondary" : "primary"}>
+                                    Aflys ændring
+                                </Button>  
+                            </div>
+                            
+                        </> }
+
+
                     </Card.Body>
                 </Card>
             ) }

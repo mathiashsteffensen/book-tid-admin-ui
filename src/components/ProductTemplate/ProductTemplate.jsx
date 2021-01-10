@@ -40,7 +40,7 @@ const ProductTemplate = ({product, handleProductSelect, showFeatures = true, isS
         }
     ]
 
-    const [unitAmount, setUnitAmount] = useState(currentProduct ? currentProduct.quantity : 1)
+    const [unitAmount, setUnitAmount] = useState((currentProduct && isTiered) ? currentProduct.quantity : 1)
     const [salesPrice, setSalesPrice] = useState(new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(startPrice))
 
     const onIncrement = () =>

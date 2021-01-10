@@ -445,7 +445,7 @@ const onSubscriptionComplete = (apiKey) => axios.post(API_URI + `/admin/pay/subs
 
 const retrieveUpcomingInvoice = async (newPriceId, quantity, apiKey) =>
 {
-    return axios.post(API_URI + '/admin/pay/retrieve-upcoming-invoice' + apiKey, {
+    return axios.post(API_URI + `/admin/pay/retrieve-upcoming-invoice/${apiKey}`, {
         newPriceId: newPriceId,
         quantity: quantity
     })
@@ -459,12 +459,12 @@ const retrieveUpcomingInvoice = async (newPriceId, quantity, apiKey) =>
 
 const updateSubscription = async (priceId, quantity, apiKey) =>
 {
-    return axios.post(API_URI + '/update-subscription' + apiKey, {
+    return axios.post(API_URI + '/admin/pay/update-subscription/' + apiKey, {
         newPriceId: priceId,
         quantity: quantity
     })
     .then((response) => {
-        return response.json();
+        return response.data;
     })
     .then((response) => {
         return response;

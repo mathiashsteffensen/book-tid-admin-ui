@@ -17,7 +17,7 @@ export default function Login()
     let handleLogin = (e) =>
     {
         e.preventDefault()
-        login(email, password).catch((err) => setMessage(err))
+        login(email, password).catch((err) => setMessage(err.message))
     }
 
     useEffect(() => {

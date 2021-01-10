@@ -252,15 +252,15 @@ export default function Profile({initProfileSettings, currentProduct, user})
                                     ) }
 
                                     { (changingSubscription && products) && (
-                                        <InlineUpgrade salesPrice={initProfileSettings.nextMonthPay} quantity={initProfileSettings.maxNumberOfCalendars} currentProduct={currentProduct.name === 'Basic' ? products.basic : products.premium} products={products} />
+                                        <InlineUpgrade hide={() => setChangingSubscription(false)} periodEnd={user.currentPeriodEnd} salesPrice={initProfileSettings.nextMonthPay} quantity={initProfileSettings.maxNumberOfCalendars} currentProduct={currentProduct.name === 'Basic' ? products.basic : products.premium} products={products} />
                                     ) }
                                     
                                     <br />
-                                    <div className="text-sm font-semibold flex justify-start items-center"> 
+                                    {!changingSubscription && <div className="text-sm font-semibold flex justify-start items-center"> 
                                         <Button onClick={handleSubscriptionCancellation} size="sm" variant="outline-danger">
                                             Opsig abonnement <ArrowRightAltIcon className="ml-1" />
                                         </Button>
-                                    </div>
+                                    </div>}
                                 </div>}
 
                                 
