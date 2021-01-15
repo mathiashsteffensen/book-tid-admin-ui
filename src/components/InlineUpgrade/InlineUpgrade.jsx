@@ -101,7 +101,7 @@ export default function InlineUpgrade({products, currentProduct, quantity, sales
                             Der skete en fejl, genindlæs venligst siden
                         </> }
 
-                        { isLoading && <div className="flex justify-center items-center">
+                        { (isLoading && !error) && <div className="flex justify-center items-center">
                             <Spinner variant="primary" animation="border" />
                         </div> }
 
@@ -115,7 +115,7 @@ export default function InlineUpgrade({products, currentProduct, quantity, sales
                             </> }
 
                             { (currentProduct.name === 'Premium' && newProduct.name === 'Basic') && <>
-                                Ændring til Basic planen med 1 medarbejderkalender
+                                Ændring til <strong>Basic</strong> planen med <strong>1</strong> medarbejderkalender
                                 { dueToday > 0 && <p>Der vil blive trukket <strong>{new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(dueToday / 100)}</strong> i dag</p>}
                                 { dueToday < 0 && <p>Du vil blive refunderet <strong>{new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(dueToday / -100)}</strong> i dag</p>}
                                 

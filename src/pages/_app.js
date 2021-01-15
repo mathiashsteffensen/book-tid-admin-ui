@@ -46,7 +46,8 @@ function MyApp({ Component, pageProps })
 
         <Head>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-            <title>Book Tid - Admin</title>
+            <link rel="icon" href="logo-dark.svg" />
+            <title>Book Tid | Admin</title>
         </Head>
         <Header />
         <Component {...pageProps} />
@@ -59,7 +60,8 @@ function MyApp({ Component, pageProps })
     <div>
       <Head>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-            <title>Book Tid - Admin</title>
+            <link rel="icon" href="logo-dark.svg" />
+            <title>Book Tid | Admin</title>
       </Head>
       <Component {...pageProps} />
     </div>

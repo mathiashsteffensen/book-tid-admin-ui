@@ -1,4 +1,8 @@
-module.exports = {
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+module.exports = withBundleAnalyzer({
     webpack(config, {isServer}) {
       config.module.rules.push({
         test: /\.svg$/,
@@ -7,6 +11,6 @@ module.exports = {
         },
         use: ['@svgr/webpack'],
       });
-      return config;
+      return config
     },
-  };
+  });
