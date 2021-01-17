@@ -3,14 +3,19 @@ import Link from 'next/link'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Nav from 'react-bootstrap/Nav'
+import Button from 'react-bootstrap/Button'
 
 import SettingsIcon from '@material-ui/icons/Settings';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import HelpIcon from '@material-ui/icons/HelpOutlineRounded'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
+import { logout } from '../../requests'
+
+
 // TODO: Add help page / FAQ
-// TODO: Add account/profile settings
+
 export default function Header() 
 {
     const [toggleDropdown, setToggleDropdown] = useState(false)
@@ -62,6 +67,13 @@ export default function Header()
                                 Online Booking
                             </NavDropdown.Item>
                         </Link>
+                        
+                        <div className="px-6 py-2">
+                            <Button onClick={logout} variant="outline-danger" className="w-full">
+                                Log Ud
+                            </Button>   
+                        </div>
+                        
                     </NavDropdown>
                     
                     <Link href="/profil">

@@ -471,6 +471,13 @@ const updateSubscription = async (priceId, quantity, apiKey) =>
     });
 }
 
+const logout = () =>
+{
+    localStorage.removeItem('apiKey')
+    document.cookie = 'apiKey=; Max-Age=-99999999;'
+    location.reload()
+}
+
 export {
     login,
     signup,
@@ -515,5 +522,6 @@ export {
     onSubscriptionComplete,
     retryInvoiceWithNewPaymentMethod,
     retrieveUpcomingInvoice,
-    updateSubscription
+    updateSubscription,
+    logout
 }
