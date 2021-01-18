@@ -6,7 +6,7 @@ import PhoneIcon from '@material-ui/icons/AddToHomeScreen';
 import FeatureList from './FeatureList/FeatureList';
 import UnitCounter from './UnitCounter';
 
-const ProductTemplate = ({product, handleProductSelect, showFeatures = true, isSelected = false, currentProduct, selectedProduct}) => 
+const ProductTemplate = ({product, handleProductSelect, showFeatures = true, isSelected = false, currentProduct, selectedProduct, features}) => 
 {
     const {
         price,
@@ -28,17 +28,6 @@ const ProductTemplate = ({product, handleProductSelect, showFeatures = true, isS
         var startPrice = price.unit_amount/100,
             unitName = metadata.unit_name
     }
-
-    const features = [
-        {
-            Icon: PhoneIcon,
-            text: 'Test Feature'
-        },
-        {
-            Icon: PhoneIcon,
-            text: 'Amazing Test Feature'
-        }
-    ]
 
     const [unitAmount, setUnitAmount] = useState((currentProduct && isTiered) ? currentProduct.quantity : 1)
     const [salesPrice, setSalesPrice] = useState(new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(startPrice))

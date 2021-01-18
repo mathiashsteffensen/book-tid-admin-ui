@@ -35,7 +35,7 @@ export default function Login() {
                             </h3>
                         </div>
 
-                        <div className="px-16 py-4 flex justify-center items-center flex-col">
+                        <div className="px-4 md:px-16 py-4 flex justify-center items-center flex-col">
                             <Form.Group controlId="login-email">
                                 <Form.Label>E-Mail</Form.Label>
                                 <Form.Control

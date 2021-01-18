@@ -9,7 +9,7 @@ export default function FeatureList({features})
             <Card.Header>Funktioner</Card.Header>
             <ListGroup variant="flush">
                 {features.map((FeatureInstance, i) => (
-                    <Feature FeatureInstance={FeatureInstance} key={i} i={i} length={features.length} />
+                    <Feature FeatureInstance={FeatureInstance} implemented={FeatureInstance.implemented} key={i} i={i} length={features.length} />
                 ))}
             </ListGroup>
         </Card>
