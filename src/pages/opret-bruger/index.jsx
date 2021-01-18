@@ -278,15 +278,15 @@ export default function SignUp()
     }
 
     return (
-        <main className="w-screen min-h-screen bg-gray-900 bg-opaque flex flex-col justify-start items-center">
+        <main className="w-screen min-h-screen pb-16 bg-gray-900 bg-opaque flex flex-col justify-start items-center">
             <AltHeader />
 
-            <Form ref={formRef} noValidate validated={validated} className="bg-gray-100 overflow-hidden rounded shadow my-4">
+            <Form ref={formRef} noValidate validated={validated} className="bg-gray-100 overflow-hidden rounded shadow mx-4 my-4">
                 <div className="w-full bg-gray-700">
                     <h3 className="text-2xl text-gray-100 px-16 py-6 font-semibold">Opret en bruger</h3>
                 </div>
 
-                <div className="px-16 py-4 flex justify-center items-center flex-col">
+                <div className="px-4 md:px-16 py-4 flex justify-center items-center flex-col">
                     {showPartOne 
                     ? 
                         <PartOne 
