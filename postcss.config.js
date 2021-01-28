@@ -2,9 +2,6 @@ const purgecss = require('@fullhuman/postcss-purgecss')
 
 module.exports = {
   plugins: {
-    'tailwindcss': {},
-    'autoprefixer': {},
-
     '@fullhuman/postcss-purgecss': {
         content: [
         './src/pages/*.js',
@@ -13,7 +10,11 @@ module.exports = {
         './src/components/**/*.js',
         './node_modules/react-bootstrap/**/*.js',
       ]
-    }
+    },
+    'tailwindcss': {},
+    'autoprefixer': {},
+
+    
 
   },
 };
