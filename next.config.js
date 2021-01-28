@@ -1,7 +1,6 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
-
 const withPurgeCss = require('next-purgecss');
 
 module.exports = withBundleAnalyzer(
@@ -18,11 +17,9 @@ module.exports = withBundleAnalyzer(
     },
 
     purgeCssPaths: [
-      './src/pages/*.js',
-      './src/pages/**/*.js',
-      './src/components/*.js',
-      './src/components/**/*.js',
+      './src/**/*.js',
       './node_modules/react-bootstrap/**/*.js',
+      './node_modules/react-bootstrap/*.js',
     ],
   })  
 );
