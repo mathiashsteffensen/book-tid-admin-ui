@@ -89,7 +89,7 @@ export default function CalendarSettingsPage()
             subtitle="Rediger i dine indstillinger for kalendere og åbningstider"
             CTAs={maxAllowed > calendars.length ?
                 <Button
-                    size="lg"
+                    size="large"
                     color="primary"
                     onClick={() => createCalendar(localStorage.getItem('apiKey')).then(update)}
                 >

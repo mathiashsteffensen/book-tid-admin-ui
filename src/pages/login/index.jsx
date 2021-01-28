@@ -59,7 +59,7 @@ export default function Login() {
                                 />
                             </Form.Group>
 
-                            <Button className="w-full" onClick={handleLogin}>
+                            <Button type="submit" className="w-full" onClick={handleLogin}>
                                 Log Ind
                             </Button>
 

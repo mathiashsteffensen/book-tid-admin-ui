@@ -11,7 +11,7 @@ import {getCatsAndServices, verifyApiKey} from '../../requests'
 import CatAndServices from '../../components/CatAndServices/CatAndServices'
 
 
-export default function Services({initialCatsAndServices}) 
+export default function Services({initialCatsAndServices, user, apiKey}) 
 {
     // Change this state value to force an update
     const [shouldUpdate, setUpdate] = useState(true)
@@ -115,6 +115,8 @@ export default function Services({initialCatsAndServices})
                     
                 </div>
             }
+            subscriptionType={user.subscriptionType === 'free' ? user.subscriptionType : user.subscriptionTypeName}
+            apiKey={apiKey}
         >
             <div className="w-11/12">
                 {catsAndServices.map((catAndServices, i) => (
@@ -152,7 +154,8 @@ export async function getServerSideProps({req})
             props: {
                 valid: Boolean(isValid),
                 user: isValid,
-                initialCatsAndServices: catsAndServices
+                initialCatsAndServices: catsAndServices,
+                apiKey
             }
         }
     } else return {

@@ -31,14 +31,20 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 const features = {
     premium: [
         {
+            title: 'Modtag nemt online bookinger',
+            Icon: EventAvailableIcon,
+            implemented: true,
+        },
+        {
             title: 'Ubegrænsede bookinger',
             Icon: CheckIcon,
             implemented: true,
         },
         {
-            title: 'Modtag nemt online bookinger',
-            Icon: EventAvailableIcon,
+            title: 'Få en personlig bookingside',
+            Icon: WebIcon,
             implemented: true,
+            description: `Hvis din forretning er "Frisør Eksempel" kan der bookes tid hos <span class="text-primary">frisoereksempel.booktid.net</span>`
         },
         {
             title:
@@ -53,12 +59,6 @@ const features = {
             description: 'Send bekræftelses E-Mails samt E-Mails når tider ændres eller aflyses'
         },
         {
-            title: 'Få en personlig bookingside',
-            Icon: WebIcon,
-            implemented: true,
-            description: `Hvis din forretning er "Frisør Eksempel" kan der bookes tid hos <span class="text-primary">frisoereksempel.booktid.net</span>`
-        },
-        {
             title: 'Se detaljeret statistik relateret til din forretning',
             Icon: TimelineIcon,
             implemented: false
@@ -66,14 +66,20 @@ const features = {
     ],
     basic: [
         {
+            title: 'Modtag nemt online bookinger',
+            Icon: EventAvailableIcon,
+            implemented: true,
+        },
+        {
             title: 'Op til 150 bookinger per måned',
             Icon: CheckIcon,
             implemented: true,
         },
         {
-            title: 'Modtag nemt online bookinger',
-            Icon: EventAvailableIcon,
+            title: 'Få en personlig bookingside',
+            Icon: WebIcon,
             implemented: true,
+            description: `Hvis din forretning er "Frisør Eksempel" kan der bookes tid hos <span class="text-primary">frisoereksempel.booktid.net</span>`
         },
         {
             title:
@@ -82,19 +88,15 @@ const features = {
             implemented: true,
         },
         {
-            title: 'Send E-Mail påmindelser automatisk',
+            title: 'Send E-Mail-Påmindelser automatisk',
             Icon: EmailIcon,
             implemented: true,
-        },
-        {
-            title: 'Få en personlig bookingside med din branding',
-            Icon: WebIcon,
-            implemented: true,
-            description: `Hvis din forretning er "Frisør Eksempel" kan der bookes tid hos <span class="text-primary">frisoereksempel.booktid.net</span>`
+            description: 'Send bekræftelses E-Mails samt E-Mails når tider ændres eller aflyses'
         },
         {
             title: 'Se detaljeret statistik relateret til din forretning',
             Icon: TimelineIcon,
+            implemented: false
         }
     ],
 };
@@ -151,11 +153,18 @@ export default Upgrade;
 export async function getServerSideProps({ req }) {
     const apiKey = req.cookies.apiKey;
     const isValid = await verifyApiKey(apiKey).catch((err) => console.log(err));
-    console.log(isValid);
+
     if (isValid) {
         const products = await getProductsAndPrices();
         products.basic = products.basic[0];
         products.premium = products.premium[0];
+
+        if (isValid.subscriptionType !== 'free') return {
+            redirect: {
+                permanent: false,
+                destination: '/profil',
+            },
+        }
 
         return {
             props: {

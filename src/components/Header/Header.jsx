@@ -20,9 +20,9 @@ export default function Header()
 {
     const [toggleDropdown, setToggleDropdown] = useState(false)
     return (
-        <Navbar onSelect={() => setToggleDropdown(false)} onToggle={() => setToggleDropdown(!toggleDropdown)} expanded={toggleDropdown} className="px-16 py-2 justify-center" bg="dark" variant="dark" expand="md">
+        <Navbar onSelect={() => setToggleDropdown(false)} onToggle={() => setToggleDropdown(!toggleDropdown)} expanded={toggleDropdown} className="px-6 py-2 justify-center" bg="dark" variant="dark" expand="md">
             <Link href="/kalender">
-                <Navbar.Brand>
+                <Navbar.Brand as="a">
                     <h1>BOOKTID.NET</h1>
                     <h5 className="text-sm">BETA v0.2.0</h5>
                 </Navbar.Brand>

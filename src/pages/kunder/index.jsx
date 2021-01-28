@@ -136,6 +136,8 @@ export default function Kunder(props)
                     Ny Kunde
                 </Button>
             }
+            subscriptionType={props.user.subscriptionType === 'free' ? props.user.subscriptionType : props.user.subscriptionTypeName}
+            apiKey={props.apiKey}
         >
             <div className=" w-11/12 bg-gray-100 rounded-xl shadow-md px-4 overflow-hidden flex flex-col justify-center items-center">
                 <CustomerSearch
@@ -192,6 +194,7 @@ export async function getServerSideProps({req}) {
                 user: isValid,
                 customerList: customerList ? customerList : [],
                 totalCustomers: totalCustomers ? totalCustomers : 0,
+                apiKey
             }
         }
     } else return {

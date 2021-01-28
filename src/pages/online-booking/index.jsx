@@ -14,7 +14,7 @@ import FormControl from 'react-bootstrap/FormControl'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
-export default function OnlineBooking({bookingSettings}) {
+export default function OnlineBooking({bookingSettings, user, apiKey}) {
     const [state, setState] = useState({
         bookingSettings: bookingSettings,
         editDomain: false,
@@ -47,6 +47,8 @@ export default function OnlineBooking({bookingSettings}) {
                     </Button> 
                 </div>
             }
+            subscriptionType={user.subscriptionType === 'free' ? user.subscriptionType : user.subscriptionTypeName}
+            apiKey={apiKey}
         >
             <div className="w-11/12 divide-y divide-gray-300">
                 <FullPageInput 
@@ -272,7 +274,8 @@ export async function getServerSideProps({req, res})
             props: {
                 valid: Boolean(isValid),
                 user: isValid,
-                bookingSettings
+                bookingSettings,
+                apiKey
             },
         }
     } else return {

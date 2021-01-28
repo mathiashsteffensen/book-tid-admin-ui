@@ -1,15 +1,22 @@
 import React, {useState, useEffect} from 'react'
+
+import useSWR from 'swr'
+
 import {
     getAppointmentsByCalendarMonth,
     getAppointmentsByWeek,
     getAppointmentsByDay
 } from '../../requests'
+
+import getter from '../../getter'
+
 import {
     getWeeklyOpeningHoursByDate,
     getDailyOpeningHoursByDate
 } from '../../utils'
 
 import axios from 'axios'
+
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import 'dayjs/locale/da'
@@ -17,6 +24,7 @@ dayjs.locale('da')
 dayjs.extend(utc)
 
 import { ViewState } from '@devexpress/dx-react-scheduler';
+
 import {
     Scheduler,
     DayView,
@@ -32,12 +40,11 @@ import MyAppointmentTooltip from './MyAppointmentTooltip/MyAppointmentTooltip'
 import MyToolbar from './MyToolbar/MyToolbar'
 
 
-export default function Calendar({calendars, handleAddAppointmentForm}) 
+export default function Calendar({calendars, handleAddAppointmentForm, apiKey}) 
 {
     // Calendar state --------------------------------------------------------------
     const [date, setDate] = useState(dayjs.utc().format('YYYY-MM-DD'))
     const [viewType, setViewType] = useState('Month')
-    const [appointments, setAppointments] = useState([])
     const [showTooltip, setShowTooltip] = useState(false)
     const [openingHours, setOpeningHours] = useState({
         opening: 8, 
@@ -73,94 +80,7 @@ export default function Calendar({calendars, handleAddAppointmentForm})
     }
 
     // Fetch appointments
-    useEffect(() => 
-    {
-        const abortController = axios.CancelToken.source()
-        const apiKey = localStorage.getItem('apiKey')
-        switch (viewType) 
-        {
-            case 'Month':
-                getAppointmentsByCalendarMonth(apiKey, dayjs(date).add(1, 'hour').format('YYYY-MM-DD'), abortController)
-                .then((res) =>
-                {
-                    let flattened = res.flat()
-
-                    setAppointments(flattened.filter((appointment) => selectedCalendars.indexOf(appointment.calendarID) !== -1).map((appointment) => {
-                        const ownerCalendar = calendars.filter((calendar) => calendar.calendarID === appointment.calendarID)[0]
-
-                        return {
-                            startDate: dayjs(appointment.startTime).subtract(1, 'hour').toJSON(),
-                            endDate: dayjs(appointment.endTime).subtract(1, 'hour').toJSON(),
-                            title: appointment.service,
-                            id: appointment._id,
-                            calendarID: appointment.bookedOnline ? ownerCalendar.calendarID + 'online' : ownerCalendar.calendarID,
-                            calendarName: ownerCalendar.name,
-                            color: appointment.bookedOnline ? ownerCalendar.onlineColor : ownerCalendar.standardColor,
-                            bookedOnline: appointment.bookedOnline
-                        }
-                    }))
-                })
-                .catch((err) =>
-                {
-                    console.log(err)
-                }) 
-                break;
-            
-            case 'Week':
-                getAppointmentsByWeek(apiKey, dayjs(date).add(1, 'hour').format('YYYY-MM-DD'), abortController)
-                .then((res) =>
-                {
-                    setAppointments(res.filter((appointment) => selectedCalendars.indexOf(appointment.calendarID) !== -1).map((appointment) => {
-                        const ownerCalendar = calendars.filter((calendar) => calendar.calendarID === appointment.calendarID)[0]
-
-                        return {
-                            startDate: dayjs(appointment.startTime).subtract(1, 'hour').toJSON(),
-                            endDate: dayjs(appointment.endTime).subtract(1, 'hour').toJSON(),
-                            title: appointment.service,
-                            id: appointment._id,
-                            calendarID: appointment.bookedOnline ? ownerCalendar.calendarID + 'online' : ownerCalendar.calendarID,
-                            calendarName: ownerCalendar.name,
-                            color: appointment.bookedOnline ? ownerCalendar.onlineColor : ownerCalendar.standardColor,
-                            bookedOnline: appointment.bookedOnline
-                        }
-                    }))
-                })
-                .catch((err) =>
-                {
-                    console.log(err)
-                }) 
-                break;
-
-            case 'Day':
-                getAppointmentsByDay(apiKey, dayjs(date).add(1, 'hour').format('YYYY-MM-DD'), abortController)
-                .then((res) =>
-                {
-                    console.log(res)
-                    setAppointments(res.filter((appointment) => selectedCalendars.indexOf(appointment.calendarID) !== -1).map((appointment) => {
-                        const ownerCalendar = calendars.filter((calendar) => calendar.calendarID === appointment.calendarID)[0]
-
-                        return {
-                            startDate: dayjs(appointment.startTime).subtract(1, 'hour').toJSON(),
-                            endDate: dayjs(appointment.endTime).subtract(1, 'hour').toJSON(),
-                            title: appointment.service,
-                            id: appointment._id,
-                            calendarID: appointment.bookedOnline ? ownerCalendar.calendarID + 'online' : ownerCalendar.calendarID,
-                            calendarName: ownerCalendar.name,
-                            color: appointment.bookedOnline ? ownerCalendar.onlineColor : ownerCalendar.standardColor,
-                            bookedOnline: appointment.bookedOnline
-                        }
-                    }))
-                })
-                .catch((err) =>
-                {
-                    console.log(err)
-                })
-
-            default:
-                break;
-        }
-        return () => abortController.cancel()
-    }, [date, viewType, calendars, selectedCalendars])
+    const { data: appointments, error, isValidating } = useSWR([viewType, date, apiKey, calendars, selectedCalendars], getter.appointment)
 
     // Set opening hours
     useEffect(() => {
@@ -252,6 +172,8 @@ export default function Calendar({calendars, handleAddAppointmentForm})
                     calendars={calendars}
                     checkedCalendars={selectedCalendars}
                     handleChange={handleCheckedCalendarChange}
+                    syncing={(!error && (!appointments || isValidating))}
+                    appointmentError={error}
                 />
                 <DateNavigator />
                 <ViewSwitcher />

@@ -10,7 +10,7 @@ import {
 import Button from 'react-bootstrap/Button'
 import axios from 'axios'
 
-export default function Kalender({calendars}) 
+export default function Kalender({calendars, user, apiKey}) 
 {
     // Forms ---------------------------------------------------------------------
     const [showForm, setShowForm] = useState(false)
@@ -49,13 +49,15 @@ export default function Kalender({calendars})
                         variant="primary"
                         onClick={handleAddAppointmentForm}
                     >
-                        NY BOOKING
+                        Ny Booking
                     </Button>
                 </div>
             }
+            subscriptionType={user.subscriptionType === 'free' ? user.subscriptionType : user.subscriptionTypeName}
+            apiKey={apiKey}
         >
 
-            <Calendar calendars={cloneCalendars} handleAddAppointmentForm={handleAddAppointmentForm} />
+            <Calendar apiKey={apiKey} calendars={cloneCalendars} handleAddAppointmentForm={handleAddAppointmentForm} />
             <Form 
                 isOpen={showForm}
                 formProps={formProps}
@@ -85,7 +87,8 @@ export async function getServerSideProps({req})
             props: {
                 valid: Boolean(isValid),
                 user: isValid,
-                calendars
+                calendars,
+                apiKey,
             }
         }
     } else return {
