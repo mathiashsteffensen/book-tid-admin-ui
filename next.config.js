@@ -1,10 +1,8 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
-const withPurgeCss = require('next-purgecss');
 
-module.exports = withBundleAnalyzer(
-  withPurgeCss({
+module.exports = withBundleAnalyzer({
     webpack(config, {isServer}) {
       config.module.rules.push({
         test: /\.svg$/,
@@ -15,11 +13,4 @@ module.exports = withBundleAnalyzer(
       });
       return config
     },
-
-    purgeCssPaths: [
-      './src/**/*.js',
-      './node_modules/react-bootstrap/**/*.js',
-      './node_modules/react-bootstrap/*.js',
-    ],
-  })  
-);
+});
