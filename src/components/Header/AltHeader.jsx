@@ -22,7 +22,7 @@ export default function AltHeader({showBackLink})
                     <h1>BOOKTID.NET</h1>
                 </button>
                 <h2 className="font-medium">ONLINE BOOKINGSYSTEM</h2>
-                <h5 className="text-sm text-muted mt-1">BETA v0.2.0</h5>
+                {process.env.NODE_ENV === 'development' && <h5 className="text-sm text-muted mt-1">BETA v0.2.0</h5>}
             </div>
         </header>
     )

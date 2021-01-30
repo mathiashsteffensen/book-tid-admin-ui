@@ -24,7 +24,7 @@ export default function Header()
             <Link href="/kalender">
                 <Navbar.Brand as="a">
                     <h1>BOOKTID.NET</h1>
-                    <h5 className="text-sm">BETA v0.2.0</h5>
+                    {process.env.NODE_ENV === 'development' && <h5 className="text-sm">BETA v0.2.0</h5>}
                 </Navbar.Brand>
             </Link>
             <Navbar.Toggle aria-controls="navbar"/>

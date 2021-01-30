@@ -9,13 +9,13 @@ export default function Main({title, subtitle, CTAs, children, subscriptionType,
     if (subscriptionType && apiKey) var { data, error } = useSWR(`/appointment/in-month/${apiKey}/${dayjs().toJSON().slice(0, 10)}`, getter)
 
     return (
-        <main className="w-full mt-3 md:mt-22 mb-20 flex flex-col justify-center items-center">
+        <main className="w-full px-2 mt-3 md:mt-22 mb-32 flex flex-col justify-center items-center">
             { (!error && data && (subscriptionType === 'free' || subscriptionType === 'Basic')) &&  <div className="flex justify-between items-center w-full md:w-11/12">
-                <div className="alert alert-warning border-warning w-3/4">
+                <div className="alert alert-warning border-warning w-2/3">
                     Din bruger er begrænset til { subscriptionType === 'free' ? 50 : 150 }  bookinger per måned og de fleste features er ikke aktiveret. <a className="link" href={ subscriptionType === 'free' ? "/opgrader" : "/profil" }>Opgrader til premium</a> for at få det meste ud af BOOKTID.NET
                 </div>
 
-                <div className="alert alert-info border-info ml-4 text-center w-1/4">
+                <div className="alert alert-info border-info ml-4 text-center w-1/3">
                     { data.length }
                      / 
                      { subscriptionType === 'free' ? '50 ' : '150 ' } 

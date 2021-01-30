@@ -273,6 +273,11 @@ let getDailyOpeningHoursByDate = (calendars, date) =>
         opening: opening
     }
 }
+
+function createBookingDomain(companyName) {
+    return companyName.split(' ').join('').toLowerCase().replace(/ø/g , 'oe').replace(/æ/g, 'ae').replace(/å/g, 'aa').replace(/[.]/g, 'dot').replace(/[/]/g, 'slash').replace(/#/g, 'pound').replace(/[?]/g, 'question').replace(/[=]/g, 'equals') + '.booktid.net'
+}
+
 export {
     API_URI,
     numberToDay,
@@ -284,5 +289,6 @@ export {
     getSettingLabelFromKey,
     geometry,
     getWeeklyOpeningHoursByDate,
-    getDailyOpeningHoursByDate
+    getDailyOpeningHoursByDate,
+    createBookingDomain
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 import {useRouter} from 'next/router'
 
@@ -12,6 +12,7 @@ import Spinner from 'react-bootstrap/Spinner'
 import CompleteIcon from '@material-ui/icons/CheckCircleOutline';
 
 import {signup, verifyApiKey} from '../../requests'
+import {createBookingDomain} from '../../utils'
 
 import AltHeader from '../../components/Header/AltHeader'
 import Footer from '../../components/Footer'
@@ -93,7 +94,7 @@ function PartOne({firstName, lastName, email, phoneNumber, password, handleNext}
     )
 }
 
-function PartTwo({setPartOne, companyName, city, zip, street, number, submit, loading, complete})
+function PartTwo({setPartOne, companyName, city, zip, street, number, submit, loading, complete, bookingDomain})
 {
     return (
         <div className="flex justify-center items-cetner flex-col">
@@ -108,7 +109,8 @@ function PartTwo({setPartOne, companyName, city, zip, street, number, submit, lo
                     onChange={(e) => companyName.update(e.target.value)}
                     required 
                 />
-                <Form.Control.Feedback type="invalid">Indtast venligst et virksomheds navn, dette bruges til at generere dit booking link</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">Indtast venligst et virksomheds navn, dette bruges til at generere dit booking link (Kan ændres senere)</Form.Control.Feedback>
+                <p className="text-muted">{bookingDomain}</p>
             </Form.Group>
 
             <h6 className="font-medium text-lg my-2">Adresse:</h6>
@@ -251,7 +253,10 @@ export default function SignUp()
                 setComplete(true)
                 setTimeout(() => router.push('/login'), 75)
             })
-            .catch((err) => setMessage(err.message))
+            .catch((err) => {
+                console.log(err);
+                setMessage(err)
+            })
             .finally(() => 
             {
                 setLoading(false)
@@ -276,6 +281,13 @@ export default function SignUp()
       
         
     }
+
+    const [bookingDomain, setBookingDomain] = useState('.booktid.net')
+
+    useEffect(() =>
+    {
+        setBookingDomain(createBookingDomain(companyName))
+    }, [companyName])
 
     return (
         <main className="w-screen min-h-screen pb-16 bg-gray-900 bg-opaque flex flex-col justify-start items-center">
@@ -308,6 +320,7 @@ export default function SignUp()
                             submit={handleSubmit} 
                             loading={loading}
                             complete={complete}
+                            bookingDomain={bookingDomain}
                         />
                             
                     }
