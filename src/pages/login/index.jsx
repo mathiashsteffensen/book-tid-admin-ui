@@ -23,10 +23,10 @@ export default function Login() {
     }, []);
 
     return (
-        <main className="w-screen min-h-screen bg-gray-900 bg-opaque flex flex-col">
+        <main className="w-screen min-h-screen bg-gray-900 bg-opaque items-center flex flex-col">
             <AltHeader />
 
-            <div className="my-auto mx-6 lg:mx-80">
+            <div className="my-auto max-w-sm mx-6">
                 <Form className="bg-gray-100 mb-12 overflow-hidden rounded shadow mx-auto">
                     <div className="w-full">
                         <div className="w-full bg-gray-700">
@@ -59,7 +59,11 @@ export default function Login() {
                                 />
                             </Form.Group>
 
-                            <Button type="submit" className="w-full" onClick={handleLogin}>
+                            <Button
+                                type="submit"
+                                className="w-full"
+                                onClick={handleLogin}
+                            >
                                 Log Ind
                             </Button>
 

@@ -46,7 +46,7 @@ module.exports = {
         '3xs': '0.5rem'
       },
       gridTemplateColumns: {
-          'table': '50px repeat(7, 1fr)'
+        'table': '50px repeat(7, 1fr)'
       },
       gridTemplateRows: {
         'table': '35px repeat(6, 1fr)'
