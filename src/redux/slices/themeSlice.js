@@ -4,7 +4,7 @@ const themeSlice = createSlice({
     name: 'theme',
     initialState: 'default',
     reducers: {
-        changeTheme(state, action) {
+        changeTheme(state) {
             if (state === 'default') state = 'dark';
             else state = 'default';
         },

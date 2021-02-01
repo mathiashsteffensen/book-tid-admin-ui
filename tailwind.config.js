@@ -21,6 +21,9 @@ module.exports = {
                 border: '0.05rem',
                 '3/5-screen': '64vh',
             },
+            maxHeight: {
+                32: '8rem'
+            },
             minWidth: {
                 '2/3-screen': '75vw',
                 '1/3-screen': '25vw',

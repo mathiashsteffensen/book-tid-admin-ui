@@ -5,8 +5,8 @@ import axios from 'axios';
 import Main from '../../components/Main';
 import CalendarSettings from '../../components/CalendarSettings';
 
-import { Button, Snackbar, IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import Button from 'react-bootstrap/Button'
+import Toast from 'react-bootstrap/Toast'
 
 import {
     getMaxCalendars,
@@ -92,8 +92,7 @@ export default function CalendarSettingsPage() {
             CTAs={
                 maxAllowed > calendars.length ? (
                     <Button
-                        size="large"
-                        color="primary"
+                        className="mt-2"
                         onClick={() =>
                             createCalendar(localStorage.getItem('apiKey')).then(
                                 update
@@ -117,36 +116,19 @@ export default function CalendarSettingsPage() {
 
             <div className="mt-4 w-10/12">
                 <Button
-                    variant="contained"
-                    color="primary"
                     className="float-right mr-8"
                     onClick={saveAll}
                 >
                     Gem
                 </Button>
             </div>
-            <Snackbar
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                }}
-                open={openSucces}
-                autoHideDuration={3000}
+            <Toast
+                show={openSucces}
                 onClose={() => setOpenSuccess(false)}
-                message="Ændringer gemt"
-                action={
-                    <React.Fragment>
-                        <IconButton
-                            size="small"
-                            aria-label="close"
-                            color="inherit"
-                            onClick={() => setOpenSuccess(false)}
-                        >
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </React.Fragment>
-                }
-            />
+                className="absolute right-0 bottom-0 z-50 w-56 m-3"
+            >
+                <Toast.Header>Ændringer gemt</Toast.Header>
+            </Toast>
         </Main>
     );
 }

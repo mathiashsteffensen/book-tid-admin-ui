@@ -131,3 +131,7 @@ label {
 .link-muted {
   @apply text-gray-300 underline opacity-50
 }
+
+.toast-header {
+  justify-content: space-between;
+}

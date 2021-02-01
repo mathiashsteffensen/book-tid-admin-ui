@@ -131,7 +131,7 @@ export default function Kunder(props) {
             title="Kunder"
             subtitle="Søg i og rediger dine kunder"
             CTAs={
-                <Button onClick={handleCreateCustomerForm} size="lg">
+                <Button onClick={handleCreateCustomerForm} className="my-2">
                     Ny Kunde
                 </Button>
             }

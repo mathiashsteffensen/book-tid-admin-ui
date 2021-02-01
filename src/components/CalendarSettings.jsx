@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 
 import {
     Avatar,
-    Button,
     makeStyles,
     TextField,
     IconButton,
 } from '@material-ui/core';
+
+import Button from 'react-bootstrap/Button'
 
 import Form from '../components/forms/Form';
 
@@ -95,7 +96,7 @@ export default function CalendarSettings({
     };
 
     return (
-        <div className="md:w-full md:my-2 my-4 w-10/12 bg-gray-200 rounded px-4 py-4 md:py-2 shadow flex flex-col md:flex-row justify-between items-center">
+        <div className="md:w-full my-2 w-10/12 bg-gray-100 rounded px-4 py-4 md:py-2 shadow-sm flex flex-col md:flex-row justify-between items-center">
             <IconButton onClick={handleAvatarForm}>
                 <Avatar
                     className={avatarClass.large}
@@ -140,10 +141,10 @@ export default function CalendarSettings({
             />
 
             <div>
-                <Button color="primary" onClick={handleOpeningHoursForm}>
+                <Button variant="outline-primary" className="mr-2" onClick={handleOpeningHoursForm}>
                     Åbningstider
                 </Button>
-                <Button color="secondary" onClick={handleDelete}>
+                <Button variant="outline-danger" onClick={handleDelete}>
                     Slet
                 </Button>
             </div>

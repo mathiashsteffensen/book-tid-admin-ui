@@ -71,7 +71,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
             title="Din Profil"
             CTAs={
                 editing ? (
-                    <Button onClick={() => setEditing(false)} size="lg">
+                    <Button onClick={() => setEditing(false)} className="my-2">
                         Gem
                     </Button>
                 ) : (

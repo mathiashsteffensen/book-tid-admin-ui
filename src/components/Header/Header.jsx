@@ -43,6 +43,7 @@ export default function Header() {
                 <Nav className="md:float-left">
                     <Link href="/kalender">
                         <Nav.Link
+                            onClick={() => setToggleDropdown(false)}
                             as="a"
                             className="flex justify-center items-center"
                         >
@@ -52,6 +53,7 @@ export default function Header() {
                     </Link>
                     <Link href="/kunder">
                         <Nav.Link
+                            onClick={() => setToggleDropdown(false)}
                             as="a"
                             className="flex justify-center items-center"
                         >
@@ -76,6 +78,7 @@ export default function Header() {
                     >
                         <Link href="/kalendere-og-aabningstider">
                             <NavDropdown.Item
+                                onClick={() => setToggleDropdown(false)}
                                 as="a"
                                 href="/kalendere-og-aabningstider"
                             >
@@ -84,10 +87,10 @@ export default function Header() {
                         </Link>
 
                         <Link href="/services">
-                            <NavDropdown.Item as="a">Services</NavDropdown.Item>
+                            <NavDropdown.Item onClick={() => setToggleDropdown(false)} as="a">Services</NavDropdown.Item>
                         </Link>
                         <Link href="/online-booking">
-                            <NavDropdown.Item as="a">
+                            <NavDropdown.Item onClick={() => setToggleDropdown(false)} as="a">
                                 Online Booking
                             </NavDropdown.Item>
                         </Link>
@@ -105,6 +108,7 @@ export default function Header() {
 
                     <Link href="/profil">
                         <Nav.Link
+                            onClick={() => setToggleDropdown(false)}
                             as="a"
                             className="flex justify-center items-center"
                         >

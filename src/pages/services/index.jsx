@@ -94,17 +94,15 @@ export default function Services({ initialCatsAndServices, user, apiKey }) {
             title="Services og Kategorier"
             subtitle="Rediger i dine services og kategorier"
             CTAs={
-                <div className="flex justify-evenly items-center">
+                <div className="flex justify-evenly my-2  items-center">
                     <ButtonGroup>
                         <Button
-                            size="lg"
                             variant="outline-primary"
                             onClick={handleCreateCatForm}
                         >
                             Tilføj Kategori
                         </Button>
                         <Button
-                            size="lg"
                             variant="outline-primary"
                             onClick={handleCreateServiceForm}
                         >

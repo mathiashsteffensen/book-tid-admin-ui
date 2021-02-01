@@ -20,15 +20,21 @@ const verifyApiKey = async (apiKey) => {
 };
 
 const confirmEmail = async (emailConfirmationKey) => {
-    return await axios.get(`${API_URI}/admin/auth/confirm-signup/${emailConfirmationKey}`)
+    return await axios
+        .get(`${API_URI}/admin/auth/confirm-signup/${emailConfirmationKey}`)
         .then((res) => res.data)
-        .catch(err => {throw new Error(err.response.data.msg)})
-}
+        .catch((err) => {
+            throw new Error(err.response.data.msg);
+        });
+};
 
 const resendConfirmationEmail = async (apiKey) => {
-    return await axios.get(`${API_URI}/admin/auth/confirm-signup/resend/${apiKey}`)
+    return await axios
+        .get(`${API_URI}/admin/auth/confirm-signup/resend/${apiKey}`)
         .then((res) => res.data)
-        .catch(err => {throw new Error(err.response.data.msg)})
+        .catch((err) => {
+            throw new Error(err.response.data.msg);
+        });
 };
 
 const signup = (data) => {
@@ -230,7 +236,7 @@ const updateAvatar = async (apiKey, calendarID, photoURL) => {
 const uploadAvatar = async (apiKey, calendarID, file) => {
     let formData = new FormData();
     formData.append('avatar', file);
-    console.log(file.name);
+    if (!file) throw new Error('Vælg venligst en fil')
     return await axios
         .post(
             API_URI + `/admin/calendar/upload-avatar/${apiKey}/${calendarID}`,
@@ -520,6 +526,9 @@ const createSubscription = async (
                 priceId: priceId,
                 subscription: result,
             };
+        })
+        .catch((err) => {
+            throw new Error(err.response.data.error.message);
         });
 };
 
@@ -655,5 +664,5 @@ export {
     updateSubscription,
     logout,
     confirmEmail,
-    resendConfirmationEmail
+    resendConfirmationEmail,
 };
