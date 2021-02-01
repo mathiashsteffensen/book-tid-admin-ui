@@ -1,14 +1,18 @@
-import React from 'react'
+import React from 'react';
 
 import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col'
-import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
-export default function UnitCounter({value, unitName, onIncrement, onDecrement}) 
-{
+export default function UnitCounter({
+    value,
+    unitName,
+    onIncrement,
+    onDecrement,
+}) {
     return (
         <div className="w-full flex justify-evenly">
             <div className="flex justify-center items-center">
@@ -21,9 +25,7 @@ export default function UnitCounter({value, unitName, onIncrement, onDecrement})
                 <div className="text-2xl font-bold text-primary">
                     {value} &#215;
                 </div>
-                <div className="text-sm">
-                    {unitName}
-                </div>
+                <div className="text-sm">{unitName}</div>
             </div>
 
             <div className="flex justify-center items-center">
@@ -32,5 +34,5 @@ export default function UnitCounter({value, unitName, onIncrement, onDecrement})
                 </Button>
             </div>
         </div>
-    )
+    );
 }

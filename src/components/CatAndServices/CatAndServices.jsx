@@ -1,16 +1,17 @@
-import React from 'react'
+import React from 'react';
 
-import ListGroup from 'react-bootstrap/ListGroup'
+import ListGroup from 'react-bootstrap/ListGroup';
 
-import Category from './Category'
-import Service from './Service'
+import Category from './Category';
+import Service from './Service';
 
-export default function CatsAndServices({data, update, handleUpdateCatForm, handleUpdateServiceForm}) 
-{
-    const {
-        category,
-        services
-    } = data
+export default function CatsAndServices({
+    data,
+    update,
+    handleUpdateCatForm,
+    handleUpdateServiceForm,
+}) {
+    const { category, services } = data;
     return (
         <Category
             data={category}
@@ -18,11 +19,19 @@ export default function CatsAndServices({data, update, handleUpdateCatForm, hand
             handleUpdateCatForm={handleUpdateCatForm}
         >
             <ListGroup as="ul">
-                {services.length > 0
-                ? services.map((service, i) => <Service key={i} handleUpdateForm={handleUpdateServiceForm} update={update} service={service} />)
-                : <p>Ingen services i denne kategori</p>}
+                {services.length > 0 ? (
+                    services.map((service, i) => (
+                        <Service
+                            key={i}
+                            handleUpdateForm={handleUpdateServiceForm}
+                            update={update}
+                            service={service}
+                        />
+                    ))
+                ) : (
+                    <p>Ingen services i denne kategori</p>
+                )}
             </ListGroup>
-            
         </Category>
-    )
+    );
 }

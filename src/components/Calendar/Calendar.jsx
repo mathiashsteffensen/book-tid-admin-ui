@@ -1,27 +1,27 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 
-import useSWR from 'swr'
+import useSWR from 'swr';
 
 import {
     getAppointmentsByCalendarMonth,
     getAppointmentsByWeek,
-    getAppointmentsByDay
-} from '../../requests'
+    getAppointmentsByDay,
+} from '../../requests';
 
-import getter from '../../getter'
+import getter from '../../getter';
 
 import {
     getWeeklyOpeningHoursByDate,
-    getDailyOpeningHoursByDate
-} from '../../utils'
+    getDailyOpeningHoursByDate,
+} from '../../utils';
 
-import axios from 'axios'
+import axios from 'axios';
 
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import 'dayjs/locale/da'
-dayjs.locale('da')
-dayjs.extend(utc)
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import 'dayjs/locale/da';
+dayjs.locale('da');
+dayjs.extend(utc);
 
 import { ViewState } from '@devexpress/dx-react-scheduler';
 
@@ -33,150 +33,144 @@ import {
     DateNavigator,
     ViewSwitcher,
     Resources,
-    Appointments
+    Appointments,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
-import MyAppointmentTooltip from './MyAppointmentTooltip/MyAppointmentTooltip'
-import MyToolbar from './MyToolbar/MyToolbar'
+import MyAppointmentTooltip from './MyAppointmentTooltip/MyAppointmentTooltip';
+import MyToolbar from './MyToolbar/MyToolbar';
 
-
-export default function Calendar({calendars, handleAddAppointmentForm, apiKey}) 
-{
+export default function Calendar({
+    calendars,
+    handleAddAppointmentForm,
+    apiKey,
+}) {
     // Calendar state --------------------------------------------------------------
-    const [date, setDate] = useState(dayjs.utc().format('YYYY-MM-DD'))
-    const [viewType, setViewType] = useState('Month')
-    const [showTooltip, setShowTooltip] = useState(false)
+    const [date, setDate] = useState(dayjs.utc().format('YYYY-MM-DD'));
+    const [viewType, setViewType] = useState('Month');
+    const [showTooltip, setShowTooltip] = useState(false);
     const [openingHours, setOpeningHours] = useState({
-        opening: 8, 
-        closing: 17
-    })
+        opening: 8,
+        closing: 17,
+    });
     const [resources, setResources] = useState([
         {
             fieldName: 'calendarID',
             title: 'Medarbejder',
-            instances: calendars.map((calendar) => 
-            {
-                return {
-                    id: calendar.calendarID,
-                    text: calendar.name + ' - Standard Booking',
-                    color: calendar.standardColor
-                }
-            }).concat(calendars.map((calendar) =>
-            {
-                return {
-                    id: calendar.calendarID + 'online',
-                    text: calendar.name + ' - Online Booking',
-                    color: calendar.onlineColor
-                }
-            }))
-        }
-    ])
-    const [selectedCalendars, setSelectedCalendars] = useState(calendars.map(calendar => calendar.calendarID))
+            instances: calendars
+                .map((calendar) => {
+                    return {
+                        id: calendar.calendarID,
+                        text: calendar.name + ' - Standard Booking',
+                        color: calendar.standardColor,
+                    };
+                })
+                .concat(
+                    calendars.map((calendar) => {
+                        return {
+                            id: calendar.calendarID + 'online',
+                            text: calendar.name + ' - Online Booking',
+                            color: calendar.onlineColor,
+                        };
+                    })
+                ),
+        },
+    ]);
+    const [selectedCalendars, setSelectedCalendars] = useState(
+        calendars.map((calendar) => calendar.calendarID)
+    );
 
-    const handleCheckedCalendarChange = (calendarID) =>
-    {
-        if (selectedCalendars.indexOf(calendarID) !== -1) setSelectedCalendars(selectedCalendars.filter(id => calendarID !== id))
-        else setSelectedCalendars(selectedCalendars.concat([calendarID]))
-    }
+    const handleCheckedCalendarChange = (calendarID) => {
+        if (selectedCalendars.indexOf(calendarID) !== -1)
+            setSelectedCalendars(
+                selectedCalendars.filter((id) => calendarID !== id)
+            );
+        else setSelectedCalendars(selectedCalendars.concat([calendarID]));
+    };
 
     // Fetch appointments
-    const { data: appointments, error, isValidating } = useSWR([viewType, date, apiKey, calendars, selectedCalendars], getter.appointment)
+    const { data: appointments, error, isValidating } = useSWR(
+        [viewType, date, apiKey, calendars, selectedCalendars],
+        getter.appointment
+    );
 
     // Set opening hours
     useEffect(() => {
-        if (calendars.length > 0)
-        {
-            if (viewType === 'Week') setOpeningHours(getWeeklyOpeningHoursByDate(calendars, date))
-            else if (viewType === 'Day') setOpeningHours(getDailyOpeningHoursByDate(calendars, date))
-            
+        if (calendars.length > 0) {
+            if (viewType === 'Week')
+                setOpeningHours(getWeeklyOpeningHoursByDate(calendars, date));
+            else if (viewType === 'Day')
+                setOpeningHours(getDailyOpeningHoursByDate(calendars, date));
         }
-    }, [calendars, viewType])
+    }, [calendars, viewType]);
 
-    const WeekViewTableCell = ({onDoubleClick, startDate, ...restProps}) =>
-    {
+    const WeekViewTableCell = ({ onDoubleClick, startDate, ...restProps }) => {
         return (
             <WeekView.TimeTableCell
                 {...restProps}
                 startDate={startDate}
-                onDoubleClick={() => 
-                    {
-                        setDate(dayjs(startDate).format('YYYY-MM-DD'))
-                        setViewType('Day')
-                    }
-                }
-            >
+                onDoubleClick={() => {
+                    setDate(dayjs(startDate).format('YYYY-MM-DD'));
+                    setViewType('Day');
+                }}
+            ></WeekView.TimeTableCell>
+        );
+    };
 
-            </WeekView.TimeTableCell>
-        )
-    }
-
-    const MonthViewTableCell = ({onDoubleClick, startDate, ...restProps}) =>
-    {
+    const MonthViewTableCell = ({ onDoubleClick, startDate, ...restProps }) => {
         return (
             <MonthView.TimeTableCell
                 {...restProps}
                 startDate={startDate}
-                onDoubleClick={() => 
-                    {
-                        setDate(dayjs(startDate).format('YYYY-MM-DD'))
-                        setViewType('Day')
-                    }
-                }
-            >
-
-            </MonthView.TimeTableCell>
-        )
-    }
+                onDoubleClick={() => {
+                    setDate(dayjs(startDate).format('YYYY-MM-DD'));
+                    setViewType('Day');
+                }}
+            ></MonthView.TimeTableCell>
+        );
+    };
 
     return (
-        <Scheduler
-                data={appointments}
-                locale="da"
-                height={700}
-            >
-                <ViewState
-                    currentDate={date}
-                    onCurrentDateChange={(currentDate) => setDate(currentDate)}
-                    currentViewName={viewType}
-                    onCurrentViewNameChange={(newView) => setViewType(newView)}
-                />
-                <MonthView
-                    displayName="Måned"
-                    timeTableCellComponent={MonthViewTableCell}
-                />
-                <WeekView
-                    displayName="Uge"
-                    startDayHour={openingHours.opening}
-                    endDayHour={openingHours.closing}
-                    timeTableCellComponent={WeekViewTableCell}
-                />
-                <DayView 
-                    displayName="Dag"
-                    startDayHour={openingHours.opening}
-                    endDayHour={openingHours.closing}
-                />
-                <Appointments />
-                <MyAppointmentTooltip
-                    visible={showTooltip}
-                    onVisibilityChange={() => setShowTooltip(!showTooltip)}
-                    handleAddAppointmentForm={handleAddAppointmentForm}
-                    setDate={setDate}
-                    selectedDate={date}
-                    setShowTooltip={setShowTooltip}
-                />
-                <Resources 
-                    data={resources}
-                    mainResourceName='calendarID'
-                />
-                <MyToolbar
-                    calendars={calendars}
-                    checkedCalendars={selectedCalendars}
-                    handleChange={handleCheckedCalendarChange}
-                    syncing={(!error && (!appointments || isValidating))}
-                    appointmentError={error}
-                />
-                <DateNavigator />
-                <ViewSwitcher />
-            </Scheduler>
-    )
+        <Scheduler data={appointments} locale="da" height={700}>
+            <ViewState
+                currentDate={date}
+                onCurrentDateChange={(currentDate) => setDate(currentDate)}
+                currentViewName={viewType}
+                onCurrentViewNameChange={(newView) => setViewType(newView)}
+            />
+            <MonthView
+                displayName="Måned"
+                timeTableCellComponent={MonthViewTableCell}
+            />
+            <WeekView
+                displayName="Uge"
+                startDayHour={openingHours.opening}
+                endDayHour={openingHours.closing}
+                timeTableCellComponent={WeekViewTableCell}
+            />
+            <DayView
+                displayName="Dag"
+                startDayHour={openingHours.opening}
+                endDayHour={openingHours.closing}
+            />
+            <Appointments />
+            <MyAppointmentTooltip
+                visible={showTooltip}
+                onVisibilityChange={() => setShowTooltip(!showTooltip)}
+                handleAddAppointmentForm={handleAddAppointmentForm}
+                setDate={setDate}
+                selectedDate={date}
+                setShowTooltip={setShowTooltip}
+            />
+            <Resources data={resources} mainResourceName="calendarID" />
+            <MyToolbar
+                calendars={calendars}
+                checkedCalendars={selectedCalendars}
+                handleChange={handleCheckedCalendarChange}
+                syncing={!error && (!appointments || isValidating)}
+                appointmentError={error}
+            />
+            <DateNavigator />
+            <ViewSwitcher />
+        </Scheduler>
+    );
 }

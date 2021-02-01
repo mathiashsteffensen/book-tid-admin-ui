@@ -2,21 +2,21 @@
     "name": "Admin | BOOKTID.NET",
     "short_name": "BOOKTID.NET",
     "icons": [
-      {
-        "src": "/static/icons/calendar/128x128.png",
-        "sizes": "128x128",
-        "type": "image/png"
-      },
-      {
-        "src": "/static/icons/calendar/256x256.png",
-        "sizes": "256x256",
-        "type": "image/png"
-      },
-      {
-        "src": "/static/icons/calendar/512x512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-      }
+        {
+            "src": "/static/icons/calendar/128x128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/icons/calendar/256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/icons/calendar/512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
     ],
     "theme_color": "#FFFFFF",
     "background_color": "#FFFFFF",

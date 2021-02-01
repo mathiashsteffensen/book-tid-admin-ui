@@ -1,37 +1,40 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react';
 
-import {getBookingSettings, updateBookingSettings, verifyApiKey} from '../../requests'
-import {getSettingLabelFromKey} from '../../utils'
+import {
+    getBookingSettings,
+    updateBookingSettings,
+    verifyApiKey,
+} from '../../requests';
+import { getSettingLabelFromKey } from '../../utils';
 
-import Main from '../../components/Main'
-import FullPageInput from '../../components/FullPageInput'
+import Main from '../../components/Main';
+import FullPageInput from '../../components/FullPageInput';
 
-import {Snackbar, IconButton} from '@material-ui/core'
-import CloseIcon from '@material-ui/icons/Close'
+import { Snackbar, IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 
-import InputGroup from 'react-bootstrap/InputGroup'
-import FormControl from 'react-bootstrap/FormControl'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
-export default function OnlineBooking({bookingSettings, user, apiKey}) {
+export default function OnlineBooking({ bookingSettings, user, apiKey }) {
     const [state, setState] = useState({
         bookingSettings: bookingSettings,
         editDomain: false,
-    })
+    });
 
-    const [openSucces, setOpenSuccess] = useState(false)
+    const [openSucces, setOpenSuccess] = useState(false);
 
-    const [shouldUpdate, setShouldUpdate] = useState(false)
-    const update = () => setShouldUpdate(!shouldUpdate)
+    const [shouldUpdate, setShouldUpdate] = useState(false);
+    const update = () => setShouldUpdate(!shouldUpdate);
 
-    const handleChange = (key, value) =>
-    {
-        let newState = state
-        state.bookingSettings[key] = value
-        setState(newState)
-        update()
-    }
+    const handleChange = (key, value) => {
+        let newState = state;
+        state.bookingSettings[key] = value;
+        setState(newState);
+        update();
+    };
 
     return (
         <Main
@@ -40,55 +43,85 @@ export default function OnlineBooking({bookingSettings, user, apiKey}) {
             CTAs={
                 <div>
                     <Button
-                        onClick={() => updateBookingSettings(localStorage.getItem('apiKey'), state.bookingSettings).then(() => setOpenSuccess(true))}
+                        onClick={() =>
+                            updateBookingSettings(
+                                localStorage.getItem('apiKey'),
+                                state.bookingSettings
+                            ).then(() => setOpenSuccess(true))
+                        }
                         size="lg"
                     >
                         Gem
-                    </Button> 
+                    </Button>
                 </div>
             }
-            subscriptionType={user.subscriptionType === 'free' ? user.subscriptionType : user.subscriptionTypeName}
+            subscriptionType={
+                user.subscriptionType === 'free'
+                    ? user.subscriptionType
+                    : user.subscriptionTypeName
+            }
             apiKey={apiKey}
         >
             <div className="w-11/12 divide-y divide-gray-300">
-                <FullPageInput 
-                    title={getSettingLabelFromKey("domainPrefix").title}
-                    subtitle={getSettingLabelFromKey("domainPrefix").subtitle}
+                <FullPageInput
+                    title={getSettingLabelFromKey('domainPrefix').title}
+                    subtitle={getSettingLabelFromKey('domainPrefix').subtitle}
                     input={
                         <div className="flex ml-2 justify-center items-center w-full">
                             <InputGroup>
                                 <FormControl
                                     className="text-right"
                                     value={state.bookingSettings.domainPrefix}
-                                    onChange={(e) => handleChange('domainPrefix', e.target.value)}
+                                    onChange={(e) =>
+                                        handleChange(
+                                            'domainPrefix',
+                                            e.target.value
+                                        )
+                                    }
                                     readOnly={!state.editDomain}
                                 />
                                 <InputGroup.Append>
-                                    <InputGroup.Text>.booktid.net</InputGroup.Text>
+                                    <InputGroup.Text>
+                                        .booktid.net
+                                    </InputGroup.Text>
                                 </InputGroup.Append>
                             </InputGroup>
-                            
-                            <p 
-                                onClick={() => setState({...state, ...{editDomain: !state.editDomain}})} 
+
+                            <p
+                                onClick={() =>
+                                    setState({
+                                        ...state,
+                                        ...{ editDomain: !state.editDomain },
+                                    })
+                                }
                                 className="ml-4 cursor-pointer underline text-center text-2xs text-blue-700 font-medium"
                             >
-                                    {state.editDomain 
-                                        ? 'Klik her for at låse dit domænenavn' 
-                                        : 'Klik her for at redigerer dit domæne navn'
-                                    }
+                                {state.editDomain
+                                    ? 'Klik her for at låse dit domænenavn'
+                                    : 'Klik her for at redigerer dit domæne navn'}
                             </p>
                         </div>
                     }
                 />
 
-                <FullPageInput 
-                    title={getSettingLabelFromKey("latestBookingBefore").title}
-                    subtitle={getSettingLabelFromKey("latestBookingBefore").subtitle}
+                <FullPageInput
+                    title={getSettingLabelFromKey('latestBookingBefore').title}
+                    subtitle={
+                        getSettingLabelFromKey('latestBookingBefore').subtitle
+                    }
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <FormControl as="select"
-                                value={state.bookingSettings.latestBookingBefore}
-                                onChange={(e) => handleChange('latestBookingBefore', e.target.value)}
+                            <FormControl
+                                as="select"
+                                value={
+                                    state.bookingSettings.latestBookingBefore
+                                }
+                                onChange={(e) =>
+                                    handleChange(
+                                        'latestBookingBefore',
+                                        e.target.value
+                                    )
+                                }
                                 className="w-full"
                                 custom
                             >
@@ -109,14 +142,23 @@ export default function OnlineBooking({bookingSettings, user, apiKey}) {
                 />
 
                 <FullPageInput
-                    title={getSettingLabelFromKey("latestCancelbefore").title}
-                    subtitle={getSettingLabelFromKey("latestCancelbefore").subtitle}
+                    title={getSettingLabelFromKey('latestCancelbefore').title}
+                    subtitle={
+                        getSettingLabelFromKey('latestCancelbefore').subtitle
+                    }
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <FormControl as="select" custom
+                            <FormControl
+                                as="select"
+                                custom
                                 value={state.bookingSettings.latestCancelbefore}
-                                onChange={(e) => handleChange('latestCancelbefore', e.target.value)}
-                                style={{width: '100%'}}
+                                onChange={(e) =>
+                                    handleChange(
+                                        'latestCancelbefore',
+                                        e.target.value
+                                    )
+                                }
+                                style={{ width: '100%' }}
                             >
                                 <option value={30}>30 min</option>
                                 <option value={60}>1 time</option>
@@ -134,15 +176,24 @@ export default function OnlineBooking({bookingSettings, user, apiKey}) {
                     }
                 />
 
-                <FullPageInput 
-                    title={getSettingLabelFromKey("maxDaysBookAhead").title}
-                    subtitle={getSettingLabelFromKey("maxDaysBookAhead").subtitle}
+                <FullPageInput
+                    title={getSettingLabelFromKey('maxDaysBookAhead').title}
+                    subtitle={
+                        getSettingLabelFromKey('maxDaysBookAhead').subtitle
+                    }
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <FormControl as="select" custom
+                            <FormControl
+                                as="select"
+                                custom
                                 value={state.bookingSettings.maxDaysBookAhead}
-                                onChange={(e) => handleChange('maxDaysBookAhead', e.target.value)}
-                                style={{width: '100%'}}
+                                onChange={(e) =>
+                                    handleChange(
+                                        'maxDaysBookAhead',
+                                        e.target.value
+                                    )
+                                }
+                                style={{ width: '100%' }}
                             >
                                 <option value={7}>1 uge</option>
                                 <option value={14}>2 uger</option>
@@ -165,83 +216,132 @@ export default function OnlineBooking({bookingSettings, user, apiKey}) {
                     }
                 />
 
-                <FullPageInput 
-                    title={getSettingLabelFromKey("requireCustomerAddress").title}
-                    subtitle={getSettingLabelFromKey("requireCustomerAddress").subtitle}
+                <FullPageInput
+                    title={
+                        getSettingLabelFromKey('requireCustomerAddress').title
+                    }
+                    subtitle={
+                        getSettingLabelFromKey('requireCustomerAddress')
+                            .subtitle
+                    }
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Form.Switch 
+                            <Form.Switch
                                 id="requireCustomerAddress"
-                                checked={state.bookingSettings.requireCustomerAddress}
-                                onChange={(e) => handleChange('requireCustomerAddress', e.target.checked)}
+                                checked={
+                                    state.bookingSettings.requireCustomerAddress
+                                }
+                                onChange={(e) =>
+                                    handleChange(
+                                        'requireCustomerAddress',
+                                        e.target.checked
+                                    )
+                                }
                                 color="primary"
                             />
                         </div>
                     }
                 />
 
-                <FullPageInput 
-                    title={getSettingLabelFromKey("hideCustomerCommentSection").title}
-                    subtitle={getSettingLabelFromKey("hideCustomerCommentSection").subtitle}
+                <FullPageInput
+                    title={
+                        getSettingLabelFromKey('hideCustomerCommentSection')
+                            .title
+                    }
+                    subtitle={
+                        getSettingLabelFromKey('hideCustomerCommentSection')
+                            .subtitle
+                    }
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
                             <Form.Switch
                                 id="hideCustomerCommentSection"
-                                className="cursor-pointer" 
-                                checked={state.bookingSettings.hideCustomerCommentSection}
-                                onChange={(e) => handleChange('hideCustomerCommentSection', e.target.checked)}
+                                className="cursor-pointer"
+                                checked={
+                                    state.bookingSettings
+                                        .hideCustomerCommentSection
+                                }
+                                onChange={(e) =>
+                                    handleChange(
+                                        'hideCustomerCommentSection',
+                                        e.target.checked
+                                    )
+                                }
                                 color="primary"
                             />
                         </div>
                     }
                 />
 
-                <FullPageInput 
-                    title={getSettingLabelFromKey("hideServiceDuration").title}
-                    subtitle={getSettingLabelFromKey("hideServiceDuration").subtitle}
+                <FullPageInput
+                    title={getSettingLabelFromKey('hideServiceDuration').title}
+                    subtitle={
+                        getSettingLabelFromKey('hideServiceDuration').subtitle
+                    }
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Form.Switch 
+                            <Form.Switch
                                 id="hideServiceDuration"
-                                checked={state.bookingSettings.hideServiceDuration}
-                                onChange={(e) => handleChange('hideServiceDuration', e.target.checked)}
+                                checked={
+                                    state.bookingSettings.hideServiceDuration
+                                }
+                                onChange={(e) =>
+                                    handleChange(
+                                        'hideServiceDuration',
+                                        e.target.checked
+                                    )
+                                }
                                 color="primary"
                             />
                         </div>
                     }
                 />
 
-                <FullPageInput 
-                    title={getSettingLabelFromKey("hideServicePrice").title}
-                    subtitle={getSettingLabelFromKey("hideServicePrice").subtitle}
+                <FullPageInput
+                    title={getSettingLabelFromKey('hideServicePrice').title}
+                    subtitle={
+                        getSettingLabelFromKey('hideServicePrice').subtitle
+                    }
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Form.Switch 
+                            <Form.Switch
                                 id="hideServicePrice"
                                 checked={state.bookingSettings.hideServicePrice}
-                                onChange={(e) => handleChange('hideServicePrice', e.target.checked)}
+                                onChange={(e) =>
+                                    handleChange(
+                                        'hideServicePrice',
+                                        e.target.checked
+                                    )
+                                }
                                 color="primary"
                             />
                         </div>
                     }
                 />
 
-                <FullPageInput 
-                    title={getSettingLabelFromKey("hideContactInfo").title}
-                    subtitle={getSettingLabelFromKey("hideContactInfo").subtitle}
+                <FullPageInput
+                    title={getSettingLabelFromKey('hideContactInfo').title}
+                    subtitle={
+                        getSettingLabelFromKey('hideContactInfo').subtitle
+                    }
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <Form.Switch 
+                            <Form.Switch
                                 id="hideContactInfo"
                                 checked={state.bookingSettings.hideContactInfo}
-                                onChange={(e) => handleChange('hideContactInfo', e.target.checked)}
+                                onChange={(e) =>
+                                    handleChange(
+                                        'hideContactInfo',
+                                        e.target.checked
+                                    )
+                                }
                                 color="primary"
                             />
                         </div>
                     }
                 />
             </div>
-            <Snackbar 
+            <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',
                     horizontal: 'right',
@@ -252,36 +352,42 @@ export default function OnlineBooking({bookingSettings, user, apiKey}) {
                 message="Ændringer gemt"
                 action={
                     <React.Fragment>
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={() => setOpenSuccess(false)}>
+                        <IconButton
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick={() => setOpenSuccess(false)}
+                        >
                             <CloseIcon fontSize="small" />
                         </IconButton>
                     </React.Fragment>
                 }
             />
         </Main>
-    )
+    );
 }
 
-export async function getServerSideProps({req, res}) 
-{
-    const apiKey = req.cookies.apiKey
-    const isValid = await verifyApiKey(apiKey).catch(err => console.log(err))
+export async function getServerSideProps({ req, res }) {
+    const apiKey = req.cookies.apiKey;
+    const isValid = await verifyApiKey(apiKey).catch((err) => console.log(err));
 
-    if (isValid)
-    {
-        let bookingSettings = await getBookingSettings(req.cookies.apiKey).catch((err) => console.log(err.message))
+    if (isValid) {
+        let bookingSettings = await getBookingSettings(
+            req.cookies.apiKey
+        ).catch((err) => console.log(err.message));
         return {
             props: {
                 valid: Boolean(isValid),
                 user: isValid,
                 bookingSettings,
-                apiKey
+                apiKey,
             },
-        }
-    } else return {
-        redirect: {
-            permanent: false,
-            destination: '/login'
-        }
-    }
+        };
+    } else
+        return {
+            redirect: {
+                permanent: false,
+                destination: '/login',
+            },
+        };
 }

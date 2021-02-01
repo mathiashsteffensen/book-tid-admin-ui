@@ -1,34 +1,31 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react';
 
-import {GridList} from '@material-ui/core'
-import {makeStyles} from '@material-ui/core/styles'
+import { GridList } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-import PhotoTile from './PhotoTile'
-
+import PhotoTile from './PhotoTile';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'space-around',
-      overflow: 'hidden',
-      backgroundColor: theme.palette.background.paper,
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+        backgroundColor: theme.palette.background.paper,
     },
     gridList: {
-      width: 400,
-      height: 200,
+        width: 400,
+        height: 200,
     },
     tileBar: {
-        height: 28
+        height: 28,
     },
-  }));
+}));
 
-export default function PhotoGrid({photos, usePhoto, deletePhoto}) 
-{
-    const classes = useStyles()
+export default function PhotoGrid({ photos, usePhoto, deletePhoto }) {
+    const classes = useStyles();
 
-    if (photos)
-    {
+    if (photos) {
         return (
             <div>
                 <GridList
@@ -36,13 +33,18 @@ export default function PhotoGrid({photos, usePhoto, deletePhoto})
                     cellHeight={100}
                     className={classes.gridList}
                 >
-                    {photos.map((photo, i) => <PhotoTile tileBarClass={classes.tileBar} usePhoto={usePhoto} deletePhoto={deletePhoto} photo={photo} key={i} />)}
+                    {photos.map((photo, i) => (
+                        <PhotoTile
+                            tileBarClass={classes.tileBar}
+                            usePhoto={usePhoto}
+                            deletePhoto={deletePhoto}
+                            photo={photo}
+                            key={i}
+                        />
+                    ))}
                 </GridList>
-
             </div>
-        )
-    } else
-    {
-
+        );
+    } else {
     }
 }

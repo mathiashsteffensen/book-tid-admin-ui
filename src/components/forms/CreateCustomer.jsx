@@ -1,30 +1,28 @@
-import React, {useState} from 'react'
-import {Button, TextField} from '@material-ui/core'
+import React, { useState } from 'react';
+import { Button, TextField } from '@material-ui/core';
 
-import FormModel from './FormModel'
-import {createCustomer} from '../../requests'
+import FormModel from './FormModel';
+import { createCustomer } from '../../requests';
 
-export default function CreateCustomer({closeForm}) 
-{
+export default function CreateCustomer({ closeForm }) {
     const [state, setState] = useState({
         name: '',
         email: '',
         phoneNumber: '',
         note: '',
-    })
+    });
 
-    const [error, setError] = useState('')
+    const [error, setError] = useState('');
 
-    const [shouldUpdate, setShouldUpdate] = useState(false)
-    const update = () => setShouldUpdate(!shouldUpdate)
+    const [shouldUpdate, setShouldUpdate] = useState(false);
+    const update = () => setShouldUpdate(!shouldUpdate);
 
-    const handleChange = (key, value) =>
-    {
-        let newState = state
-        newState[key] = value
-        setState(newState)
-        update()
-    }
+    const handleChange = (key, value) => {
+        let newState = state;
+        newState[key] = value;
+        setState(newState);
+        update();
+    };
 
     return (
         <FormModel
@@ -34,17 +32,17 @@ export default function CreateCustomer({closeForm})
         >
             <div className="w-full mt-2 flex flex-col justify-center items-center">
                 <div className="my-2 w-10/12">
-                    <TextField 
+                    <TextField
                         label="Navn"
                         required
                         onChange={(e) => handleChange('name', e.target.value)}
                         value={state.name}
                         className="w-full"
-                    />  
+                    />
                 </div>
 
                 <div className="my-2 w-10/12">
-                    <TextField 
+                    <TextField
                         label="E-Mail"
                         type="email"
                         required
@@ -53,19 +51,21 @@ export default function CreateCustomer({closeForm})
                         className="w-full"
                     />
                 </div>
-                
+
                 <div className="my-2 w-10/12">
-                    <TextField 
+                    <TextField
                         label="Telefon"
                         type="phonenumber"
-                        onChange={(e) => handleChange('phoneNumber', e.target.value)}
+                        onChange={(e) =>
+                            handleChange('phoneNumber', e.target.value)
+                        }
                         value={state.phoneNumber}
                         className="w-full"
-                    />  
+                    />
                 </div>
-                
+
                 <div className="my-2 w-10/12">
-                    <TextField 
+                    <TextField
                         label="Note"
                         multiline
                         rows={4}
@@ -73,7 +73,7 @@ export default function CreateCustomer({closeForm})
                         value={state.note}
                         variant="outlined"
                         className="w-full"
-                    />  
+                    />
                 </div>
 
                 <div className="w-9/12 mt-4">
@@ -81,15 +81,20 @@ export default function CreateCustomer({closeForm})
                         className="float-right"
                         variant="contained"
                         color="primary"
-                        onClick={() => createCustomer(localStorage.getItem('apiKey'), state).then(closeForm).catch(err => setError(err.message))}
+                        onClick={() =>
+                            createCustomer(
+                                localStorage.getItem('apiKey'),
+                                state
+                            )
+                                .then(closeForm)
+                                .catch((err) => setError(err.message))
+                        }
                     >
                         Gem
                     </Button>
-                    <div className="float-left text-red-600">
-                        {error}
-                    </div>
+                    <div className="float-left text-red-600">{error}</div>
                 </div>
             </div>
         </FormModel>
-    )
+    );
 }

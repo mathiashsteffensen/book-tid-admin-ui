@@ -44,7 +44,7 @@ const features = {
             title: 'Få en personlig bookingside',
             Icon: WebIcon,
             implemented: true,
-            description: `Hvis din forretning er "Frisør Eksempel" kan der bookes tid hos <span class="text-primary">frisoereksempel.booktid.net</span>`
+            description: `Hvis din forretning er "Frisør Eksempel" kan der bookes tid hos <span class="text-primary">frisoereksempel.booktid.net</span>`,
         },
         {
             title:
@@ -56,13 +56,14 @@ const features = {
             title: 'Send E-Mail-Påmindelser automatisk',
             Icon: EmailIcon,
             implemented: true,
-            description: 'Send bekræftelses E-Mails samt E-Mails når tider ændres eller aflyses'
+            description:
+                'Send bekræftelses E-Mails samt E-Mails når tider ændres eller aflyses',
         },
         {
             title: 'Se detaljeret statistik relateret til din forretning',
             Icon: TimelineIcon,
-            implemented: false
-        }
+            implemented: false,
+        },
     ],
     basic: [
         {
@@ -79,7 +80,7 @@ const features = {
             title: 'Få en personlig bookingside',
             Icon: WebIcon,
             implemented: true,
-            description: `Hvis din forretning er "Frisør Eksempel" kan der bookes tid hos <span class="text-primary">frisoereksempel.booktid.net</span>`
+            description: `Hvis din forretning er "Frisør Eksempel" kan der bookes tid hos <span class="text-primary">frisoereksempel.booktid.net</span>`,
         },
         {
             title:
@@ -91,13 +92,14 @@ const features = {
             title: 'Send E-Mail-Påmindelser automatisk',
             Icon: EmailIcon,
             implemented: true,
-            description: 'Send bekræftelses E-Mails samt E-Mails når tider ændres eller aflyses'
+            description:
+                'Send bekræftelses E-Mails samt E-Mails når tider ændres eller aflyses',
         },
         {
             title: 'Se detaljeret statistik relateret til din forretning',
             Icon: TimelineIcon,
-            implemented: false
-        }
+            implemented: false,
+        },
     ],
 };
 
@@ -159,12 +161,13 @@ export async function getServerSideProps({ req }) {
         products.basic = products.basic[0];
         products.premium = products.premium[0];
 
-        if (isValid.subscriptionType !== 'free') return {
-            redirect: {
-                permanent: false,
-                destination: '/profil',
-            },
-        }
+        if (isValid.subscriptionType !== 'free')
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: '/profil',
+                },
+            };
 
         return {
             props: {

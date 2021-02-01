@@ -26,10 +26,10 @@ export default function Feature({ length, FeatureInstance, i, implemented }) {
                     className={
                         implemented ? ' text-2xs' : 'line-through text-2xs'
                     }
-                    dangerouslySetInnerHTML={{__html: FeatureInstance.description}}
-                >
-                    
-                </span>
+                    dangerouslySetInnerHTML={{
+                        __html: FeatureInstance.description,
+                    }}
+                ></span>
             </div>
 
             {!implemented && (

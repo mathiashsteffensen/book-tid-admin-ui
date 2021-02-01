@@ -1,54 +1,51 @@
-import React from 'react'
+import React from 'react';
 
-import ReactModal from 'react-modal'
-ReactModal.setAppElement('body')
+import ReactModal from 'react-modal';
+ReactModal.setAppElement('body');
 import AddCategory from './AddCategory';
-import UpdateCategory from './UpdateCategory'
-import AddService from './AddService'
+import UpdateCategory from './UpdateCategory';
+import AddService from './AddService';
 import UpdateService from './UpdateService';
 import Avatar from './AvatarForm';
 import ColorForm from './ColorForm';
-import OpeningHours from './multipartforms/openinghours/OpeningHours'
-import CreateCustomer from './CreateCustomer'
-import UpdateCustomer from './UpdateCustomer'
-import AddBooking from './AddBooking'
+import OpeningHours from './multipartforms/openinghours/OpeningHours';
+import CreateCustomer from './CreateCustomer';
+import UpdateCustomer from './UpdateCustomer';
+import AddBooking from './AddBooking';
 
-export default function Form({formType, formProps, isOpen, handleClose}) 
-{
-    if (formType)
-    {
+export default function Form({ formType, formProps, isOpen, handleClose }) {
+    if (formType) {
         var FormComponent;
-        switch(formType)
-        {
+        switch (formType) {
             case 'create-category':
-                FormComponent = AddCategory
+                FormComponent = AddCategory;
                 break;
             case 'update-category':
-                FormComponent = UpdateCategory
+                FormComponent = UpdateCategory;
                 break;
             case 'create-service':
-                FormComponent = AddService
+                FormComponent = AddService;
                 break;
             case 'update-service':
-                FormComponent = UpdateService
+                FormComponent = UpdateService;
                 break;
             case 'avatar':
-                FormComponent = Avatar
+                FormComponent = Avatar;
                 break;
             case 'color':
-                FormComponent = ColorForm
+                FormComponent = ColorForm;
                 break;
             case 'opening-hours':
-                FormComponent = OpeningHours
+                FormComponent = OpeningHours;
                 break;
             case 'create-customer':
-                FormComponent = CreateCustomer
+                FormComponent = CreateCustomer;
                 break;
             case 'update-customer':
-                FormComponent = UpdateCustomer
+                FormComponent = UpdateCustomer;
                 break;
             case 'create-booking':
-                FormComponent = AddBooking
+                FormComponent = AddBooking;
                 break;
             default:
                 break;
@@ -61,10 +58,8 @@ export default function Form({formType, formProps, isOpen, handleClose})
                 className="flex outline-none justify-center items-center lg:mx-48 mx-4"
                 overlayClassName="popupOverlay"
             >
-                
                 <FormComponent closeForm={handleClose} formProps={formProps} />
             </ReactModal>
-        )
-    } else return <div></div>
-    
+        );
+    } else return <div></div>;
 }

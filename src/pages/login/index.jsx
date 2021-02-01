@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Spinner from 'react-bootstrap/Spinner';
 
 import { login, verifyApiKey } from '../../requests';
 import AltHeader from '../../components/Header/AltHeader';
@@ -13,9 +14,14 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
+    const [submitting, setSubmitting] = useState(false);
+
     let handleLogin = (e) => {
+        setSubmitting(true);
         e.preventDefault();
-        login(email, password).catch((err) => setMessage(err.message));
+        login(email, password)
+            .catch((err) => setMessage(err.message))
+            .finally(() => setSubmitting(false));
     };
 
     useEffect(() => {
@@ -64,7 +70,11 @@ export default function Login() {
                                 className="w-full"
                                 onClick={handleLogin}
                             >
-                                Log Ind
+                                {submitting ? (
+                                    <Spinner animation="border" />
+                                ) : (
+                                    'Log Ind'
+                                )}
                             </Button>
 
                             {message !== '' ? (
