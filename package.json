@@ -6,6 +6,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start -p $PORT",
+        "dockerTest": "next start -p 3000",
         "analyze": "ANALYZE=true yarn build && cd .next/analyze && serve",
         "format": "yarn prettier --write ."
     },

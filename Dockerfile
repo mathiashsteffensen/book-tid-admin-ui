@@ -1,5 +1,7 @@
-FROM node:12-alpine
+FROM node:14
 WORKDIR /app
 COPY . .
 RUN yarn install
-RUN yarn run dev
+RUN yarn build
+ENV PORT=3000
+CMD yarn run start
