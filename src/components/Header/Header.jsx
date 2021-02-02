@@ -64,9 +64,12 @@ export default function Header() {
                 </Nav>
 
                 <Nav className="md:float-right">
-                    <Nav.Link className="flex justify-center items-center">
-                        <HelpIcon />
-                    </Nav.Link>
+                    <Link href="/faq">
+                        <Nav.Link as="a" className="flex justify-center items-center">
+                            <HelpIcon />
+                        </Nav.Link>
+                    </Link>
+                    
 
                     <NavDropdown
                         title={
