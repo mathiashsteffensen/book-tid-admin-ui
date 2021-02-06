@@ -7,7 +7,7 @@
         "build": "next build",
         "start": "next start -p $PORT",
         "dockerTest": "sudo docker build -t book-tid-admin-ui . && sudo docker run -p 3000:3000 book-tid-admin-ui",
-        "docker": "sudo docker-compose build && sudo docker-compose up",
+        "docker": "docker-compose build && docker-compose up",
         "analyze": "ANALYZE=true yarn build && cd .next/analyze && serve",
         "format": "yarn prettier --write ."
     },
