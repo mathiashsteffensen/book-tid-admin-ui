@@ -3,7 +3,3 @@ services:
     build: .
     ports:
       - "80:3000"
-    volumes:
-      - logvolume01:/var/log
-volumes:
-  logvolume01: {}
