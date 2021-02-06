@@ -68,7 +68,7 @@ function MyApp({ Component, pageProps }) {
                     rel="stylesheet"
                     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
                 />
-                <link rel="icon" href="logo-dark.svg" />
+                <link rel="icon" href="icons/calendar/16x16.png" />
                 <title>BOOKTID.NET | Admin</title>
             </Head>
             <Component {...pageProps} />
