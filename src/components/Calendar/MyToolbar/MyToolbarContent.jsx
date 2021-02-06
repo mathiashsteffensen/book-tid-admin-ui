@@ -31,7 +31,10 @@ export default function MyToolbarContent({
                     animation="border"
                 />
             )}
-            <div className="flex justify-center h-full overflow-x-auto sm:p-0 w-full ml-3 pl-56 items-center mr-10">
+            {calendars.length > 1 ? <div style={{
+                paddingLeft: `${calendars.length * 4.7}rem`,
+                marginRight: `${calendars.length * 3.33}rem`
+            }} className="flex justify-center h-full overflow-x-auto sm:p-0 w-full ml-3 items-center">
                 {calendars.map((calendar) => (
                     <WorkerCheckBox
                         key={calendar._id}
@@ -41,6 +44,16 @@ export default function MyToolbarContent({
                     />
                 ))}
             </div>
+            : <div className="flex justify-center h-full sm:p-0 w-full ml-0 pr-auto items-center">
+                {calendars.map((calendar) => (
+                    <WorkerCheckBox
+                        key={calendar._id}
+                        calendar={calendar}
+                        checkedCalendars={checkedCalendars}
+                        handleChange={handleChange}
+                    />
+                ))}
+            </div>}
         </Toolbar.FlexibleSpace>
     );
 }

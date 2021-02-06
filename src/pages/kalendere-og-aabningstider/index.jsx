@@ -92,7 +92,7 @@ export default function CalendarSettingsPage() {
             CTAs={
                 maxAllowed > calendars.length ? (
                     <Button
-                        className="mt-2"
+                        className="mt-3"
                         onClick={() =>
                             createCalendar(localStorage.getItem('apiKey')).then(
                                 update
@@ -124,6 +124,7 @@ export default function CalendarSettingsPage() {
             </div>
             <Toast
                 show={openSucces}
+                delay={30000}
                 onClose={() => setOpenSuccess(false)}
                 className="absolute right-0 bottom-0 z-50 w-56 m-3"
             >

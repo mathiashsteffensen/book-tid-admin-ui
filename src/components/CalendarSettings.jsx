@@ -96,7 +96,7 @@ export default function CalendarSettings({
     };
 
     return (
-        <div className="md:w-full my-2 w-10/12 bg-gray-100 rounded px-4 py-4 md:py-2 shadow-sm flex flex-col md:flex-row justify-between items-center">
+        <div className="md:w-full my-2 w-10/12 bg-gray-100 rounded px-4 py-3 md:py-2 shadow-sm flex flex-col md:flex-row justify-between items-center">
             <IconButton onClick={handleAvatarForm}>
                 <Avatar
                     className={avatarClass.large}
@@ -140,7 +140,7 @@ export default function CalendarSettings({
                 }
             />
 
-            <div>
+            <div className="my-3">
                 <Button variant="outline-primary" className="mr-2" onClick={handleOpeningHoursForm}>
                     Åbningstider
                 </Button>

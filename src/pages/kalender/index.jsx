@@ -41,7 +41,7 @@ export default function Kalender({ calendars, user, apiKey }) {
         <Main
             title="Kalender"
             CTAs={
-                <div className="z-10 my-2">
+                <div className="z-10 mt-2">
                     <Button
                         variant="primary"
                         onClick={handleAddAppointmentForm}

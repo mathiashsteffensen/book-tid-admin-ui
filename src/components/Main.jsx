@@ -19,7 +19,7 @@ export default function Main({
         );
 
     return (
-        <main className="w-full px-2 mt-3 md:mt-22 mb-48 flex flex-col justify-center items-center">
+        <main className="w-full px-2 mt-3 md:mt-22 flex flex-col justify-center items-center">
             {!error &&
                 data &&
                 (subscriptionType === 'free' ||
