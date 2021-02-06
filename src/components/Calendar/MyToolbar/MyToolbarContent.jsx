@@ -14,7 +14,7 @@ export default function MyToolbarContent({
     appointmentError,
 }) {
     return (
-        <Toolbar.FlexibleSpace className="flex justify-center w-2/3 h-20 items-center mr-auto z-0 sm:my-0 ml-2">
+        <Toolbar.FlexibleSpace className="flex justify-center w-3/5 h-20 items-center mr-auto z-0 sm:my-0 ml-2">
             {appointmentError && (
                 <span className="text-danger text-sm mr-4 w-64">
                     Der skete en fejl med at vise dine bookinger, genindlæs
@@ -33,8 +33,8 @@ export default function MyToolbarContent({
             )}
             {calendars.length > 1 ? <div style={{
                 paddingLeft: `${calendars.length * 4.7}rem`,
-                marginRight: `${calendars.length * 3.33}rem`
-            }} className="flex justify-center h-full overflow-x-auto sm:p-0 w-full ml-3 items-center">
+                marginRight: `${calendars.length * 3}rem`
+            }} className="flex justify-center h-full overflow-x-auto sm:p-0 w-full ml-4 items-center">
                 {calendars.map((calendar) => (
                     <WorkerCheckBox
                         key={calendar._id}
@@ -44,7 +44,7 @@ export default function MyToolbarContent({
                     />
                 ))}
             </div>
-            : <div className="flex justify-center h-full sm:p-0 w-full ml-0 pr-auto items-center">
+            : <div className="flex justify-center h-full sm:p-0 w-full ml-2 pr-auto items-center">
                 {calendars.map((calendar) => (
                     <WorkerCheckBox
                         key={calendar._id}
