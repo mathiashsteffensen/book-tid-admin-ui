@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "start": "yarn run build && next start -p $PORT",
+        "start": "yarn run build && next start -p 8081",
         "dockerTest": "sudo docker build -t book-tid-admin-ui . && sudo docker run -p 3000:3000 book-tid-admin-ui",
         "docker": "sudo docker build -t book-tid-admin-ui . && sudo docker run -p 80:3000 book-tid-admin-ui",
         "analyze": "ANALYZE=true yarn build && cd .next/analyze && serve",
