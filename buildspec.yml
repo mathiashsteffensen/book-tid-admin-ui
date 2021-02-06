@@ -11,3 +11,12 @@ artifacts:
     - yarn.lock
     - package.json
     - Dockerfile
+  secondary-artifacts:
+    BuildArtifact:
+      files:
+        - '**/*'
+      name: BuildArtifact
+    BuildArtif:
+      files:
+        - '**/*'
+      name: BuildArtif
