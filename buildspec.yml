@@ -3,7 +3,7 @@ version: 0.2
 phases:
   build:
     commands:
-      - yarn run docker
+      - docker build -t admin-ui_web .
 
 artifacts:
   files:
