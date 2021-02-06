@@ -4,6 +4,9 @@ phases:
   build:
     commands:
       - yarn run docker
+  post-build:
+    commands:
+      - printf '[{"name":"admin-ui_web","imageUri":"latest"}]' > imagedefinitions.json
 
 artifacts:
   files:

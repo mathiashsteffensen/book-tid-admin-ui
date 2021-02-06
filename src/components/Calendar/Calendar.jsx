@@ -130,7 +130,7 @@ export default function Calendar({
     };
 
     return (
-        <Scheduler data={appointments} locale="da" height={720}>
+        <Scheduler className="m-2" data={appointments} locale="da" height={720}>
             <ViewState
                 currentDate={date}
                 onCurrentDateChange={(currentDate) => setDate(currentDate)}

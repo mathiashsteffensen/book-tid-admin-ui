@@ -62,6 +62,7 @@ export default function Kalender({ calendars, user, apiKey }) {
                 calendars={cloneCalendars}
                 handleAddAppointmentForm={handleAddAppointmentForm}
             />
+            
             <Form
                 isOpen={showForm}
                 formProps={formProps}

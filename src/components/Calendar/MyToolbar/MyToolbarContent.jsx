@@ -31,7 +31,7 @@ export default function MyToolbarContent({
                     animation="border"
                 />
             )}
-            <div className="flex justify-center h-full overflow-x-auto sm:p-0 w-full pl-56 items-center mr-4">
+            <div className="flex justify-center h-full overflow-x-auto sm:p-0 w-full ml-3 pl-56 items-center mr-10">
                 {calendars.map((calendar) => (
                     <WorkerCheckBox
                         key={calendar._id}
