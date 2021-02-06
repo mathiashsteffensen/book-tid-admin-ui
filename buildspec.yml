@@ -4,7 +4,7 @@ phases:
   build:
     commands:
       - yarn run docker
-  post-build:
+  post_build:
     commands:
       - printf '[{"name":"admin-ui_web","imageUri":"latest"}]' > imagedefinitions.json
 
