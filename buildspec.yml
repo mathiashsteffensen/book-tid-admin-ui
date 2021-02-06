@@ -1,0 +1,13 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - yarn run docker
+
+artifacts:
+  files:
+    - build/**/*
+    - yarn.lock
+    - package.json
+    - Dockerfile
