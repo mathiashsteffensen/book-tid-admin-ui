@@ -66,6 +66,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                 <FullPageInput
                     title={getSettingLabelFromKey('domainPrefix').title}
                     subtitle={getSettingLabelFromKey('domainPrefix').subtitle}
+                    extraInfo={<a target="_blank" href={`https://${bookingSettings.domainPrefix}.booktid.net`} className="text-xs link">Gå til booking side</a>}
                     input={
                         <div className="flex ml-2 justify-center items-center w-full">
                             <InputGroup>
