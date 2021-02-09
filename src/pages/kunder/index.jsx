@@ -25,7 +25,7 @@ export default function Kunder(props) {
             sortBy: '+name',
             searchTerm: '',
             firstRender: true,
-            pages: Math.ceil(props.totalCustomers / 10),
+            pages: props.totalCustomers !== 0 ? Math.ceil(props.totalCustomers / 10) : 1,
             currentPage: 1,
         },
     });
@@ -102,7 +102,7 @@ export default function Kunder(props) {
 
         let newState = state;
         newState.totalCustomers = totalCustomers;
-        newState.pages = Math.ceil(totalCustomers / state.limit);
+        newState.pages = totalCustomers !== 0 ? Math.ceil(totalCustomers / state.limit) : 1;
 
         setState(newState);
         update();
