@@ -1,0 +1,27 @@
+.spinner {
+    svg {
+        width: 30px;
+        animation: spin 700ms linear infinite;
+        overflow: visible;
+    }
+
+    &.sm {
+        width: 20px;
+    }
+
+    &.lg {
+        width: 40px;
+    }
+    
+    @include themeSpinner('primary', 'light');
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

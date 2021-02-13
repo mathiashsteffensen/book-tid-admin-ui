@@ -4,15 +4,14 @@ import Link from 'next/link';
 
 import dayjs from 'dayjs';
 
-import Main from '../../components/Main';
+import Main from '../../components/custom/Main';
 
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Form from 'react-bootstrap/Form';
-import Alert from 'react-bootstrap/Alert';
-import Collapse from 'react-bootstrap/Collapse';
+import { Button } from '../../components/agnostic/Button';
+import { FlexContainer as Container } from '../../components/agnostic/FlexContainer';
+import { Form } from '../../components/agnostic/Form/Form';
+import { Alert } from '../../components/agnostic/Alert';
+import { Row } from '../../components/agnostic/Row'
+import { Col } from '../../components/agnostic/Col';
 
 import EditIcon from '@material-ui/icons/Edit';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
@@ -26,7 +25,7 @@ import {
     cancelSubscription,
 } from '../../requests';
 
-import InlineUpgrade from '../../components/InlineUpgrade/InlineUpgrade';
+import InlineUpgrade from '../../components/custom/InlineUpgrade/InlineUpgrade';
 
 export default function Profile({ initProfileSettings, currentProduct, user }) {
     console.log(initProfileSettings);
@@ -85,8 +84,8 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                 )
             }
         >
-            <Container fluid>
-                <Row>
+            <Container className="w-full">
+                <Row spacing="1rem" className="w-full">
                     <Col sm={5}>
                         <Row>
                             <Col className="full-underline text-lg" md={12}>
@@ -117,7 +116,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                                 </Form.Group>
                             </Col>
 
-                            <Col className="mt-2">
+                            <Col className="mt-2" md={8}>
                                 <Form.Group>
                                     <Form.Label>Efternavn</Form.Label>
                                     <Form.Control
@@ -261,7 +260,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                             </Col>
                         </Row>
                     </Col>
-                    <Col>
+                    <Col sm={7}>
                         <Row>
                             <Col className="full-underline text-lg" md={12}>
                                 Abonnementsinformation

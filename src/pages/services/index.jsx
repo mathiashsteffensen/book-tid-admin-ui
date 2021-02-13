@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import Form from '../../components/forms/Form';
-import Main from '../../components/Main';
-
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Form from '../../components/custom/forms/Form';
+import Main from '../../components/custom/Main';
+import CatAndServices from '../../components/custom/CatAndServices/CatAndServices';
+import { Button } from '../../components/agnostic/Button';
+import { ButtonGroup } from '../../components/agnostic/ButtonGroup';
 
 import { getCatsAndServices, verifyApiKey } from '../../requests';
-import CatAndServices from '../../components/CatAndServices/CatAndServices';
+
 
 export default function Services({ initialCatsAndServices, user, apiKey }) {
     // Change this state value to force an update

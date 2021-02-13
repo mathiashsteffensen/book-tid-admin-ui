@@ -1,0 +1,55 @@
+@mixin themeSwitch($variants...) {
+    @for $i from 0 to length($variants) {
+        &.#{nth($variants, $i + 1)} {
+            input:checked + .slider {
+                background-color: map-get($colors, #{nth($variants, $i + 1)});
+            }
+            input:focus + .slider {
+                box-shadow: 0 0 1px map-get($colors, #{nth($variants, $i + 1)});
+            }
+        }
+    }
+}
+
+@mixin themeInput($variants...) {
+    @for $i from 0 to length($variants) {
+        &.#{nth($variants, $i + 1)} {
+            border: 1px solid map-get($colors, #{nth($variants, $i + 1)});
+        
+            &:focus {
+                box-shadow: 0 0 2px 1px map-get($colors, #{nth($variants, $i + 1)});
+            }
+        }
+    }
+}
+
+@mixin themeAlert($variants...) {
+    @for $i from 0 to length($variants) {
+        &.#{nth($variants, $i + 1)} {
+            background-color: map-get($colors-opaque, #{nth($variants, $i + 1)});
+            border: 1px solid map-get($colors, #{nth($variants, $i + 1)});
+        }
+    }
+}
+
+@mixin themeSpinner($variants...) {
+    @for $i from 0 to length($variants) {
+        &.#{nth($variants, $i + 1)} {
+            svg {
+                stroke: map-get($colors, #{nth($variants, $i + 1)})  
+            }
+        }
+    }
+}
+
+@mixin genColVariants($viewportsToGen...) {
+    @for $i from 0 to length($viewportsToGen) {
+        @media (min-width: map-get($viewports, #{nth($viewportsToGen, $i + 1)})) {
+            @for $j from 1 to 12 {
+                 &.#{nth($viewportsToGen, $i + 1)}-#{$j} {
+                    grid-column: span #{$j};
+                }
+            }
+        }
+    } 
+}

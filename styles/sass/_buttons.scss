@@ -1,0 +1,108 @@
+.btn {
+    font-size: 1rem;
+    padding: 0.5em 1.2em;
+    border-radius: 7px;
+    font-weight: 500;
+
+    &.primary {
+        background-color: map-get($colors, primary);
+        color: map-get($colors, light);
+    }
+
+    &.outline-primary {
+        border: 1px solid map-get($colors, primary);
+        color: map-get($colors, primary);
+
+        &:hover {
+            background-color: map-get($colors, primary);
+            color: map-get($colors, light);
+            opacity: 1;
+        }
+    }
+
+    &.secondary {
+        background-color: map-get($colors, secondary);
+        color: map-get($colors, light)
+    }
+
+    &.outline-secondary {
+        border: 1px solid map-get($colors, secondary);
+        color: map-get($colors, secondary);
+
+        &:hover {
+            background-color: map-get($colors, secondary);
+            color: map-get($colors, light);
+            opacity: 1;
+        }
+    }
+
+    &.dark {
+        background-color: map-get($colors, dark);
+        color: map-get($colors, light)
+    }
+
+    &.outline-dark {
+        border: 1px solid map-get($colors, dark);
+        color: map-get($colors, dark);
+
+        &:hover {
+            background-color: map-get($colors, dark);
+            color: map-get($colors, light);
+            opacity: 1;
+        }
+    }
+
+    &.danger {
+        background-color: map-get($colors, danger);
+        color: map-get($colors, light);
+    }
+
+    &.outline-danger {
+        border: 1px solid map-get($colors, danger);
+        color: map-get($colors, danger);
+
+        &:hover {
+            background-color: map-get($colors, danger);
+            color: map-get($colors, light);
+            opacity: 1;
+            fill: map-get($colors, light);
+        }
+    }
+
+    &.lg {
+        font-size: 1.1rem;
+    }
+
+    &.sm {
+        font-size: 0.9rem;
+    }
+
+    &:disabled {
+        cursor: default;
+        opacity: 0.8;
+    }
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.btn-group {
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+
+    .btn {
+        border-radius: 0;
+
+        &:last-child {
+            border-top-right-radius: 7px;
+            border-bottom-right-radius: 7px;
+        }
+
+        &:first-child {
+            border-top-left-radius: 7px;
+            border-bottom-left-radius: 7px;
+        }
+    }
+}

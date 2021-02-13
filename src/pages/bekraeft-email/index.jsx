@@ -1,12 +1,11 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import Main from '../../components/Main'
-import AltHeader from '../../components/Header/AltHeader'
-import Footer from '../../components/Footer'
-
-import Spinner from 'react-bootstrap/Spinner'
-import Alert from 'react-bootstrap/Alert'
+import Main from '../../components/custom/Main'
+import AltHeader from '../../components/custom/Header/AltHeader'
+import Footer from '../../components/custom/Footer'
+import { Spinner } from '../../components/agnostic/Spinner'
+import { Alert } from '../../components/agnostic/Alert'
 
 import { verifyApiKey, confirmEmail } from '../../requests';
 
@@ -21,18 +20,16 @@ export default function ConfirmEmail({ user }) {
     }) 
 
     return (
-        <>
+        <div className="flex h-screen flex-col">
             <AltHeader showBackLink={Boolean(user)} />
-            <Main
-                title="Bekræft E-Mail"
-            >
+            <Main>
                 
                 <div className="w-10/12 flex justify-center items-center">
-                    { loading && <Spinner variant="primary" animation="border" /> }
+                    { loading && <Spinner variant="primary" /> }
 
                     { error && <Alert className="border-danger" variant="danger">{ error.message }</Alert> }
 
-                    { (!loading && !error) && <Alert className="border-success" variant="success">
+                    { (!loading && !error) && <Alert variant="success">
                         {data}
                         <br/>
                         {Boolean(user) ? <Link href="/kalender">
@@ -46,7 +43,7 @@ export default function ConfirmEmail({ user }) {
             </Main>
 
             <Footer />
-        </> 
+        </div> 
         
     )
 } 

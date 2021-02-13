@@ -14,5 +14,16 @@ module.exports = {
             }
         }
         ],
+        process.env.NODE_ENV === 'production' ? [
+            '@fullhuman/postcss-purgecss',
+            {
+              content: [
+                  './src/pages/**/*.{js,jsx,ts,tsx}',
+                  './src/components/**/*.{js,jsx,ts,tsx}'
+              ],
+              defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
+              safelist: ["html", "body", "min-w-1/3", "min-w-2/3"]
+            }
+        ] : null
     ],
 };

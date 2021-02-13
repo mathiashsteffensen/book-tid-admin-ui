@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Button from 'react-bootstrap/Button';
+import { Button } from '../../components/agnostic/Button';
 
-import Main from '../../components/Main';
-import Form from '../../components/forms/Form';
-import CustomerList from '../../components/CustomerList/CustomerList';
-import Pagination from '../../components/Pagination';
-import CustomerSearch from '../../components/CustomerSearch';
+import Main from '../../components/custom/Main';
+import Form from '../../components/custom/forms/Form';
+import CustomerList from '../../components/custom/CustomerList/CustomerList';
+import Pagination from '../../components/custom/Pagination';
+import CustomerSearch from '../../components/custom/CustomerSearch.tsx';
 
 import {
     getTotalCustomers,
@@ -45,6 +45,7 @@ export default function Kunder(props) {
         setFormProps({});
         setFormType('');
         updateFetch();
+        mutate(null, true)
     };
 
     const handleCreateCustomerForm = () => {
@@ -90,7 +91,7 @@ export default function Kunder(props) {
         update();
     };
 
-    const { data: customerList, error: searchError } = useCustomerSearch(props.apiKey, state.searchTerm, state.offset, state.sortBy, state.limit)
+    const { data: customerList, error: searchError, mutate } = useCustomerSearch(props.apiKey, state.searchTerm, state.offset, state.sortBy, state.limit)
 
     const fetchCustomers = async (abortController) => {
         const apiKey = localStorage.getItem('apiKey');
@@ -156,6 +157,7 @@ export default function Kunder(props) {
                         update={updateFetch}
                         handleUpdateCustomerForm={handleUpdateCustomerForm}
                         offset={state.offset}
+                        mutate={mutate}
                     />
                 ) : (
                     <span>

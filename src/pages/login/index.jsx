@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Spinner from 'react-bootstrap/Spinner';
+import { Button } from '../../components/agnostic/Button';
+import { Form } from '../../components/agnostic/Form/Form';
+import { Spinner } from '../../components/agnostic/Spinner';
 
 import { login, verifyApiKey } from '../../requests';
-import AltHeader from '../../components/Header/AltHeader';
-import Footer from '../../components/Footer';
+import AltHeader from '../../components/custom/Header/AltHeader';
+import Footer from '../../components/custom/Footer';
+
+import CompleteIcon from '@material-ui/icons/CheckCircleOutline';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -16,10 +18,13 @@ export default function Login() {
 
     const [submitting, setSubmitting] = useState(false);
 
+    const [complete, setComplete] = useState(false)
+
     let handleLogin = (e) => {
         setSubmitting(true);
         e.preventDefault();
         login(email, password)
+            .then(() => setComplete(true))
             .catch((err) => setMessage(err.message))
             .finally(() => setSubmitting(false));
     };
@@ -29,50 +34,58 @@ export default function Login() {
     }, []);
 
     return (
-        <main className="w-screen min-h-screen bg-gray-900 bg-opaque items-center flex flex-col">
+        <main className="w-screen h-screen bg-gray-900 bg-opaque items-center flex flex-col">
             <AltHeader />
 
-            <div className="my-auto max-w-sm mx-6">
-                <Form className="bg-gray-100 mb-12 overflow-hidden rounded shadow mx-auto">
+            <div className="max-w-md flex justify-center items-center mx-6 h-full">
+                <Form className="bg-gray-100 overflow-hidden rounded-lg shadow mx-auto">
                     <div className="w-full">
                         <div className="w-full bg-gray-700">
-                            <h3 className="text-2xl text-gray-100 px-16 py-6 font-semibold">
+                            <h3 className="text-2xl text-gray-100 px-12 py-4 font-semibold">
                                 Log ind
                             </h3>
                         </div>
 
-                        <div className="px-4 md:px-16 py-4 flex justify-center items-center flex-col">
-                            <Form.Group controlId="login-email">
-                                <Form.Label>E-Mail</Form.Label>
-                                <Form.Control
+                        <div className="md:px-12 px-4 py-4 flex justify-center items-center flex-col">
+                            <Form.Group direction="row" controlId="login-email">
+                                <Form.Input
                                     type="email"
                                     onChange={(e) => setEmail(e.target.value)}
                                     value={email}
                                     autoComplete="email"
                                     required
+                                    placeholder=" "
                                 />
+                                <Form.Label>E-Mail</Form.Label>
                             </Form.Group>
 
-                            <Form.Group controlId="login-password">
-                                <Form.Label>Adgangskode</Form.Label>
-                                <Form.Control
+                            <Form.Group direction="row" controlId="login-password">
+                                <Form.Input
                                     type="password"
                                     onChange={(e) =>
                                         setPassword(e.target.value)
                                     }
                                     value={password}
                                     required
+                                    placeholder=" "
                                 />
+                                <Form.Label>Adgangskode</Form.Label>
                             </Form.Group>
 
                             <Button
                                 type="submit"
-                                className="w-full"
+                                className="w-full flex justify-center items-center"
                                 onClick={handleLogin}
                             >
-                                {submitting ? (
-                                    <Spinner animation="border" />
-                                ) : (
+                                {submitting && (
+                                    <Spinner variant="light" />
+                                )}
+
+                                {complete && (
+                                    <CompleteIcon fontSize="large" />
+                                )}
+
+                                {(!submitting && !complete) && (
                                     'Log Ind'
                                 )}
                             </Button>

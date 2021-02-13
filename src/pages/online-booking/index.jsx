@@ -7,23 +7,24 @@ import {
 } from '../../requests';
 import { getSettingLabelFromKey } from '../../utils';
 
-import Main from '../../components/Main';
-import FullPageInput from '../../components/FullPageInput';
+import Main from '../../components/custom/Main';
+import FullPageInput from '../../components/custom/FullPageInput';
+import { Button } from '../../components/agnostic/Button';
+import { Input } from '../../components/agnostic/Form/Input';
+import { InputGroup } from '../../components/agnostic/Form/InputGroup';
+import { Form } from '../../components/agnostic/Form/Form';
 
 import { Snackbar, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+
 
 export default function OnlineBooking({ bookingSettings, user, apiKey }) {
     const [state, setState] = useState({
         bookingSettings: bookingSettings,
         editDomain: false,
     });
-
+    console.log(bookingSettings.latestCancelBefore);
     const [openSucces, setOpenSuccess] = useState(false);
 
     const [shouldUpdate, setShouldUpdate] = useState(false);
@@ -49,7 +50,6 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                                 state.bookingSettings
                             ).then(() => setOpenSuccess(true))
                         }
-                        size="lg"
                     >
                         Gem
                     </Button>
@@ -70,7 +70,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                     input={
                         <div className="flex ml-2 justify-center items-center w-full">
                             <InputGroup>
-                                <FormControl
+                                <Input
                                     className="text-right"
                                     value={state.bookingSettings.domainPrefix}
                                     onChange={(e) =>
@@ -112,8 +112,8 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                     }
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <FormControl
-                                as="select"
+                            <Input
+                                select
                                 value={
                                     state.bookingSettings.latestBookingBefore
                                 }
@@ -124,7 +124,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                                     )
                                 }
                                 className="w-full"
-                                custom
+                                
                             >
                                 <option value={30}>30 min</option>
                                 <option value={60}>1 time (standard)</option>
@@ -137,7 +137,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                                 <option value={1440}>1 dag</option>
                                 <option value={2880}>2 dage</option>
                                 <option value={4320}>3 dage</option>
-                            </FormControl>
+                            </Input>
                         </div>
                     }
                 />
@@ -149,10 +149,9 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                     }
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <FormControl
-                                as="select"
-                                custom
-                                value={state.bookingSettings.latestCancelbefore}
+                            <Input
+                                select
+                                value={state.bookingSettings.latestCancelBefore}
                                 onChange={(e) =>
                                     handleChange(
                                         'latestCancelbefore',
@@ -172,7 +171,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                                 <option value={1440}>1 dag</option>
                                 <option value={2880}>2 dage</option>
                                 <option value={4320}>3 dage</option>
-                            </FormControl>
+                            </Input>
                         </div>
                     }
                 />
@@ -184,9 +183,8 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                     }
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
-                            <FormControl
-                                as="select"
-                                custom
+                            <Input
+                                select
                                 value={state.bookingSettings.maxDaysBookAhead}
                                 onChange={(e) =>
                                     handleChange(
@@ -212,7 +210,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                                 <option value={364}>1 år</option>
                                 <option value={728}>2 år</option>
                                 <option value={1092}>3 år (standard)</option>
-                            </FormControl>
+                            </Input>
                         </div>
                     }
                 />
@@ -228,6 +226,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
                             <Form.Switch
+                                customSize="sm"
                                 id="requireCustomerAddress"
                                 checked={
                                     state.bookingSettings.requireCustomerAddress
@@ -256,6 +255,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
                             <Form.Switch
+                                customSize="sm"
                                 id="hideCustomerCommentSection"
                                 className="cursor-pointer"
                                 checked={
@@ -282,6 +282,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
                             <Form.Switch
+                                customSize="sm"
                                 id="hideServiceDuration"
                                 checked={
                                     state.bookingSettings.hideServiceDuration
@@ -306,6 +307,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
                             <Form.Switch
+                                customSize="sm"
                                 id="hideServicePrice"
                                 checked={state.bookingSettings.hideServicePrice}
                                 onChange={(e) =>
@@ -328,6 +330,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                     input={
                         <div className="ml-2 flex justify-start items-center w-full">
                             <Form.Switch
+                                customSize="sm"
                                 id="hideContactInfo"
                                 checked={state.bookingSettings.hideContactInfo}
                                 onChange={(e) =>

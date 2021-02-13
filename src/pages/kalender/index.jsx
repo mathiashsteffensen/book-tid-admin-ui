@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import Main from '../../components/Main';
-import Form from '../../components/forms/Form';
-import Calendar from '../../components/Calendar/Calendar';
+import Main from '../../components/custom/Main';
+import Form from '../../components/custom/forms/Form';
+import Calendar from '../../components/custom/Calendar/Calendar';
 import { getAllCalendars, verifyApiKey } from '../../requests';
 
-import Button from 'react-bootstrap/Button';
+import { Button } from '../../components/agnostic/Button';
 import axios from 'axios';
 
 export default function Kalender({ calendars, user, apiKey }) {

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
 
-import Main from '../../components/Main';
-import CalendarSettings from '../../components/CalendarSettings';
+import Main from '../../components/custom/Main';
+import CalendarSettings from '../../components/custom/CalendarSettings';
 
-import Button from 'react-bootstrap/Button'
-import Toast from 'react-bootstrap/Toast'
+import { Button } from '../../components/agnostic/Button'
+import { Toast } from '../../components/agnostic/Toast'
 
 import {
     getMaxCalendars,
@@ -64,7 +64,9 @@ export default function CalendarSettingsPage() {
                 updates
             ).catch((err) => setError(err));
         });
-        error === '' ? setOpenSuccess(true) : null;
+        if (error === '') {
+            setOpenSuccess(true)
+        }
     };
 
     const handleNameChange = (value, calendarID) => {
@@ -124,7 +126,7 @@ export default function CalendarSettingsPage() {
             </div>
             <Toast
                 show={openSucces}
-                delay={30000}
+                delay={2000}
                 onClose={() => setOpenSuccess(false)}
                 className="absolute right-0 bottom-0 z-50 w-56 m-3"
             >

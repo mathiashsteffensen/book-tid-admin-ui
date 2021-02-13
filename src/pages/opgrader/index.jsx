@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 
 // Component library imports
-import CardDeck from 'react-bootstrap/CardDeck';
+import {CardGroup as CardDeck} from '../../components/agnostic/CardGroup';
 
 // Stripe elements
 import { Elements } from '@stripe/react-stripe-js/';
 import { loadStripe } from '@stripe/stripe-js';
 
 // Custom component imports
-import ProductTemplate from '../../components/ProductTemplate/ProductTemplate';
-import PaymentForm from '../../components/PaymentForm/PaymentForm';
-import AltHeader from '../../components/Header/AltHeader';
-import Footer from '../../components/Footer';
+import ProductTemplate from '../../components/custom/ProductTemplate/ProductTemplate';
+import PaymentForm from '../../components/custom/PaymentForm/PaymentForm';
+import AltHeader from '../../components/custom/Header/AltHeader';
+import Footer from '../../components/custom/Footer';
 
 // Icon Imports
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
@@ -118,7 +118,7 @@ const Upgrade = ({ products, user }) => {
             <main className="w-screen min-h-screen bg-gray-900 bg-opaque flex flex-col">
                 <AltHeader showBackLink />
 
-                <div className="md:mx-32 pt-6 pb-20 mb-auto mx-6">
+                <div className="md:mx-32 pt-6 pb-20 my-auto mx-6">
                     <div className="flex justify-center items-center">
                         {showPaymentForm ? (
                             <PaymentForm

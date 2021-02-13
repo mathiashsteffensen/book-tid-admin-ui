@@ -1,0 +1,121 @@
+* {
+  	box-sizing: border-box;
+}
+
+html,
+body {
+	padding: 0;
+	margin: 0;
+	font-size: 15px;
+	font-family: $font-stack;
+	font-weight: 500;
+}
+
+// Typography
+h1 {
+	font-size: 1.75rem;
+	font-family: inherit;  
+}
+
+h2 {
+	font-size: 1.5rem;
+	font-family: inherit;  
+	margin: 0;
+}
+
+.subtitle {
+	font-size: 1.3rem;
+
+	&.sm {
+		font-size: 1.1rem;
+	}
+
+	&.dark {
+		color: map-get($colors, dark);
+	}
+
+	&.light {
+		color: map-get($colors, light);
+	}
+}
+
+h3 {
+	font-size: 1.25rem;
+	font-family: inherit;  
+}
+
+h4 {
+	font-size: 1.125rem;
+	font-family: inherit;  
+}
+
+h5 {
+	font-size: 1rem;
+	font-family: inherit;  
+}
+
+h6 {
+	font-size: 0.875rem;
+	font-family: inherit;  
+}
+
+// Background Variants
+.bg-dark {
+	background-color: map-get($colors, dark);
+}
+
+.bg-light {
+	background-color: map-get($colors, light);
+}
+
+.bg-primary {
+	background-color: map-get($colors, secondary);
+}
+
+.bg-secondary {
+	background-color: map-get($colors, secondary);
+}
+
+.bg-danger {
+	background-color: map-get($colors, danger);
+}
+
+.bg-warning {
+	background-color: map-get($colors, warning);
+}
+
+.bg-info {
+	background-color: map-get($colors, info);
+}
+
+// Resets
+a {
+  	color: inherit;
+	text-decoration: none;
+	font-family: inherit;  
+}
+
+button {
+	cursor: pointer;
+	background: none;
+	border: none;
+	font-family: inherit;  
+}
+
+button:focus {
+	outline: none;
+}
+
+select {
+	border: none;
+	background: none;
+}
+
+select:focus {
+	outline: none;
+}
+
+label {
+	font-weight: 500;
+	font-size: 1.1rem;
+}

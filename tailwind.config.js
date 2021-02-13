@@ -16,6 +16,7 @@ module.exports = {
                 border: '0.05rem',
                 'extend-50': '150%',
                 'extend-27': '130%',
+                80: '20rem',
                 92: '23rem',
                 100: '100rem',
             },
@@ -32,7 +33,10 @@ module.exports = {
                 '2/3-screen': '75vw',
                 '1/3-screen': '25vw',
                 '1/2': '50%',
+                '2/3': '66%',
+                '1/3': '33%',
                 32: '8rem',
+                92: '23rem',
             },
             maxWidth: {
                 screen: '100vw',

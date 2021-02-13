@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap");
+
+/*! purgecss start ignore */
+$font-stack: "Raleway", Fira Sans, sans-serif;
+
+$colors: (
+  primary: rgb(41, 88, 175),
+  secondary: rgb(52, 82, 24),
+  light: rgb(244, 245, 248),
+  dark: rgb(40, 41, 48),
+  success: rgba(75, 181, 67, 1),
+  info: rgba(81, 163, 163, 1),
+  warning: rgb(230, 233, 57),
+  danger: rgba(227, 23, 10, 1),
+);
+
+$colors-opaque: (
+  primary: rgba(41, 88, 175, 0.3),
+  secondary: rgba(70, 63, 26, 0.3),
+  light: rgba(239, 241, 245, 0.3),
+  dark: rgba(19, 14, 14, 0.3),
+  success: rgba(75, 181, 67, 0.3),
+  info: rgba(81, 163, 163, 0.3),
+  warning: rgba(230, 233, 57, 0.3),
+  danger: rgba(227, 23, 10, 0.3),
+);
+
+$viewports: (
+  sm: 468px,
+  md: 768px,
+  lg: 1048px,
+  xl: 1220px,
+);
+
+// Base styles and resets
+@import "./base";
+
+// Mixins
+@import "./mixins";
+
+// Container styles
+@import "./containers";
+
+// Button styles
+@import "./buttons";
+
+// Input styles
+@import "./inputs";
+
+// Spinner styles
+@import "./spinner";
+
+// Icons
+@import "./icons";
+
+// Accessibility styles
+@import "./accessibility";
+
+/*! purgecss end ignore */
+
+//************************** Custom Styles below here **************************//
+

@@ -5,8 +5,10 @@ import 'dayjs/locale/da';
 dayjs.locale('da');
 import Link from 'next/link';
 
-import AltHeader from '../../components/Header/AltHeader';
-import Footer from '../../components/Footer';
+import AltHeader from '../../components/custom/Header/AltHeader';
+import Footer from '../../components/custom/Footer';
+
+import { Card } from '../../components/agnostic/Card/Card'
 
 import {
     verifyApiKey,
@@ -21,40 +23,43 @@ export default function Thanks({ productPurchased }) {
             <AltHeader showBackLink />
 
             <main className="w-full h-full flex flex-col justify-center items-center">
-                <div className="p-4 m-2 text-gray-100 bg-secondary text-center rounded-sm shadow-xs">
-                    <p>
-                        Vi har modtaget din betaling for BOOKTID{' '}
-                        {productPurchased.name} Abonnement på{' '}
-                        {new Intl.NumberFormat('da-DK', {
-                            style: 'currency',
-                            currency: 'DKK',
-                        }).format(productPurchased.paymentOf / 100)}
-                    </p>
-                    <p>
-                        Næste betaling vil blive opkrævet den{' '}
-                        {dayjs(productPurchased.nextPaymentAt).format(
-                            'D. MMM YYYY'
-                        )}
-                    </p>
-                </div>
+                <Card>
+                    <Card.Body>
+                        <Card.Text>
+                            Vi har modtaget din betaling for BOOKTID{' '}
+                            {productPurchased.name} Abonnement på{' '}
+                            {new Intl.NumberFormat('da-DK', {
+                                style: 'currency',
+                                currency: 'DKK',
+                            }).format(productPurchased.paymentOf / 100)}
+                        </Card.Text>
 
-                <div className="p-4 m-2 text-gray-100 bg-secondary text-center text-lg rounded-sm shadow-xs">
-                    <h1 className="text-xl">Tak for at du er kunde hos os!</h1>
-                    <br />
-                    <h2>
-                        Hvis du har spørgsmål så tøv ikke med at kontakte os på{' '}
-                        <a
-                            className="link-muted"
-                            href="mailto:service@booktid.net"
-                        >
-                            service@booktid.net
-                        </a>
-                    </h2>
-                </div>
+                        <Card.Text>
+                            Næste betaling vil blive opkrævet den{' '}
+                            {dayjs(productPurchased.nextPaymentAt).format(
+                                'D. MMM YYYY'
+                            )}
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
 
-                <div>
+                <Card className="mt-2">
+                    <Card.Body>
+                        <Card.Title>
+                            Hvis du har spørgsmål så tøv ikke med at kontakte os på{' '}
+                            <a
+                                className="link"
+                                href="mailto:service@booktid.net"
+                            >
+                                service@booktid.net
+                            </a>
+                        </Card.Title>
+                    </Card.Body>
+                </Card>
+
+                <div className="p-4 mt-4">
                     <Link href="/kalender">
-                        <a className="link p-4 m-2">Tilbage til min kalender</a>
+                        <a className="link">Tilbage til min kalender</a>
                     </Link>
                 </div>
             </main>

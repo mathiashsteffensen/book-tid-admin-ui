@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import Head from 'next/head';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../styles/index.css';
-import Footer from '../components/Footer';
-import Header from '../components/Header/Header';
-import EmailConfirmationBanner from '../components/EmailConfirmationBanner'
 
-import Button from 'react-bootstrap/Button';
+import '../../styles/sass/index.scss'
+import '../../styles/index.css';
+import Footer from '../components/custom/Footer';
+import Header from '../components/custom/Header/Header';
+import EmailConfirmationBanner from '../components/custom/EmailConfirmationBanner'
+
+import { Button } from '../components/agnostic/Button';
 
 function MyApp({ Component, pageProps }) {
     const { user } = pageProps;

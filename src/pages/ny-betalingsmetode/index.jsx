@@ -8,9 +8,9 @@ import { Elements } from '@stripe/react-stripe-js/';
 import { loadStripe } from '@stripe/stripe-js';
 
 // Custom component imports
-import PaymentForm from '../../components/PaymentForm/PaymentForm';
-import AltHeader from '../../components/Header/AltHeader';
-import Footer from '../../components/Footer';
+import PaymentForm from '../../components/custom/PaymentForm/PaymentForm';
+import AltHeader from '../../components/custom/Header/AltHeader';
+import Footer from '../../components/custom/Footer';
 
 // HTTP Request imports
 import { getLatestInvoice, getProduct, verifyApiKey } from '../../requests';
