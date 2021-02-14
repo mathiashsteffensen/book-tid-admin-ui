@@ -2,8 +2,8 @@ import React, { ReactChild } from 'react'
 
 export interface Alert {
     variant: 'primary' | 'secondary' | 'light' | 'dark' | 'info' | 'warning' | 'danger' | 'success',
-    children: ReactChild | Array<ReactChild>,
-    className: string
+    children: ReactChild | Array<ReactChild> | string,
+    className?: string
 }
 
 export const Alert = ( { variant, children, className }: Alert ) => {

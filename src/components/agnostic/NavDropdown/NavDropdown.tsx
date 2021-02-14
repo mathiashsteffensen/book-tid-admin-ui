@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 export interface NavDropdown {
     title: React.ReactElement | string,
@@ -8,6 +8,33 @@ export interface NavDropdown {
 
 export const NavDropdown: React.FC<NavDropdown> = ( { title, id, children } ) => {
     const [show, setShow] = useState(false)
+
+    const ref = useRef(null)
+
+    useEffect(() => {
+        const menu = ref.current
+
+        if (!menu) return;
+
+        // @ts-ignore
+        const items: HTMLAllCollection = menu.querySelectorAll('.dropdown-item')
+
+        const clickHandler = () => setShow(false)
+
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i]
+
+            item.addEventListener('click', clickHandler)
+        }
+        return () => {
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i]
+    
+                item.removeEventListener('click', clickHandler)
+            }
+        }
+    }, [ref])
+
     return (
         <div className="dropdown">
             <a 
@@ -24,6 +51,7 @@ export const NavDropdown: React.FC<NavDropdown> = ( { title, id, children } ) =>
                 aria-labelledby={id}
                 className={show ? "dropdown-menu show" : "dropdown-menu"}
                 style={{position: 'absolute', top: '0px', left: '0px', margin: '0px', right: 'auto', bottom: 'auto', transform: 'translate(7.77778px, 40px)', opacity: show ? 1 : 0}}
+                ref={ref}
             >
                 {children}
             </div>

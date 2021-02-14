@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-import Main from '../../components/custom/Main'
+import Main from '../../components/custom/Main.tsx'
 import AltHeader from '../../components/custom/Header/AltHeader'
 import Footer from '../../components/custom/Footer'
 import { Spinner } from '../../components/agnostic/Spinner'
@@ -18,7 +18,7 @@ export default function ConfirmEmail({ user }) {
     const { data, loading, error } = useAJAX(confirmEmail, [router.query.key], {
         fakeTimeOut: 300
     }) 
-
+    console.log(data, user);
     return (
         <div className="flex h-screen flex-col">
             <AltHeader showBackLink={Boolean(user)} />
@@ -27,9 +27,9 @@ export default function ConfirmEmail({ user }) {
                 <div className="w-10/12 flex justify-center items-center">
                     { loading && <Spinner variant="primary" /> }
 
-                    { error && <Alert className="border-danger" variant="danger">{ error.message }</Alert> }
+                    { error && <Alert variant="danger">{ error.message }</Alert> }
 
-                    { (!loading && !error) && <Alert variant="success">
+                    { (!loading && !error) && <Alert className="w-10/12 flex flex-col justify-center items-center" variant="success">
                         {data}
                         <br/>
                         {Boolean(user) ? <Link href="/kalender">

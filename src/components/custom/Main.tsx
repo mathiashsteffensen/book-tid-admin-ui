@@ -12,6 +12,13 @@ export default function Main({
     children,
     subscriptionType,
     apiKey,
+}: {
+    title?: string,
+    subtitle?: string,
+    CTAs?: React.ReactChild | React.ReactChildren,
+    children: React.ReactChild | React.ReactChildren,
+    subscriptionType?: string,
+    apiKey?: string
 }) {
     if (subscriptionType && apiKey)
         var { data, error } = useSWR(

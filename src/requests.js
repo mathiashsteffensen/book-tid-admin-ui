@@ -617,6 +617,16 @@ const logout = () => {
     location.reload();
 };
 
+const updateProfile = async (data, apiKey) => {
+    return axios.post(API_URI + '/admin/settings/profile/' + apiKey, data)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((err) => {
+            throw new Error(err.response.data.msg);
+        });
+}
+
 export {
     login,
     signup,
@@ -665,4 +675,5 @@ export {
     logout,
     confirmEmail,
     resendConfirmationEmail,
+    updateProfile
 };

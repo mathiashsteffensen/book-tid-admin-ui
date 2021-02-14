@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 import dayjs from 'dayjs';
-
-import Main from '../../components/custom/Main';
+// @ts-ignore
+import Main from '../../components/custom/Main.tsx';
 
 import { Button } from '../../components/agnostic/Button';
 import { FlexContainer as Container } from '../../components/agnostic/FlexContainer';
@@ -12,6 +12,7 @@ import { Form } from '../../components/agnostic/Form/Form';
 import { Alert } from '../../components/agnostic/Alert';
 import { Row } from '../../components/agnostic/Row'
 import { Col } from '../../components/agnostic/Col';
+import { Spinner } from '../../components/agnostic/Spinner'
 
 import EditIcon from '@material-ui/icons/Edit';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
@@ -23,6 +24,7 @@ import {
     getProduct,
     getProductsAndPrices,
     cancelSubscription,
+    updateProfile
 } from '../../requests';
 
 import InlineUpgrade from '../../components/custom/InlineUpgrade/InlineUpgrade';
@@ -30,7 +32,23 @@ import InlineUpgrade from '../../components/custom/InlineUpgrade/InlineUpgrade';
 export default function Profile({ initProfileSettings, currentProduct, user }) {
     console.log(initProfileSettings);
     currentProduct.quantity = initProfileSettings.maxNumberOfCalendars;
-    const [profileSettings, setProfileSettings] = useState({
+    const [profileSettings, setProfileSettings]: [{
+        name: {
+            firstName: string,
+            lastName: string
+        },
+        email: string,
+        phoneNumber: string,
+        businessInfo: {
+            name: string,
+            address: {
+                city: string,
+                postcode: string,
+                street: string,
+                number: string
+            }
+        }
+    }, any] = useState({
         name: initProfileSettings.name,
         email: initProfileSettings.email,
         phoneNumber: initProfileSettings.phoneNumber,
@@ -41,9 +59,15 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
 
     const [changingSubscription, setChangingSubscription] = useState(false);
 
-    const [products, setProducts] = useState({});
+    const [products, setProducts]: [any, any] = useState({});
 
     const [productsReady, setProductsReady] = useState(false);
+
+    const [saving, setSaving] = useState(false)
+    
+    const [saveInfo, setSaveInfo]: [boolean | string, any] = useState(false)
+
+    const [saveError, setSaveError] = useState('')
 
     useEffect(() => {
         getProductsAndPrices().then((res) => {
@@ -65,23 +89,61 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                 .catch((err) => console.log(err));
     };
 
+    const handleSave = () => {
+        setEditing(false)
+        setSaving(true)
+        setSaveError('')
+        updateProfile(profileSettings, localStorage.getItem('apiKey'))
+            .then(() => {
+                if (initProfileSettings.email.toLowerCase() !== profileSettings.email.toLowerCase()) {
+                    setSaveInfo("Du har forsøgt at ændre din email, vi har sendt en besked til din gamle email for at bekræfte ændringen")
+                }
+            })
+            .catch((err) => setSaveError(err.message))
+            .finally(() => setSaving(false))
+    }
+
     return (
         <Main
             title="Din Profil"
             CTAs={
-                editing ? (
-                    <Button onClick={() => setEditing(false)} className="my-2">
-                        Gem
-                    </Button>
-                ) : (
-                    <Button
-                        title="Ændr i dine indstillinger"
-                        onClick={() => setEditing(true)}
-                        variant="outline-primary"
-                    >
-                        <EditIcon />
-                    </Button>
-                )
+                <>
+                    { editing && (
+                        <Button onClick={handleSave} className="my-2">
+                            Gem
+                        </Button>
+                    ) }
+                    { (!editing && !saving) && (
+                        <>
+                            { saveError && (
+                                <Alert variant="danger">
+                                    {saveError}
+                                </Alert>
+                            )}
+
+                            { saveInfo && (
+                                <Alert variant="info">
+                                    {saveInfo}
+                                </Alert>
+                            ) }
+                            <Button
+                                title="Ændr i dine indstillinger"
+                                onClick={() => setEditing(true)}
+                                variant="outline-primary"
+                            >
+                                <EditIcon />
+                            </Button>
+                        </>
+                        
+                    ) }
+                    
+                    { (!editing && saving) && (
+                        <Button className="my-2">
+                            <Spinner variant="light" />
+                        </Button>
+                    ) }
+                </>
+                
             }
         >
             <Container className="w-full">
@@ -218,7 +280,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                                     <Form.Label>Adresse</Form.Label>
 
                                     <Row>
-                                        <Col md={9}>
+                                        <Col md={7}>
                                             <Form.Group>
                                                 <Form.Label>By</Form.Label>
                                                 <Form.Control
@@ -251,6 +313,118 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                                                         profileSettings
                                                             .businessInfo
                                                             .address.city
+                                                    }
+                                                />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col md={5}>
+                                            <Form.Group>
+                                                <Form.Label>Postnummer</Form.Label>
+                                                <Form.Control
+                                                    onChange={(e) =>
+                                                        setProfileSettings({
+                                                            ...profileSettings,
+                                                            ...{
+                                                                businessInfo: {
+                                                                    name:
+                                                                        profileSettings
+                                                                            .businessInfo
+                                                                            .name,
+                                                                    address: {
+                                                                        ...profileSettings
+                                                                            .businessInfo
+                                                                            .address,
+                                                                        ...{
+                                                                            postcode:
+                                                                                e
+                                                                                    .target
+                                                                                    .value,
+                                                                        },
+                                                                    },
+                                                                },
+                                                            },
+                                                        })
+                                                    }
+                                                    readOnly={!editing}
+                                                    value={
+                                                        profileSettings
+                                                            .businessInfo
+                                                            .address.postcode
+                                                    }
+                                                />
+                                            </Form.Group>
+                                        </Col>
+
+                                        <Col md={9}>
+                                            <Form.Group>
+                                                <Form.Label>Vej</Form.Label>
+                                                <Form.Control
+                                                    onChange={(e) =>
+                                                        setProfileSettings({
+                                                            ...profileSettings,
+                                                            ...{
+                                                                businessInfo: {
+                                                                    name:
+                                                                        profileSettings
+                                                                            .businessInfo
+                                                                            .name,
+                                                                    address: {
+                                                                        ...profileSettings
+                                                                            .businessInfo
+                                                                            .address,
+                                                                        ...{
+                                                                            street:
+                                                                                e
+                                                                                    .target
+                                                                                    .value,
+                                                                        },
+                                                                    },
+                                                                },
+                                                            },
+                                                        })
+                                                    }
+                                                    readOnly={!editing}
+                                                    value={
+                                                        profileSettings
+                                                            .businessInfo
+                                                            .address.street
+                                                    }
+                                                />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col md={3}>
+                                            <Form.Group>
+                                                <Form.Label>Nummer</Form.Label>
+                                                <Form.Control
+                                                    onChange={(e) =>
+                                                        setProfileSettings({
+                                                            ...profileSettings,
+                                                            ...{
+                                                                businessInfo: {
+                                                                    name:
+                                                                        profileSettings
+                                                                            .businessInfo
+                                                                            .name,
+                                                                    address: {
+                                                                        ...profileSettings
+                                                                            .businessInfo
+                                                                            .address,
+                                                                        ...{
+                                                                            number:
+                                                                                e
+                                                                                    .target
+                                                                                    .value,
+                                                                        },
+                                                                    },
+                                                                },
+                                                            },
+                                                        })
+                                                    }
+                                                    readOnly={!editing}
+                                                    value={
+                                                        profileSettings
+                                                            .businessInfo
+                                                            .address.number
                                                     }
                                                 />
                                             </Form.Group>
@@ -340,7 +514,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                                                 )}
 
                                             {changingSubscription &&
-                                                products && (
+                                                products !== {} && (
                                                     <InlineUpgrade
                                                         hide={() =>
                                                             setChangingSubscription(

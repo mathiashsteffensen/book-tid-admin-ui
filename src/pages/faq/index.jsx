@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Main from '../../components/custom/Main'
+import Main from '../../components/custom/Main.tsx'
 
 import { verifyApiKey } from '../../requests'
 

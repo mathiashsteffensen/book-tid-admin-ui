@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Main from '../../components/custom/Main';
+import Main from '../../components/custom/Main.tsx';
 import Form from '../../components/custom/forms/Form';
 import Calendar from '../../components/custom/Calendar/Calendar';
 import { getAllCalendars, verifyApiKey } from '../../requests';

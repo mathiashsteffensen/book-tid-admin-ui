@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
 
-import Main from '../../components/custom/Main';
+import Main from '../../components/custom/Main.tsx';
 import CalendarSettings from '../../components/custom/CalendarSettings';
 
 import { Button } from '../../components/agnostic/Button'
-import { Toast } from '../../components/agnostic/Toast'
+
+import { Snackbar, IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 
 import {
     getMaxCalendars,
@@ -124,14 +126,28 @@ export default function CalendarSettingsPage() {
                     Gem
                 </Button>
             </div>
-            <Toast
-                show={openSucces}
-                delay={2000}
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                open={openSucces}
+                autoHideDuration={3000}
                 onClose={() => setOpenSuccess(false)}
-                className="absolute right-0 bottom-0 z-50 w-56 m-3"
-            >
-                <Toast.Header>Ændringer gemt</Toast.Header>
-            </Toast>
+                message="Ændringer gemt"
+                action={
+                    <React.Fragment>
+                        <IconButton
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick={() => setOpenSuccess(false)}
+                        >
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                }
+            />
         </Main>
     );
 }

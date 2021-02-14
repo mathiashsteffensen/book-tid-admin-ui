@@ -1,7 +1,7 @@
 import { group } from 'console'
 import React, { ReactChild, useRef } from 'react'
 
-export interface Group {
+export interface GroupProps {
     direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse',
     children: ReactChild | Array<ReactChild>,
     sm?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12,
@@ -10,7 +10,9 @@ export interface Group {
     xl?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 }
 
-export const Group = ( { direction = 'column', children, md = 12, sm = 12, lg = 12, xl = 12 }: Group ) => 
+export interface Group extends React.FC<GroupProps> {}
+
+export const Group: Group = ( { direction = 'column', children, md = 12, sm = 12, lg = 12, xl = 12 } ) => 
 {
     const groupRef = useRef(null)
 

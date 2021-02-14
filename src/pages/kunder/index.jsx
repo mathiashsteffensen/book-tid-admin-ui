@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from '../../components/agnostic/Button';
 
-import Main from '../../components/custom/Main';
+import Main from '../../components/custom/Main.tsx';
 import Form from '../../components/custom/forms/Form';
 import CustomerList from '../../components/custom/CustomerList/CustomerList';
 import Pagination from '../../components/custom/Pagination';

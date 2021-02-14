@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { RefAttributes } from 'react'
 
 import { Input } from './Input'
 import { Group } from './Group'
@@ -6,26 +6,30 @@ import { Label } from './Label'
 import { Switch } from './Switch'
 import { Row } from './Row'
 
-export interface Form extends React.FormHTMLAttributes<any> {
+export interface FormProps extends React.FormHTMLAttributes<any> {
     validated?: boolean
 }
 
-export const Form = React.forwardRef<HTMLFormElement>(( { children, className, validated = false, ...otherProps }: Form, ref ) => {
+export interface Form extends React.FC<RefAttributes<FormProps>> {
+    Group: Group,
+    Input: Input,
+    Control: Input,
+    Label: Label,
+    Switch: Switch,
+    Row: React.FC<any>
+}
+//@ts-ignore
+export const Form: Form = React.forwardRef<FormProps>(( { children, className, validated = false, ...otherProps }: FormProps, ref: React.ForwardedRef<any> ) => {
     return (
         <form ref={ref} className={`form ${className} ${validated && 'was-validated'}`} {...otherProps} >
             {children}
         </form>
     )
 })
-// @ts-ignore
+
 Form.Input = Input
-// @ts-ignore
 Form.Control = Input
-// @ts-ignore
 Form.Group = Group
-// @ts-ignore
 Form.Label = Label
-// @ts-ignore
 Form.Switch = Switch
-// @ts-ignore
 Form.Row = Row
