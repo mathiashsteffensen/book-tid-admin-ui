@@ -54,6 +54,9 @@ function MyApp({ Component, pageProps }) {
                     />
                     <link rel="icon" href="icons/calendar/16x16.png" />
                     <title>BOOKTID.NET | Admin</title>
+                    <meta name="description" content={`
+                        Administration for BOOKTID.NET brugere
+                    `}></meta>
                 </Head>
                 <Header />
                 <Component {...pageProps} />
@@ -71,6 +74,9 @@ function MyApp({ Component, pageProps }) {
                 />
                 <link rel="icon" href="icons/calendar/16x16.png" />
                 <title>BOOKTID.NET | Admin</title>
+                <meta name="description" content={`
+                    Administration for BOOKTID.NET brugere
+                `}></meta>
             </Head>
             <Component {...pageProps} />
         </div>

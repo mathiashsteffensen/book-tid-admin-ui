@@ -143,7 +143,6 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                         </Button>
                     ) }
                 </>
-                
             }
         >
             <Container className="w-full">

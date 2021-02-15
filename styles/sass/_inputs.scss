@@ -130,6 +130,11 @@ select.input {
         width: 100%;
     }
 
+
+    .sliding-label {
+        max-width: 50%;
+    }
+
     .input:placeholder-shown:focus + .sliding-label {
         transform: translateX(-200px);
         animation: labelSlide 300ms ease-in-out;

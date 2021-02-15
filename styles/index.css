@@ -121,10 +121,6 @@ label {
   @apply w-full bg-primary h-border opacity-50
 }
 
-.link {
-  @apply text-primary underline
-}
-
 .link-muted {
   @apply text-gray-300 underline opacity-50
 }

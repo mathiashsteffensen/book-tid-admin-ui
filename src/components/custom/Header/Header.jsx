@@ -32,7 +32,7 @@ export default function Header() {
                 <Navbar.Brand>
                     <h1>BOOKTID.NET</h1>
                     {process.env.NODE_ENV === 'development' && (
-                        <h5 className="text-sm">BETA v0.2.0</h5>
+                        <p className="text-sm">BETA v0.2.0</p>
                     )}
                 </Navbar.Brand>
             </Link>

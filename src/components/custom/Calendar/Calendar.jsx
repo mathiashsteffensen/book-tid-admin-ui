@@ -109,6 +109,24 @@ export default function Calendar({
     };
 
     const MonthViewTableCell = ({ onDoubleClick, startDate, ...restProps }) => {
+        const isInCurrentMonth = dayjs(startDate).month() === dayjs(date).month()
+
+        const isToday = (dayjs(startDate).month() === dayjs(date).month() && dayjs(startDate).date() === dayjs(date).date())
+
+        let style
+
+        if (isToday) style = {
+            color: 'white'
+        }
+        else if (isInCurrentMonth) style = {
+            color: 'black'
+        }
+        else style = {
+            color: 'rgba(0,0,0,0.9)'
+        }
+
+
+
         return (
             <MonthView.TimeTableCell
                 {...restProps}
@@ -117,6 +135,8 @@ export default function Calendar({
                     setDate(dayjs(startDate).format('YYYY-MM-DD'));
                     setViewType('Day');
                 }}
+                style={style}
+                className="month-view-table-cell"
             ></MonthView.TimeTableCell>
         );
     };

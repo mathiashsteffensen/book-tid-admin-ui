@@ -60,3 +60,11 @@ $viewports: (
 
 //************************** Custom Styles below here **************************//
 
+.month-view-table-cell div {
+  color: inherit;
+}
+
+.link {
+  color: map-get($colors, primary);
+  text-decoration: underline;
+}
