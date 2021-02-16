@@ -111,7 +111,7 @@ export default function Calendar({
     const MonthViewTableCell = ({ onDoubleClick, startDate, ...restProps }) => {
         const isInCurrentMonth = dayjs(startDate).month() === dayjs(date).month()
 
-        const isToday = (dayjs(startDate).month() === dayjs(date).month() && dayjs(startDate).date() === dayjs(date).date())
+        const isToday = (dayjs(startDate).month() === dayjs().month() && dayjs(startDate).date() === dayjs().date())
 
         let style
 

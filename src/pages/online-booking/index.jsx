@@ -5,7 +5,7 @@ import {
     updateBookingSettings,
     verifyApiKey,
 } from '../../requests';
-import { getSettingLabelFromKey } from '../../utils';
+import { getSettingLabelFromKey } from '../../utils.ts';
 
 import Main from '../../components/custom/Main';
 import FullPageInput from '../../components/custom/FullPageInput';
@@ -154,7 +154,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                                 value={state.bookingSettings.latestCancelBefore}
                                 onChange={(e) =>
                                     handleChange(
-                                        'latestCancelbefore',
+                                        'latestCancelBefore',
                                         e.target.value
                                     )
                                 }
@@ -336,6 +336,29 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                                 onChange={(e) =>
                                     handleChange(
                                         'hideContactInfo',
+                                        e.target.checked
+                                    )
+                                }
+                                color="primary"
+                            />
+                        </div>
+                    }
+                />
+
+                <FullPageInput
+                    title={getSettingLabelFromKey('hideGoogleMaps').title}
+                    subtitle={
+                        getSettingLabelFromKey('hideGoogleMaps').subtitle
+                    }
+                    input={
+                        <div className="ml-2 flex justify-start items-center w-full">
+                            <Form.Switch
+                                customSize="sm"
+                                id="hideContactInfo"
+                                checked={state.bookingSettings.hideGoogleMaps}
+                                onChange={(e) =>
+                                    handleChange(
+                                        'hideGoogleMaps',
                                         e.target.checked
                                     )
                                 }

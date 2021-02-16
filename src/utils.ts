@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import weekOfYear from 'dayjs/plugin/weekOfYear'
+dayjs.extend(weekOfYear)
 dayjs.extend(utc);
 
 const API_URI =
@@ -93,7 +95,10 @@ function inputTimeToObj(time) {
 
 
 
-function getSettingLabelFromKey(key) {
+function getSettingLabelFromKey(key: string): {
+    title: string,
+    subtitle: string
+} | void {
     switch (key) {
         case 'personalDataPolicy':
             return {
@@ -150,10 +155,10 @@ function getSettingLabelFromKey(key) {
                 subtitle:
                     'Gør at kunden ikke kan se dine kontakt informationer. Dette skjuler navn, firmaaddresse, email og telefonnummer',
             };
-        case '':
+        case 'hideGoogleMaps':
             return {
-                title: '',
-                subtitle: ''
+                title: 'Skjul Google Maps',
+                subtitle: 'Skjuler Google Maps på booking siden. OBS: Hvis du vil vise Google Maps er det vigtigt at du ikke har valgt at skjule dine kontakt informationer'
             }
         case 'domainPrefix':
             return {
@@ -177,7 +182,7 @@ const geometry = {
 };
 
 let getWeeklyScheduleByDate = (schedule, date) => {
-    let thisWeeksSchedule = false;
+    let thisWeeksSchedule;
     let thisWeek = dayjs.utc(date).week();
     let thisYear = dayjs.utc(date).year();
     switch (schedule.scheduleType) {

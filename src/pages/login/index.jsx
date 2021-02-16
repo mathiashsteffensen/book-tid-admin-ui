@@ -55,8 +55,9 @@ export default function Login() {
                                     autoComplete="email"
                                     required
                                     placeholder=" "
+                                    id="email"
                                 />
-                                <Form.Label>E-Mail</Form.Label>
+                                <Form.Label htmlFor="email">E-Mail</Form.Label>
                             </Form.Group>
 
                             <Form.Group direction="row" controlId="login-password">
@@ -68,8 +69,9 @@ export default function Login() {
                                     value={password}
                                     required
                                     placeholder=" "
+                                    id="password"
                                 />
-                                <Form.Label>Adgangskode</Form.Label>
+                                <Form.Label htmlFor="password">Adgangskode</Form.Label>
                             </Form.Group>
 
                             <Button

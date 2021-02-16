@@ -195,7 +195,7 @@ export default function PaymentForm({
                             )}
 
                             {loading && (
-                                <Button className="my-3">
+                                <Button className="my-3 flex justify-center">
                                     <Spinner variant="light" role="status">
                                         <span className="sr-only">Loading...</span>
                                     </Spinner>

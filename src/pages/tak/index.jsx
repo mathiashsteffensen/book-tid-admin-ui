@@ -95,8 +95,6 @@ export async function getServerSideProps({ req }) {
             nextPaymentAt: profileSettings.currentPeriodEnd,
         };
 
-        console.log(profileSettings);
-
         return {
             props: {
                 valid: false,
