@@ -6,6 +6,7 @@ import { Nav } from '../../agnostic/Nav/Nav';
 import { NavDropdown } from '../../agnostic/NavDropdown/NavDropdown';
 import { Button } from '../../agnostic/Button';
 
+import AppStoreIcon from '../../../assets/app-store.svg'
 import SettingsIcon from '@material-ui/icons/Settings';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import EventNoteIcon from '@material-ui/icons/EventNote';
@@ -69,6 +70,15 @@ export default function Header() {
                         </Nav.Link>
                     </Link>
                     
+                    <Link href="/app-store">
+                        <Nav.Link
+                            onClick={() => setToggleDropdown(false)}
+                            className="flex justify-center items-center"
+                        >
+                            <AppStoreIcon className="MuiSvgIcon-root mr-1" />
+                            Apps
+                        </Nav.Link>
+                    </Link>
 
                     <NavDropdown
                         title={

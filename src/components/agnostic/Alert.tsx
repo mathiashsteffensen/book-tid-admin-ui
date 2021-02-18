@@ -1,14 +1,12 @@
 import React, { ReactChild } from 'react'
 
-export interface Alert {
+export interface Alert extends React.HTMLAttributes<HTMLDivElement> {
     variant: 'primary' | 'secondary' | 'light' | 'dark' | 'info' | 'warning' | 'danger' | 'success',
-    children: ReactChild | Array<ReactChild> | string,
-    className?: string
 }
 
-export const Alert = ( { variant, children, className }: Alert ) => {
+export const Alert = ( { variant, children, className, ...otherProps }: Alert ) => {
     return (
-        <div className={`alert ${variant} ${className}`}>
+        <div {...otherProps} className={`alert ${variant} ${className}`}>
             {children}
         </div>
     )

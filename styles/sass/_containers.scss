@@ -234,7 +234,7 @@
 }
 
 .navbar-expand-md {
-    @media (min-width: 768px) {
+    @media (min-width: 850px) {
         flex-flow: row nowrap;
         justify-content: flex-start;
 
@@ -247,7 +247,7 @@
         }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 850px) {
         .navbar-collapse {
             
             &.open {

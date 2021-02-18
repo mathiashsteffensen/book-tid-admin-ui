@@ -52,6 +52,11 @@
         }
     }
 
+    &.success {
+        background-color: map-get($colors, success);
+        color: map-get($colors, light);
+    }
+
     &.danger {
         background-color: map-get($colors, danger);
         color: map-get($colors, light);

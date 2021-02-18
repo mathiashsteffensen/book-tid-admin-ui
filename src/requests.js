@@ -627,6 +627,26 @@ const updateProfile = async (data, apiKey) => {
         });
 }
 
+const activateApp = async (app, apiKey) => (
+    await axios.post(API_URI + '/admin/app-store/activate-app/' + apiKey, { app })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((err) => {
+            throw new Error(err.response.data.msg);
+        })
+)
+
+const deactivateApp = async (app, apiKey) => (
+    await axios.post(API_URI + '/admin/app-store/deactivate-app/' + apiKey, { app })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((err) => {
+            throw new Error(err.response.data.msg);
+        })
+)
+
 export {
     login,
     signup,
@@ -675,5 +695,7 @@ export {
     logout,
     confirmEmail,
     resendConfirmationEmail,
-    updateProfile
+    updateProfile,
+    activateApp,
+    deactivateApp
 };
