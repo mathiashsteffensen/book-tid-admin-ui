@@ -5,7 +5,7 @@ import {
     updateBookingSettings,
     verifyApiKey,
 } from '../../requests';
-import { getSettingLabelFromKey } from '../../utils.ts';
+import { getSettingLabelFromKey } from '../../utils.tsx';
 
 import Main from '../../components/custom/Main';
 import FullPageInput from '../../components/custom/FullPageInput';
@@ -24,7 +24,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
         bookingSettings: bookingSettings,
         editDomain: false,
     });
-    console.log(bookingSettings.latestCancelBefore);
+
     const [openSucces, setOpenSuccess] = useState(false);
 
     const [shouldUpdate, setShouldUpdate] = useState(false);

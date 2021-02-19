@@ -16,7 +16,7 @@ export default function Feature({ length, FeatureInstance, i, implemented }) {
             <div className="flex flex-col">
                 <span
                     className={
-                        implemented ? ' text-sm' : 'line-through text-sm'
+                        implemented ? ' text-base' : 'line-through text-base'
                     }
                 >
                     {FeatureInstance.title}
@@ -24,7 +24,7 @@ export default function Feature({ length, FeatureInstance, i, implemented }) {
 
                 <span
                     className={
-                        implemented ? ' text-2xs' : 'line-through text-2xs'
+                        implemented ? ' text-sm' : 'line-through text-sm'
                     }
                     dangerouslySetInnerHTML={{
                         __html: FeatureInstance.description,

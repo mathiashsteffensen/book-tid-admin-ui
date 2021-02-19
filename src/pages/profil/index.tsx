@@ -72,7 +72,6 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
     useEffect(() => {
         getProductsAndPrices().then((res) => {
             const products = res;
-            products.basic = res.basic[0];
             products.premium = res.premium[0];
             setProducts(products);
             setProductsReady(true);
@@ -155,7 +154,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
 
                             <Col className="mt-2" md={4}>
                                 <Form.Group>
-                                    <Form.Label>Fornavn</Form.Label>
+                                    <Form.Label slider={false} >Fornavn</Form.Label>
                                     <Form.Control
                                         onChange={(e) =>
                                             setProfileSettings({
@@ -179,7 +178,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
 
                             <Col className="mt-2" md={8}>
                                 <Form.Group>
-                                    <Form.Label>Efternavn</Form.Label>
+                                    <Form.Label slider={false}>Efternavn</Form.Label>
                                     <Form.Control
                                         onChange={(e) =>
                                             setProfileSettings({
@@ -205,7 +204,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                         <Row>
                             <Col md={8}>
                                 <Form.Group>
-                                    <Form.Label>E-Mail</Form.Label>
+                                    <Form.Label slider={false}>E-Mail</Form.Label>
                                     <Form.Control
                                         onChange={(e) =>
                                             setProfileSettings({
@@ -222,7 +221,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                             </Col>
                             <Col md={4}>
                                 <Form.Group>
-                                    <Form.Label>Telefonnummer</Form.Label>
+                                    <Form.Label slider={false}>Telefonnummer</Form.Label>
                                     <Form.Control
                                         onChange={(e) =>
                                             setProfileSettings({
@@ -250,7 +249,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
 
                             <Col className="mt-2" md={12}>
                                 <Form.Group>
-                                    <Form.Label>Navn</Form.Label>
+                                    <Form.Label slider={false}>Navn</Form.Label>
                                     <Form.Control
                                         onChange={(e) =>
                                             setProfileSettings({
@@ -276,12 +275,12 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
 
                             <Col className="mt-2" md={12}>
                                 <Form.Group>
-                                    <Form.Label>Adresse</Form.Label>
+                                    <Form.Label slider={false}>Adresse</Form.Label>
 
                                     <Row>
                                         <Col md={7}>
                                             <Form.Group>
-                                                <Form.Label>By</Form.Label>
+                                                <Form.Label slider={false}>By</Form.Label>
                                                 <Form.Control
                                                     onChange={(e) =>
                                                         setProfileSettings({
@@ -318,7 +317,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                                         </Col>
                                         <Col md={5}>
                                             <Form.Group>
-                                                <Form.Label>Postnummer</Form.Label>
+                                                <Form.Label slider={false}>Postnummer</Form.Label>
                                                 <Form.Control
                                                     onChange={(e) =>
                                                         setProfileSettings({
@@ -356,7 +355,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
 
                                         <Col md={9}>
                                             <Form.Group>
-                                                <Form.Label>Vej</Form.Label>
+                                                <Form.Label slider={false}>Vej</Form.Label>
                                                 <Form.Control
                                                     onChange={(e) =>
                                                         setProfileSettings({
@@ -393,7 +392,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                                         </Col>
                                         <Col md={3}>
                                             <Form.Group>
-                                                <Form.Label>Nummer</Form.Label>
+                                                <Form.Label slider={false}>Nummer</Form.Label>
                                                 <Form.Control
                                                     onChange={(e) =>
                                                         setProfileSettings({

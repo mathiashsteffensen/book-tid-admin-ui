@@ -93,8 +93,6 @@ function inputTimeToObj(time) {
     };
 }
 
-
-
 function getSettingLabelFromKey(key: string): {
     title: string,
     subtitle: string
@@ -317,6 +315,16 @@ function createBookingDomain(companyName) {
     );
 }
 
+const renderTextWithBreaks = (fullText: string) => {
+    return fullText.split('\n').map((text: string) => (
+        <p>{text}</p>
+    ))
+}
+
+const generateTimeOfDayOptions = () => {
+    return Array.apply(null, new Array(25)).map((e, i) => i > 9 ? `${i}:00` : `0${i}:00`)
+}
+
 export {
     API_URI,
     numberToDay,
@@ -329,4 +337,6 @@ export {
     getWeeklyOpeningHoursByDate,
     getDailyOpeningHoursByDate,
     createBookingDomain,
+    renderTextWithBreaks,
+    generateTimeOfDayOptions
 };

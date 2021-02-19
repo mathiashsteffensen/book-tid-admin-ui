@@ -11,7 +11,7 @@ import { Spinner } from '../../components/agnostic/Spinner';
 import CompleteIcon from '@material-ui/icons/CheckCircleOutline';
 
 import { signup, verifyApiKey } from '../../requests';
-import { createBookingDomain } from '../../utils.ts';
+import { createBookingDomain } from '../../utils.tsx';
 
 import AltHeader from '../../components/custom/Header/AltHeader';
 import Footer from '../../components/custom/Footer';

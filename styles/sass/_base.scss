@@ -37,6 +37,10 @@ h2 {
 	&.light {
 		color: map-get($colors, light);
 	}
+
+	&.lg {
+		font-size: 1.6rem;
+	}
 }
 
 h3 {

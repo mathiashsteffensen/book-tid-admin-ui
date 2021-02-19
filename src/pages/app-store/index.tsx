@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Link from 'next/link';
 
 import { App } from '../../GlobalTypes'
 
@@ -8,11 +9,11 @@ import { Row } from '../../components/agnostic/Row';
 import { Col } from '../../components/agnostic/Col';
 
 import { AppCard } from '../../components/custom/AppCard'
+import { AppSettings } from '../../components/custom/AppSettings'
 
 import { verifyApiKey } from '../../requests';
 
 import jsonAppList from '../../assets/app-list.json'
-
 
 
 export default function AppStore( { user } ) {
@@ -23,19 +24,33 @@ export default function AppStore( { user } ) {
         }
     }))
 
-    console.log(appList[0]);
+    const [showAppSettings, setShowAppSettings] = useState(false)
+
+    const [appToShow, setAppToShow] = useState(appList[0])
+
+    const handleShowAppSettings = (app: App) => {
+        setAppToShow(app)
+        setShowAppSettings(true)
+    }
     
     return (
         <div>
-            <Alert className="sm:px-12" style={{margin: 0, borderRadius: 0}} variant="success">Apps til BOOKTID.NET</Alert>
+            <Alert className="sm:px-12 text-xl" style={{margin: 0, borderRadius: 0}} variant="success">Apps til BOOKTID.NET</Alert>
+            { user.subscriptionTypeName !== 'Premium' && <FlexContainer>
+                <Alert variant="warning" >
+                    <Link href="/opgrader"><a className="link">Opgrader til premium</a></Link> for at gøre brug af BOOKTID.NETs apps        
+                </Alert>
+            </FlexContainer>}
             <FlexContainer>
-                <Row className=" px-6 w-full sm:w-11/12">
+                { !showAppSettings ? <Row className=" px-6 w-full sm:w-11/12">
                     {appList.map((app) => (
                         <Col key={app.name} md={4}>
-                            <AppCard isActive={app.activated} app={app} />
+                            <AppCard disabled={user.subscriptionTypeName !== 'Premium'} showSettings={handleShowAppSettings} isActive={app.activated} app={app} />
                         </Col> 
                     ))}
-                </Row>
+                </Row> : (
+                    <AppSettings back={() => setShowAppSettings(false)} app={appToShow} />
+                )}
             </FlexContainer>
         </div>
     )

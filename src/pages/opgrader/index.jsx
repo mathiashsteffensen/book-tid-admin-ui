@@ -20,6 +20,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import CheckIcon from '@material-ui/icons/Check';
 import WebIcon from '@material-ui/icons/Web';
 import TimelineIcon from '@material-ui/icons/Timeline';
+import PhoneIcon from '@material-ui/icons/PhonelinkRing';
 
 // HTTP Request imports
 import { getProductsAndPrices, verifyApiKey } from '../../requests';
@@ -53,54 +54,25 @@ const features = {
             implemented: true,
         },
         {
-            title: 'Send E-Mail-Påmindelser automatisk',
+            title: 'Send E-Mail bekræftelser til dine kunder automatisk',
             Icon: EmailIcon,
             implemented: true,
             description:
                 'Send bekræftelses E-Mails samt E-Mails når tider ændres eller aflyses',
         },
         {
-            title: 'Se detaljeret statistik relateret til din forretning',
-            Icon: TimelineIcon,
-            implemented: false,
-        },
-    ],
-    basic: [
-        {
-            title: 'Modtag nemt online bookinger',
-            Icon: EventAvailableIcon,
-            implemented: true,
-        },
-        {
-            title: 'Op til 150 bookinger per måned',
-            Icon: CheckIcon,
-            implemented: true,
-        },
-        {
-            title: 'Få en personlig bookingside',
-            Icon: WebIcon,
-            implemented: true,
-            description: `Hvis din forretning er "Frisør Eksempel" kan der bookes tid hos <span class="text-primary">frisoereksempel.booktid.net</span>`,
-        },
-        {
-            title:
-                'Sæt begrænsninger for hvor kort tid før der kan bookes, så er du altid forberedt',
-            Icon: EventBusyIcon,
-            implemented: true,
-        },
-        {
-            title: 'Send E-Mail-Påmindelser automatisk',
-            Icon: EmailIcon,
+            title: 'Send SMS Påmindelser automatisk, og gratis',
+            Icon: PhoneIcon,
             implemented: true,
             description:
-                'Send bekræftelses E-Mails samt E-Mails når tider ændres eller aflyses',
+                'Hver sikker på at dine kunder dukker op til deres aftaler, og her gider vi ikke at sende en regning på 80 øre hver gang du sender en SMS',
         },
         {
             title: 'Se detaljeret statistik relateret til din forretning',
             Icon: TimelineIcon,
             implemented: false,
         },
-    ],
+    ]
 };
 
 const Upgrade = ({ products, user }) => {
@@ -132,11 +104,6 @@ const Upgrade = ({ products, user }) => {
                             <CardDeck>
                                 <ProductTemplate
                                     handleProductSelect={handleProductSelect}
-                                    product={products.basic}
-                                    features={features.basic}
-                                />
-                                <ProductTemplate
-                                    handleProductSelect={handleProductSelect}
                                     product={products.premium}
                                     features={features.premium}
                                 />
@@ -158,7 +125,6 @@ export async function getServerSideProps({ req }) {
 
     if (isValid) {
         const products = await getProductsAndPrices();
-        products.basic = products.basic[0];
         products.premium = products.premium[0];
 
         if (isValid.subscriptionType !== 'free')

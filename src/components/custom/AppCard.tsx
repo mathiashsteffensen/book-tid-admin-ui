@@ -9,7 +9,7 @@ import { Spinner } from '../agnostic/Spinner'
 
 import { activateApp, deactivateApp } from '../../requests'
 
-export const AppCard = ( { app, isActive }: { app: App, isActive: boolean } ) => {
+export const AppCard = ( { app, disabled, isActive, showSettings }: { app: App, disabled: boolean, isActive: boolean, showSettings: (app: App) => void } ) => {
     const [loading, setLoading] = useState(false)
 
     const handleActivate = () => {
@@ -46,11 +46,11 @@ export const AppCard = ( { app, isActive }: { app: App, isActive: boolean } ) =>
             <Card.Footer>
                 { isActive ? (
                     <FlexContainer justify="space-evenly">
-                        <Button>Indstillinger</Button>
+                        <Button onClick={() => showSettings(app)}>Indstillinger</Button>
                         <Button onClick={handleDeactivate} variant="danger" >{ loading ? <Spinner variant="light" /> : 'Deaktivèr'}</Button>
                     </FlexContainer>
                 ) : (
-                    <Button onClick={handleActivate} size="lg" className="w-full flex justify-center">{ loading ? <Spinner variant="light" /> : 'Aktivèr'}</Button>
+                    <Button disabled={disabled} onClick={handleActivate} size="lg" className="w-full flex justify-center">{ loading ? <Spinner variant="light" /> : 'Aktivèr'}</Button>
                 ) }
             </Card.Footer>
         </Card>

@@ -101,6 +101,8 @@ const ProductTemplate = ({
             <Card.Footer>
                 <div className="w-full flex justify-center items-center">
                     <Button
+                        size="lg"
+                        className="w-full"
                         onClick={() =>
                             handleProductSelect({
                                 name,

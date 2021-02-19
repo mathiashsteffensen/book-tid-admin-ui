@@ -82,14 +82,6 @@ export default function InlineUpgrade({
             <CardGroup>
                 <ProductTemplate
                     handleProductSelect={setNewProduct}
-                    product={products.basic}
-                    isSelected={newProduct.name === 'Basic'}
-                    currentProduct={currentProduct}
-                    showFeatures={false}
-                    selectedProduct={newProduct}
-                />
-                <ProductTemplate
-                    handleProductSelect={setNewProduct}
                     product={products.premium}
                     isSelected={newProduct.name === 'Premium'}
                     showFeatures={false}

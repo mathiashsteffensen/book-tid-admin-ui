@@ -647,6 +647,26 @@ const deactivateApp = async (app, apiKey) => (
         })
 )
 
+const getAppSettings = async (appId, apiKey) => (
+    await axios.get(API_URI + '/admin/app-store/app-settings/' + apiKey + '/' + appId)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((err) => {
+            throw new Error(err.response.data.msg);
+        })
+)
+
+const updateAppSettings = async (appId, apiKey, data) => (
+    await axios.patch(API_URI + '/admin/app-store/app-settings/' + apiKey + '/' + appId, data)
+        .then((response) => {
+            return response.data;
+        })
+        .catch((err) => {
+            throw new Error(err.response.data.msg);
+        })
+)
+
 export {
     login,
     signup,
@@ -697,5 +717,7 @@ export {
     resendConfirmationEmail,
     updateProfile,
     activateApp,
-    deactivateApp
+    deactivateApp,
+    getAppSettings,
+    updateAppSettings
 };

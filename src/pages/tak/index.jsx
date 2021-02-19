@@ -23,8 +23,8 @@ export default function Thanks({ productPurchased }) {
             <AltHeader showBackLink />
 
             <main className="w-full h-full flex flex-col justify-center items-center">
-                <Card>
-                    <Card.Body>
+                <Card className="mt-2">
+                    <Card.Body className="text-center">
                         <Card.Text>
                             Vi har modtaget din betaling for BOOKTID{' '}
                             {productPurchased.name} Abonnement på{' '}
@@ -40,11 +40,7 @@ export default function Thanks({ productPurchased }) {
                                 'D. MMM YYYY'
                             )}
                         </Card.Text>
-                    </Card.Body>
-                </Card>
-
-                <Card className="mt-2">
-                    <Card.Body>
+                        <br/>
                         <Card.Title>
                             Hvis du har spørgsmål så tøv ikke med at kontakte os på{' '}
                             <a

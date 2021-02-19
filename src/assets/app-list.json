@@ -9,7 +9,14 @@
                 "name": "SMS afsendelses tidspunkt",
                 "description": "Hvornår skal dine kunder modtage en sms påmindelse.\n\nVælg hvilket tidspunkt dagen før hvor sms påmindelsen skal sendes.",
                 "type": "select",
-                "options": "timeOfDay"
+                "options": "timeOfDay",
+                "id": "remindAt"
+            },
+            {
+                "name": "Send påmindelses SMSer",
+                "description": "Vælg om du vil sende påmindelses SMSer.",
+                "type": "switch",
+                "id": "sendReminders"
             }
         ]
     }
