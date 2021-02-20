@@ -11,6 +11,7 @@ export default function TooltipHeader({
     selectedDate,
     setShowTooltip,
     handleAddAppointmentForm,
+    mutate,
     ...restProps
 }) {
     return (
@@ -27,12 +28,7 @@ export default function TooltipHeader({
                 )
                     .then(() => {
                         setShowTooltip(false);
-                        setDate(
-                            dayjs(selectedDate)
-                                .add(1, 'day')
-                                .format('YYYY-MM-DD')
-                        );
-                        setDate(dayjs(selectedDate).format('YYYY-MM-DD'));
+                        mutate(undefined, true)
                     })
                     .catch((err) => console.log(err))
             }

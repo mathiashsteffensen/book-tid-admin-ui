@@ -80,7 +80,7 @@ export default function Calendar({
     };
 
     // Fetch appointments
-    const { data: appointments, error, isValidating } = useSWR(
+    const { data: appointments, error, isValidating, mutate } = useSWR(
         [viewType, date, apiKey, calendars, selectedCalendars],
         getter.appointment
     );
@@ -172,6 +172,7 @@ export default function Calendar({
                 setDate={setDate}
                 selectedDate={date}
                 setShowTooltip={setShowTooltip}
+                mutate={mutate}
             />
             <Resources data={resources} mainResourceName="calendarID" />
             <MyToolbar

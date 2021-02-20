@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 import dayjs from 'dayjs';
-// @ts-ignore
-import Main from '../../components/custom/Main.tsx';
+
+import Main from '../../components/custom/Main';
 
 import { Button } from '../../components/agnostic/Button';
 import { FlexContainer as Container } from '../../components/agnostic/FlexContainer';

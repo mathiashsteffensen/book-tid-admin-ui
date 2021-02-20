@@ -9,6 +9,7 @@ export default function MyAppointmentTooltip({
     setShowTooltip,
     visible,
     onVisibilityChange,
+    mutate,
 }) {
     const Header = (props) => (
         <TooltipHeader
@@ -17,6 +18,7 @@ export default function MyAppointmentTooltip({
             setDate={setDate}
             setShowTooltip={setShowTooltip}
             handleAddAppointmentForm={handleAddAppointmentForm}
+            mutate={mutate}
         />
     );
     return (
