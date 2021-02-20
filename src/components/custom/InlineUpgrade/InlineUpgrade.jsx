@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import useSWR from 'swr'
 import dayjs from 'dayjs';
 
 import { CardGroup } from '../../agnostic/CardGroup';
@@ -23,7 +23,6 @@ export default function InlineUpgrade({
     periodEnd,
     hide,
 }) {
-    const router = useRouter();
 
     currentProduct.quantity = quantity;
 
@@ -89,19 +88,14 @@ export default function InlineUpgrade({
                     selectedProduct={newProduct}
                 />
             </CardGroup>
-            {((currentProduct.name === 'Basic' &&
-                newProduct.name === 'Premium') ||
-                (newProduct.name === 'Premium' &&
-                    currentProduct.quantity !== newProduct.unitAmount) ||
-                (currentProduct.name === 'Premium' &&
-                    newProduct.name === 'Basic')) && (
+            {(currentProduct.quantity !== newProduct.unitAmount) && (
                 <Card className="mt-2">
                     <Card.Body>
                         {error && (
                             <>Der skete en fejl, genindlæs venligst siden</>
                         )}
 
-                        {isLoading && !error && (
+                        {(isLoading && !error) && (
                             <div className="flex justify-center items-center">
                                 <Spinner variant="primary" />
                             </div>

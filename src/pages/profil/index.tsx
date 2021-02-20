@@ -59,7 +59,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
 
     const [changingSubscription, setChangingSubscription] = useState(false);
 
-    const [products, setProducts]: [any, any] = useState({});
+    const [products, setProducts]: [any, any] = useState(false);
 
     const [productsReady, setProductsReady] = useState(false);
 
@@ -511,8 +511,8 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                                                     </div>
                                                 )}
 
-                                            {changingSubscription &&
-                                                products !== {} && (
+                                            {(changingSubscription &&
+                                                products) && (
                                                     <InlineUpgrade
                                                         hide={() =>
                                                             setChangingSubscription(
@@ -528,12 +528,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                                                         quantity={
                                                             initProfileSettings.maxNumberOfCalendars
                                                         }
-                                                        currentProduct={
-                                                            currentProduct.name ===
-                                                            'Basic'
-                                                                ? products.basic
-                                                                : products.premium
-                                                        }
+                                                        currentProduct={products.premium}
                                                         products={products}
                                                     />
                                                 )}

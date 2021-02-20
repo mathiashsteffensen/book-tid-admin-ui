@@ -30,12 +30,14 @@ export default function Header() {
             expand="md"
         >
             <Link href="/kalender">
-                <Navbar.Brand>
-                    <h1>BOOKTID.NET</h1>
-                    {process.env.NODE_ENV === 'development' && (
-                        <p className="text-sm">BETA v0.2.0</p>
-                    )}
-                </Navbar.Brand>
+                <a>
+                    <Navbar.Brand>
+                        <h1>BOOKTID.NET</h1>
+                        {process.env.NODE_ENV === 'development' && (
+                            <p className="text-sm">BETA v0.2.0</p>
+                        )}
+                    </Navbar.Brand>  
+                </a>
             </Link>
             <Navbar.Toggle aria-controls="navbar" />
             <Navbar.Collapse
@@ -44,40 +46,40 @@ export default function Header() {
             >
                 <Nav className="md:float-left">
                     <Link href="/kalender">
-                        <Nav.Link
+                        <a
                             onClick={() => setToggleDropdown(false)}
-                            className="flex justify-center items-center"
+                            className="nav-link flex justify-center items-center"
                         >
                             <EventNoteIcon className="mr-1" />
                             Kalender
-                        </Nav.Link>
+                        </a>
                     </Link>
                     <Link href="/kunder">
-                        <Nav.Link
+                        <a
                             onClick={() => setToggleDropdown(false)}
-                            className="flex justify-center items-center"
+                            className="nav-link flex justify-center items-center"
                         >
                             <PeopleAltIcon className="mr-1" />
                             Kunder
-                        </Nav.Link>
+                        </a>
                     </Link>
                 </Nav>
 
                 <Nav className="md:float-right">
                     <Link href="/faq">
-                        <Nav.Link className="flex justify-center items-center">
+                        <a className="nav-link flex justify-center items-center">
                             <HelpIcon />
-                        </Nav.Link>
+                        </a>
                     </Link>
                     
                     <Link href="/app-store">
-                        <Nav.Link
+                        <a
                             onClick={() => setToggleDropdown(false)}
-                            className="flex justify-center items-center"
+                            className="nav-link flex justify-center items-center"
                         >
                             <AppStoreIcon className="MuiSvgIcon-root mr-1" />
                             Apps
-                        </Nav.Link>
+                        </a>
                     </Link>
 
                     <NavDropdown
@@ -89,22 +91,22 @@ export default function Header() {
                         id="basic-nav-dropdown"
                     >
                         <Link href="/kalendere-og-aabningstider">
-                            <NavDropdown.Item
+                            <a
                                 onClick={() => setToggleDropdown(false)}
-                                as="a"
+                                className="dropdown-item"
                                 href="/kalendere-og-aabningstider"
                             >
                                 Kalendere & Åbningstider
-                            </NavDropdown.Item>
+                            </a>
                         </Link>
 
                         <Link href="/services">
-                            <NavDropdown.Item onClick={() => setToggleDropdown(false)} as="a">Services</NavDropdown.Item>
+                            <a className="dropdown-item" onClick={() => setToggleDropdown(false)} >Services</a>
                         </Link>
                         <Link href="/online-booking">
-                            <NavDropdown.Item onClick={() => setToggleDropdown(false)} as="a">
+                            <a className="dropdown-item" onClick={() => setToggleDropdown(false)} >
                                 Online Booking
-                            </NavDropdown.Item>
+                            </a>
                         </Link>
 
                         <div className="px-6 py-2">
@@ -119,13 +121,13 @@ export default function Header() {
                     </NavDropdown>
 
                     <Link href="/profil">
-                        <Nav.Link
+                        <a
                             onClick={() => setToggleDropdown(false)}
-                            className="flex justify-center items-center"
+                            className="nav-link flex justify-center items-center"
                         >
                             <AccountCircleIcon className="mr-1" />
                             Min Profil
-                        </Nav.Link>
+                        </a>
                     </Link>
                 </Nav>
             </Navbar.Collapse>
