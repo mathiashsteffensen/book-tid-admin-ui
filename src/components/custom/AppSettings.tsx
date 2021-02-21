@@ -73,18 +73,19 @@ export const AppSettings = ({ app, back }: { app: App, back: () => void }) => {
             <Col sm={12}>
                 { (editableData && !error) && app.settings.map((setting) => (
                     <FullPageInput
-                        key={setting.name}
+                        key={setting.id}
                         title={setting.name}
                         subtitle={renderTextWithBreaks(setting.description)}
                         input={<div className="w-full mx-4">
-                            { setting.type === 'select' && <Input onChange={(e) => handleChange(e.target.value, setting.id)} value={editableData[setting.id]} select={true}>
+                            { setting.type === 'select' && <Input {...setting.otherProps}  onChange={(e) => handleChange(e.target.value, setting.id)} value={editableData[setting.id]} select={true}>
                                 { setting.options === 'timeOfDay' && generateTimeOfDayOptions().map((time: string) => (
                                     <option key={time} value={time} >
                                         {time}
                                     </option>
                                 )) }
                             </Input> }
-                            { setting.type === 'switch' && <Switch onChange={(e) => handleChange(e.target.checked, setting.id)} checked={editableData[setting.id]} customSize="sm" /> }
+                            { (setting.type !== 'select' && setting.type !== 'switch') && <Input {...setting.otherProps} type={setting.type} onChange={(e) => handleChange(e.target.value, setting.id)} value={editableData[setting.id]} /> }
+                            { setting.type === 'switch' && <Switch {...setting.otherProps}  onChange={(e) => handleChange(e.target.checked, setting.id)} checked={editableData[setting.id]} customSize="sm" /> }
                         </div>}
                         extraInfo=""
                     />

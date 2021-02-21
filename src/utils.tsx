@@ -316,8 +316,8 @@ function createBookingDomain(companyName) {
 }
 
 const renderTextWithBreaks = (fullText: string) => {
-    return fullText.split('\n').map((text: string) => (
-        <p>{text}</p>
+    return fullText.split('\n').map((text: string, i: number) => (
+        <p key={i}>{text}</p>
     ))
 }
 

@@ -12,6 +12,9 @@ export interface App {
         options?: Array<{
             value: string,
             name: string
-        }> | 'timeOfDay' | string
+        }> | 'timeOfDay' | string,
+        otherProps: {
+            [property: string]: any
+        }
     }>
 }
