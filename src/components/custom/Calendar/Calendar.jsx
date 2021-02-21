@@ -67,21 +67,18 @@ export default function Calendar({
                 ),
         },
     ]);
-    const [selectedCalendars, setSelectedCalendars] = useState(
-        calendars.map((calendar) => calendar.calendarID)
-    );
+    const [selectedCalendars, setSelectedCalendars] = useState(calendars);
 
-    const handleCheckedCalendarChange = (calendarID) => {
-        if (selectedCalendars.indexOf(calendarID) !== -1)
-            setSelectedCalendars(
-                selectedCalendars.filter((id) => calendarID !== id)
-            );
-        else setSelectedCalendars(selectedCalendars.concat([calendarID]));
-    };
+    const [selectedCalendarIds, setSelectedCalendarIds] = useState(calendars.map(calendar => calendar.calendarID))
+
+    const handleCheckedCalendarChange = (newSelectedCalendars) => {
+        setSelectedCalendarIds(newSelectedCalendars.map(calendar => calendar.calendarID))
+        setSelectedCalendars(newSelectedCalendars)
+    }
 
     // Fetch appointments
     const { data: appointments, error, isValidating, mutate } = useSWR(
-        [viewType, date, apiKey, calendars, selectedCalendars],
+        [viewType, date, apiKey, calendars, selectedCalendarIds],
         getter.appointment
     );
 

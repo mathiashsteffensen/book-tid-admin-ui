@@ -151,7 +151,7 @@ function getSettingLabelFromKey(key: string): {
             return {
                 title: 'Skjul kontakt information ved onlinebooking',
                 subtitle:
-                    'Gør at kunden ikke kan se dine kontakt informationer. Dette skjuler navn, firmaaddresse, email og telefonnummer',
+                    'Gør at kunden ikke kan se dine kontakt informationer. Dette skjuler navn, firmaaddresse, email og telefonnummer på din bookingside.',
             };
         case 'hideGoogleMaps':
             return {

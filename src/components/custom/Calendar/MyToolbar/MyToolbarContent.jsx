@@ -4,7 +4,14 @@ import { Toolbar } from '@devexpress/dx-react-scheduler-material-ui';
 
 import { Spinner } from '../../../agnostic/Spinner';
 
-import WorkerCheckBox from './WorkerCheckBox';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function MyToolbarContent({
     calendars,
@@ -13,8 +20,10 @@ export default function MyToolbarContent({
     syncing,
     appointmentError,
 }) {
+    console.log(calendars);
+    
     return (
-        <Toolbar.FlexibleSpace className="flex justify-center w-3/5 h-20 items-center mr-auto z-0 sm:my-0 ml-2">
+        <Toolbar.FlexibleSpace className="flex my-4 justify-center w-3/5 h-20 items-center mr-auto z-0 sm:my-0 ml-2">
             {appointmentError && (
                 <span className="text-danger text-sm mr-4 w-64">
                     Der skete en fejl med at vise dine bookinger, genindlæs
@@ -30,29 +39,37 @@ export default function MyToolbarContent({
                     className="mr-4"
                 />
             )}
-            {calendars.length > 1 ? <div style={{
-                paddingLeft: `${calendars.length * 4.7}rem`,
-                marginRight: `${calendars.length * 3}rem`
-            }} className="flex justify-center h-full overflow-x-auto sm:p-0 w-full ml-4 items-center">
-                {calendars.map((calendar) => (
-                    <WorkerCheckBox
-                        key={calendar._id}
-                        calendar={calendar}
-                        checkedCalendars={checkedCalendars}
-                        handleChange={handleChange}
+
+            <Autocomplete
+                className="w-92" 
+                multiple
+                options={calendars}
+                getOptionLabel={(option) => option.name}
+                defaultValue={calendars}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        variant="outlined"
+                        label="Vis tider for"
                     />
-                ))}
-            </div>
-            : <div className="flex justify-center h-full sm:p-0 w-full ml-2 pr-auto items-center">
-                {calendars.map((calendar) => (
-                    <WorkerCheckBox
-                        key={calendar._id}
-                        calendar={calendar}
-                        checkedCalendars={checkedCalendars}
-                        handleChange={handleChange}
-                    />
-                ))}
-            </div>}
+                )}
+                renderOption={(option, { selected }) => (
+                    <React.Fragment>
+                        <Checkbox
+                            icon={icon}
+                            checkedIcon={checkedIcon}
+                            style={{ marginRight: 8 }}
+                            checked={selected}
+                        />
+                        {option.name}
+                    </React.Fragment>
+                )}
+                getOptionSelected={(option, value) => option._id === value._id}
+                disableCloseOnSelect
+                disableClearable
+                onChange={(e, value) => handleChange(value)}
+                value={checkedCalendars}
+            />
         </Toolbar.FlexibleSpace>
     );
 }
