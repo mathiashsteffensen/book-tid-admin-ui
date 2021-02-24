@@ -305,7 +305,7 @@ export default function SignUp() {
     }, [companyName]);
 
     return (
-        <main className="w-screen h-screen bg-gray-900 bg-opaque flex flex-col justify-start items-center">
+        <main className="w-screen md:h-screen bg-gray-900 bg-opaque flex flex-col justify-start items-center">
             <AltHeader />
 
             <div className="flex justify-center items-center mx-6 h-full">
@@ -313,15 +313,18 @@ export default function SignUp() {
                     ref={formRef}
                     noValidate
                     validated={validated}
-                    className="bg-gray-100 overflow-hidden rounded shadow mx-4 my-4 form"
+                    className="bg-gray-100 overflow rounded shadow mx-4 my-4 form"
                 >
-                    <div className="w-full bg-gray-700">
+                    <div style={{
+                            borderTopLeftRadius: '0.13rem',
+                            borderTopRightRadius: '0.13rem',
+                        }} className="w-full bg-primary">
                         <h3 className="text-2xl text-gray-100 px-12 py-4 font-semibold">
                             Opret en bruger
                         </h3>
                     </div>
 
-                    <div className="px-4 md:px-12 py-2 flex justify-center items-center flex-col">
+                    <div className="px-4 md:px-12 py-2 pt-4 flex justify-center items-center flex-col">
                         {showPartOne ? (
                             <PartOne
                                 firstName={{

@@ -38,9 +38,12 @@ export default function Login() {
             <AltHeader />
 
             <div className="max-w-md flex justify-center items-center mx-6 h-full">
-                <Form className="bg-gray-100 overflow-hidden rounded-lg shadow mx-auto">
+                <Form className="bg-gray-100 rounded shadow-lg mx-auto">
                     <div className="w-full">
-                        <div className="w-full bg-gray-700">
+                        <div style={{
+                            borderTopLeftRadius: '0.15rem',
+                            borderTopRightRadius: '0.15rem',
+                        }} className="w-full bg-primary">
                             <h3 className="text-2xl text-gray-100 px-12 py-4 font-semibold">
                                 Log ind
                             </h3>

@@ -73,7 +73,7 @@ h6 {
 }
 
 .bg-primary {
-	background-color: map-get($colors, secondary);
+	background-color: map-get($colors, primary) !important;
 }
 
 .bg-secondary {
