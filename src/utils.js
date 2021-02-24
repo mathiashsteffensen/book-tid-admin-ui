@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import weekOfYear from 'dayjs/plugin/weekOfYear'
+dayjs.extend(weekOfYear)
 dayjs.extend(utc);
 
 const API_URI =

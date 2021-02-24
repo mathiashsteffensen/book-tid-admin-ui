@@ -5,7 +5,6 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement |
     customSize?: 'sm' | 'lg',
     textarea?: boolean,
     select?: boolean,
-    children?: React.ReactChild | React.ReactChildren
 }
 
 export interface Input extends React.FC<InputProps> {

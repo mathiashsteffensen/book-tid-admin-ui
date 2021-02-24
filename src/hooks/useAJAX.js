@@ -11,9 +11,7 @@ export default function useAJAX(ajaxFunction, args, { fakeTimeOut = 0 }) {
     {
         setLoading(true)
         setTimeout(() => {
-            console.log(...args);
             ajaxFunction(...args).then(res => {
-                    console.log(res);
                     setError(undefined)
                     setData(res)
                 }).catch(err => {
@@ -21,8 +19,6 @@ export default function useAJAX(ajaxFunction, args, { fakeTimeOut = 0 }) {
                     setError(err)
                 }).finally(() => setLoading(false))
         }, fakeTimeOut)
-        
-
     }, args)
 
     return { loading, data, error }

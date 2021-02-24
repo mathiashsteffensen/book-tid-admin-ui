@@ -1,5 +1,9 @@
 import Link from 'next/link';
 import Head from 'next/head';
+import { Provider } from 'react-redux'
+import { useStore } from '../redux/store'
+
+import { FormProvider } from '../components/custom/forms/FormProvider'
 
 import '../../styles/sass/index.scss'
 import '../../styles/index.css';
@@ -11,8 +15,14 @@ import { Button } from '../components/agnostic/Button';
 
 function MyApp({ Component, pageProps }) {
     const { user } = pageProps;
-
+    const reduxStore = useStore({
+        form: {
+            isOpen: false,
+            props: {}
+        }
+    })
     console.log(user);
+
     if (pageProps.valid) {
         return (
             <div>
@@ -58,9 +68,14 @@ function MyApp({ Component, pageProps }) {
                         Administration for BOOKTID.NET brugere
                     `}></meta>
                 </Head>
-                <Header />
-                <Component {...pageProps} />
-                <Footer />
+                <Provider store={reduxStore} >
+                    <FormProvider>
+                        <Header />
+                        <Component {...pageProps} />
+                        <Footer /> 
+                    </FormProvider>
+                </Provider>
+                
             </div>
         );
     }

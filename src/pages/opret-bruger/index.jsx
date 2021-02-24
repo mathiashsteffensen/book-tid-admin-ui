@@ -217,14 +217,16 @@ function PartTwo({
 export default function SignUp() {
     const router = useRouter();
 
+    const query = router.query
+
     const [showPartOne, setShowPartOne] = useState(true);
     const [message, setMessage] = useState('');
 
     // Part one state
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [firstName, setFirstName] = useState(query.firstName || '');
+    const [lastName, setLastName] = useState(query.lastName || '');
+    const [email, setEmail] = useState(query.email || '');
+    const [phoneNumber, setPhoneNumber] = useState(query.phoneNumber || '');
     const [password, setPassword] = useState('');
 
     // Part two state
@@ -397,6 +399,8 @@ export async function getServerSideProps({ req }) {
             },
         };
     } else {
+console.log(req.url);
+
         return {
             props: {
                 valid: false,

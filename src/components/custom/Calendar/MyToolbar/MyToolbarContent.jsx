@@ -20,10 +20,8 @@ export default function MyToolbarContent({
     syncing,
     appointmentError,
 }) {
-    console.log(calendars);
-    
     return (
-        <Toolbar.FlexibleSpace className="flex my-4 justify-center w-3/5 h-20 items-center mr-auto z-0 sm:my-0 ml-2">
+        <Toolbar.FlexibleSpace className="flex my-4 justify-center w-3/5 h-20 items-center mr-auto sm:my-0 ml-2">
             {appointmentError && (
                 <span className="text-danger text-sm mr-4 w-64">
                     Der skete en fejl med at vise dine bookinger, genindlæs

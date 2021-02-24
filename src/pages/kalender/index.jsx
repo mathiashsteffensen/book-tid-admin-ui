@@ -1,40 +1,25 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux'
 
 import Main from '../../components/custom/Main.tsx';
-import Form from '../../components/custom/forms/Form';
 import Calendar from '../../components/custom/Calendar/Calendar';
 import { getAllCalendars, verifyApiKey } from '../../requests';
 
 import { Button } from '../../components/agnostic/Button';
 import axios from 'axios';
 
+import { showForm } from '../../redux/slices/actions'
+
 export default function Kalender({ calendars, user, apiKey }) {
-    // Forms ---------------------------------------------------------------------
-    const [showForm, setShowForm] = useState(false);
-    const [formType, setFormType] = useState('');
-    const [formProps, setFormProps] = useState({});
+    const dispatch = useDispatch()
 
     const handleAddAppointmentForm = () => {
-        setFormType('create-booking');
-        setFormProps({
-            onlyOneCalendar: calendars.length === 1,
-            calendars: calendars,
-        });
-        setShowForm(true);
-    };
-
-    // Force a rerender of the calendar on form close
-    const [cloneCalendars, setCloneCalendars] = useState(calendars);
-    const update = () => {
-        setCloneCalendars([]);
-        setCloneCalendars(calendars);
-    };
-
-    const handleCloseForm = () => {
-        setShowForm(false);
-        setFormType('');
-        setFormProps({});
-        update();
+        dispatch(showForm({
+            type: 'appointment',
+            props: {
+                calendars: calendars,
+            }
+        }))
     };
 
     return (
@@ -59,16 +44,10 @@ export default function Kalender({ calendars, user, apiKey }) {
         >
             <Calendar
                 apiKey={apiKey}
-                calendars={cloneCalendars}
+                calendars={calendars}
                 handleAddAppointmentForm={handleAddAppointmentForm}
             />
-            
-            <Form
-                isOpen={showForm}
-                formProps={formProps}
-                formType={formType}
-                handleClose={handleCloseForm}
-            />
+
         </Main>
     );
 }

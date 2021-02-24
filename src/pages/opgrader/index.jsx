@@ -49,7 +49,7 @@ const features = {
         },
         {
             title:
-                'Sæt begrænsninger for hvor kort tid før der kan bookes, så er du altid forberedt',
+                'Sæt begrænsninger for hvor kort tid før der kan bookes, så du altid er forberedt',
             Icon: EventBusyIcon,
             implemented: true,
         },
@@ -66,11 +66,6 @@ const features = {
             implemented: true,
             description:
                 'Hver sikker på at dine kunder dukker op til deres aftaler, og her gider vi ikke at sende en regning på 80 øre hver gang du sender en SMS',
-        },
-        {
-            title: 'Se detaljeret statistik relateret til din forretning',
-            Icon: TimelineIcon,
-            implemented: false,
         },
     ]
 };

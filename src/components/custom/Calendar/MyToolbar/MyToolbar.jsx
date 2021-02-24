@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 
 import { Toolbar } from '@devexpress/dx-react-scheduler-material-ui';
 
@@ -11,13 +11,6 @@ export default function MyToolbar({
     syncing,
     appointmentError,
 }) {
-
-    const ref = useRef(null)
-
-    useEffect(() => {
-        console.log(ref.current, 'ref');
-    }, [ref])
-
     const ToolbarContent = (props) => (
         <MyToolbarContent
             appointmentError={appointmentError}
@@ -28,5 +21,5 @@ export default function MyToolbar({
             {...props}
         />
     );
-    return <Toolbar ref={ref} flexibleSpaceComponent={ToolbarContent}>hello</Toolbar>;
+    return <Toolbar flexibleSpaceComponent={ToolbarContent}>hello</Toolbar>;
 }

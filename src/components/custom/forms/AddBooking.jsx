@@ -167,7 +167,7 @@ export default function AddBooking({ closeForm, formProps }) {
                     />
                 )}
                 <span className="h-4"></span>
-                {calendars.length !== 1 && (
+                {!onlyOneCalendar && (
                     <LabelledSelect
                         required
                         label="Medarbejder"
