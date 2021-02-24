@@ -50,7 +50,7 @@ export default function Login() {
                         </div>
 
                         <div className="md:px-12 px-4 py-4 flex justify-center items-center flex-col">
-                            <Form.Group direction="row" controlId="login-email">
+                            <Form.Group direction="row">
                                 <Form.Input
                                     type="email"
                                     onChange={(e) => setEmail(e.target.value)}
@@ -63,7 +63,7 @@ export default function Login() {
                                 <Form.Label htmlFor="email">E-Mail</Form.Label>
                             </Form.Group>
 
-                            <Form.Group direction="row" controlId="login-password">
+                            <Form.Group direction="row">
                                 <Form.Input
                                     type="password"
                                     onChange={(e) =>

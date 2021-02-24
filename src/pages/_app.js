@@ -58,10 +58,17 @@ function MyApp({ Component, pageProps }) {
                 )}
 
                 <Head>
+                    <link rel="preconnect" href="https://api.booktid.net" />
+                    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+                    <link rel="dns-prefetch" href="https://api.booktid.net" />
+                    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
                     <link
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
                     />
+                    
                     <link rel="icon" href="icons/calendar/16x16.png" />
                     <title>BOOKTID.NET | Admin</title>
                     <meta name="description" content={`

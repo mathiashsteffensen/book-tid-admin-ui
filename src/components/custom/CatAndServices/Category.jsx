@@ -25,7 +25,7 @@ export default function Category({
 
     return (
         <div className="w-full mb-4 bg-gray-200 shadow-md rounded flex flex-col justify-center items-center">
-            <div className="w-full h-12 p-4 flex justify-between items-center">
+            <div className="w-full h-16 p-4 flex justify-between items-center">
                 <h3 className="text-xl text-gray-900 font-medium">
                     {data.name}
                 </h3>
@@ -33,7 +33,7 @@ export default function Category({
                 {data.name !== 'Uden Kategori' && (
                     <ButtonGroup>
                         <Button
-                            variant="outline-secondary"
+                            variant="outline-dark"
                             onClick={() => handleUpdateCatForm(data)}
                         >
                             Rediger

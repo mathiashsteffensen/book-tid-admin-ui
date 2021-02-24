@@ -58,7 +58,7 @@ export default function Main({
                     </div>
                 )}
 
-            <div className="w-full h-full mx-2 md:w-11/12 rounded-lg px-2 md:px-4 py-4 border-opacity-50 border-primary border-solid border-2 flex items-center justify-start flex-col">
+            <div className="w-full h-full mx-2 md:w-11/12 rounded-lg px-2 md:px-4 py-4 border-opacity-50 border-secondary border-solid border-2 flex items-center justify-start flex-col">
                 <div className="w-full px-4 py-2 flex justify-between items-center">
                     <div className="w-1/2">
                         <h1 className="text-lg font-medium text-gray-900">

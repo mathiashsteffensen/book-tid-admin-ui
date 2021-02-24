@@ -10,6 +10,7 @@ export interface State {
         isOpen: boolean,
         type: 'category' | 'service' | 'avatar' | 'color' | 'opening-hours' | 'customer' | 'appointment' | undefined,
         props: {
+            mutate: () => void,
             [property: string]: any
         }
     }

@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+
+import { useDispatch } from 'react-redux'
+import { hideForm } from '../../../redux/slices/actions'
 
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc'
+dayjs.extend(utc)
 import axios from 'axios';
 
 import { Form } from '../../agnostic/Form/Form'
@@ -12,7 +17,6 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import useAJAX from '../../../hooks/useAJAX'
-import useCustomerSearch from '../../../hooks/useCustomerSearch'
 
 import {
     customerSearch,
@@ -33,15 +37,55 @@ export interface Appointment extends React.FC<AppointmentProps> {}
 const abortController = axios.CancelToken.source();
 
 export const Appointment: Appointment = ({ calendars, appointmentData }: AppointmentProps) => {
+    const dispatch = useDispatch()
+
     const [searchTerm, setSearchTerm] = useState('')
 
     const { loading: servicesLoading, data: catsAndServices, error }: {loading: boolean, data: any, error: undefined | Error} = useAJAX(getCatsAndServices, [localStorage.getItem('apiKey'), abortController], {fakeTimeOut: 30})
 
     const { data: customerList, loading, error: searchError } = useAJAX(customerSearch, [localStorage.getItem('apiKey'), searchTerm, 0, '+name', 20, abortController], {})
 
+    const [selectedTime, setSelectedTime] = useState(dayjs.utc().set('hour', 12).set('minute', 0).toJSON().slice(0, 16))
     const [selectedService, setSelectedService] = useState('')
     const [selectedCalendar, setSelectedCalendar] = useState(calendars[0].calendarID)
+    const [selectedCustomer, setSelectedCustomer] = useState({_id: null})
+
+    const [submitError, setSubmitError]: [string | false, any] = useState(false)
+    const [submitting, setSubmitting] = useState(false)
     
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (selectedCustomer._id === null) return setSubmitError('Vælg venligst en kunde')
+        if (selectedService === '') return setSubmitError('Vælg venligst en service')
+        
+        let service = catsAndServices.map((catAndServices) => catAndServices.services).flat().filter(
+            (service) => service._id === selectedService
+        )[0];
+        const startTime = dayjs.utc(selectedTime);
+        const endTime = startTime.add(
+            service.minutesTaken + service.breakAfter,
+            'minutes'
+        );
+
+        setSubmitting(true)
+
+        createAppointment(
+            localStorage.getItem('apiKey'),
+            selectedCalendar,
+            selectedCustomer._id,
+            service.name,
+            startTime,
+            endTime
+        )
+            .catch((err) => {
+                setSubmitError(err.message);
+            })
+            .finally(() => {
+                setSubmitting(false)
+                dispatch(hideForm())
+            })
+    }
+
     return (
         <FormLayout
             title={appointmentData ? "Rediger Booking" : "Ny Booking"}
@@ -52,6 +96,8 @@ export const Appointment: Appointment = ({ calendars, appointmentData }: Appoint
                     <Form.Input 
                         required
                         type="datetime-local"
+                        value={selectedTime}
+                        onChange={(e) => setSelectedTime(e.target.value)}
                     />
                 </Form.Group>
 
@@ -72,6 +118,8 @@ export const Appointment: Appointment = ({ calendars, appointmentData }: Appoint
                         noOptionsText="Ingen Kunder"
                         loadingText="Indlæser..."
                         className="w-full"
+                        value={selectedCustomer}
+                        onChange={(e, value) => setSelectedCustomer(value)}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -100,9 +148,9 @@ export const Appointment: Appointment = ({ calendars, appointmentData }: Appoint
 
                 <Form.Group>
                     <Form.Label slider={false}>Service</Form.Label>
-                    {(!servicesLoading && catsAndServices && !error) && <Form.Input onChange={e => setSelectedService(e.target.value)} value={selectedService} select>
-                        { catsAndServices.map((catAndServices) => catAndServices.services).flat().map((service) => <option value={service._id} >{service.name}</option>) }
-                        <option value="" ></option>
+                    {(!servicesLoading && catsAndServices && !error) && <Form.Input style={selectedService === '' ? {color: 'rgba(0,0,0,0.6)'} : {}} onChange={e => e.target.value !== '' && setSelectedService(e.target.value)} value={selectedService} select>
+                        { catsAndServices.map((catAndServices) => catAndServices.services).flat().map((service) => <option style={{color: 'black'}} value={service._id} >{service.name}</option>) }
+                        <option value="" >{`<-- Vælg en service -->`}</option>
                     </Form.Input>}
 
                     { (servicesLoading && !error) && <Spinner variant="primary" /> }
@@ -119,8 +167,10 @@ export const Appointment: Appointment = ({ calendars, appointmentData }: Appoint
                     </Form.Input>
                 </Form.Group>
 
+                { submitError && <Alert variant="danger">{submitError}</Alert>}
+
                 <Form.Group className="py-4">
-                    <Button>Opret Booking</Button>
+                    <Button className="flex justify-center" onClick={handleSubmit} >{ submitting ? <Spinner variant="light" /> : 'Opret Booking'}</Button>
                 </Form.Group>
             </Form>
         </FormLayout>

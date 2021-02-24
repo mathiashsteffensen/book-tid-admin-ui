@@ -18,7 +18,7 @@ export const FormLayout = ({ title, subtitle, children }: FormLayoutProps) => {
 
     return (
         <div className="flex flex-col">
-            <div className="flex justify-between items-center text-gray-100 bg-dark px-4 py-2">
+            <div className="flex justify-between items-center text-gray-100 bg-primary px-4 py-2">
                 <div>
                     <h1 className="text-xl">{title}</h1>
                     <h2 className="text-lg">{subtitle}</h2>
