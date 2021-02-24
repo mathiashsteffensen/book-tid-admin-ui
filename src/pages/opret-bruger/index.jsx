@@ -43,7 +43,7 @@ function PartOne({
                 </Form.Group>
 
                 <Form.Group md={8}>
-                    <Form.Label>Efternavn</Form.Label>
+                    <Form.Label slider={false}>Efternavn</Form.Label>
                     <Form.Control
                         autoComplete="family-name"
                         value={lastName.value}
@@ -124,7 +124,7 @@ function PartTwo({
             </h5>
 
             <Form.Group>
-                <Form.Label>Din virksomheds navn</Form.Label>
+                <Form.Label slider={false}>Din virksomheds navn</Form.Label>
                 <Form.Control
                     autoComplete="organization"
                     value={companyName.value}
@@ -143,7 +143,7 @@ function PartTwo({
 
             <Form.Row>
                 <Form.Group md={8}>
-                    <Form.Label>By</Form.Label>
+                    <Form.Label slider={false}>By</Form.Label>
                     <Form.Control
                         autoComplete="address-level2"
                         value={city.value}
@@ -153,7 +153,7 @@ function PartTwo({
                 </Form.Group>
 
                 <Form.Group md={4}>
-                    <Form.Label>Postnummer</Form.Label>
+                    <Form.Label slider={false}>Postnummer</Form.Label>
                     <Form.Control
                         autoComplete="postal-code"
                         value={zip.value}
@@ -165,7 +165,7 @@ function PartTwo({
 
             <Form.Row>
                 <Form.Group md={9}>
-                    <Form.Label>Vej</Form.Label>
+                    <Form.Label slider={false}>Vej</Form.Label>
                     <Form.Control
                         autoComplete="street-address"
                         value={street.value}
@@ -175,7 +175,7 @@ function PartTwo({
                 </Form.Group>
 
                 <Form.Group md={3}>
-                    <Form.Label>Husnummer</Form.Label>
+                    <Form.Label slider={false}>Husnummer</Form.Label>
                     <Form.Control
                         autoComplete="on"
                         value={number.value}
