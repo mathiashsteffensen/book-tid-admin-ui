@@ -36,7 +36,7 @@ export default function Main({
                         <Alert className="w-2/3" variant="warning">
                             Din bruger er begrænset til{' '}
                             {subscriptionType === 'free' ? 50 : 150} bookinger
-                            per måned og de fleste features er ikke aktiveret.{' '}
+                            per måned og mange features er ikke aktiveret.{' '}
                             <a
                                 className="link"
                                 href={

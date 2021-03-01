@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
+import axios from 'axios';
 import useSWR from 'swr';
 
 import getter from '../../../getter';
+
+import { getAllCalendars } from '../../../requests'
 
 import {
     getWeeklyOpeningHoursByDate,
@@ -31,8 +33,10 @@ import {
 import MyAppointmentTooltip from './MyAppointmentTooltip/MyAppointmentTooltip';
 import MyToolbar from './MyToolbar/MyToolbar';
 
+import { Alert } from '../../agnostic/Alert'
+import { Spinner } from '../../agnostic/Spinner'
+
 export default function Calendar({
-    calendars,
     handleAddAppointmentForm,
     apiKey,
 }) {
@@ -48,28 +52,52 @@ export default function Calendar({
         {
             fieldName: 'calendarID',
             title: 'Medarbejder',
-            instances: calendars
-                .map((calendar) => {
-                    return {
-                        id: calendar.calendarID,
-                        text: calendar.name + ' - Standard Booking',
-                        color: calendar.standardColor,
-                    };
-                })
-                .concat(
-                    calendars.map((calendar) => {
-                        return {
-                            id: calendar.calendarID + 'online',
-                            text: calendar.name + ' - Online Booking',
-                            color: calendar.onlineColor,
-                        };
-                    })
-                ),
+            instances: []
         },
     ]);
-    const [selectedCalendars, setSelectedCalendars] = useState(calendars);
 
-    const [selectedCalendarIds, setSelectedCalendarIds] = useState(calendars.map(calendar => calendar.calendarID))
+    const [calendars, setCalendars] = useState(false)
+
+    const [selectedCalendars, setSelectedCalendars] = useState([]);
+
+    const [selectedCalendarIds, setSelectedCalendarIds] = useState([])
+
+    useEffect(() => {
+        const abortController = axios.CancelToken.source();
+        getAllCalendars(apiKey, abortController)
+            .then((res) => {
+                setCalendars(res)
+                setResources([{
+                    fieldName: 'calendarID',
+                    title: 'Medarbejder',
+                    instances: res
+                        .map((calendar) => {
+                            return {
+                                id: calendar.calendarID,
+                                text: calendar.name + ' - Standard Booking',
+                                color: calendar.standardColor,
+                            };
+                        })
+                        .concat(
+                            res.map((calendar) => {
+                                return {
+                                    id: calendar.calendarID + 'online',
+                                    text: calendar.name + ' - Online Booking',
+                                    color: calendar.onlineColor,
+                                };
+                            })
+                        ),
+                }])
+                setSelectedCalendars(res)
+                setSelectedCalendarIds(res.map(calendar => calendar.calendarID))
+            })
+            .catch((err) => {
+                    console.log(err);
+            });
+        return () => {
+            abortController.cancel()
+        }
+    }, [])
 
     const handleCheckedCalendarChange = (newSelectedCalendars) => {
         setSelectedCalendarIds(newSelectedCalendars.map(calendar => calendar.calendarID))
@@ -79,7 +107,7 @@ export default function Calendar({
     // Fetch appointments
     const { data: appointments, error, isValidating, mutate } = useSWR(
         [viewType, date, apiKey, calendars, selectedCalendarIds],
-        getter.appointment
+        getter.appointment,
     );
 
     // Set opening hours
@@ -137,6 +165,14 @@ export default function Calendar({
             ></MonthView.TimeTableCell>
         );
     };
+
+    if ((!error && !appointments) || !calendars ) return (
+        <Alert className="flex justify-between items-center" variant="info">
+            <p className="mr-2">Vent venligst mens vi indlæser din kalender</p>
+
+            <Spinner />
+        </Alert>
+    )
 
     return (
         <Scheduler className="m-2" data={appointments} locale="da" height={720}>

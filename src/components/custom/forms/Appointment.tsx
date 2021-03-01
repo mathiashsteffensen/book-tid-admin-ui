@@ -150,7 +150,7 @@ export const Appointment: Appointment = ({ calendars, appointmentData }: Appoint
                     <Form.Label slider={false}>Service</Form.Label>
                     {(!servicesLoading && catsAndServices && !error) && <Form.Input style={selectedService === '' ? {color: 'rgba(0,0,0,0.6)'} : {}} onChange={e => e.target.value !== '' && setSelectedService(e.target.value)} value={selectedService} select>
                         <option value="" >{`<-- Vælg en service -->`}</option>
-                        { catsAndServices.map((catAndServices) => catAndServices.services).flat().map((service) => <option style={{color: 'black'}} value={service._id} >{service.name}</option>) }
+                        { catsAndServices.map((catAndServices) => catAndServices.services).flat().map((service) => <option key={service._id} style={{color: 'black'}} value={service._id} >{service.name}</option>) }
                     </Form.Input>}
 
                     { (servicesLoading && !error) && <Spinner variant="primary" /> }
@@ -163,7 +163,7 @@ export const Appointment: Appointment = ({ calendars, appointmentData }: Appoint
                         value={selectedCalendar}
                         onChange={(e) => setSelectedCalendar(e.target.value)} 
                     >
-                        { calendars.map(calendar => <option value={calendar.calendarID}>{calendar.name}</option>) }
+                        { calendars.map(calendar => <option key={calendar.calendarID} value={calendar.calendarID}>{calendar.name}</option>) }
                     </Form.Input>
                 </Form.Group>
 
