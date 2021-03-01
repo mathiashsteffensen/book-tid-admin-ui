@@ -256,6 +256,7 @@ select.input {
 .form-row {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 @media (min-width: map-get($viewports, md)) {

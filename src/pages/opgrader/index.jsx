@@ -45,11 +45,11 @@ const features = {
             title: 'Få en personlig bookingside',
             Icon: WebIcon,
             implemented: true,
-            description: `Hvis din forretning er "Frisør Eksempel" kan der bookes tid hos <span class="text-primary">frisoereksempel.booktid.net</span>`,
+            description: `Konverter visninger til salg.`,
         },
         {
             title:
-                'Sæt begrænsninger for hvor kort tid før der kan bookes, så du altid er forberedt',
+                'Sæt begrænsninger for hvor kort tid før der kan bookes, så du altid er forbered.',
             Icon: EventBusyIcon,
             implemented: true,
         },
@@ -58,14 +58,14 @@ const features = {
             Icon: EmailIcon,
             implemented: true,
             description:
-                'Send bekræftelses E-Mails samt E-Mails når tider ændres eller aflyses',
+                'Send bekræftelses E-Mails samt E-Mails når tider ændres eller aflyses.',
         },
         {
             title: 'Send SMS Påmindelser automatisk, og gratis',
             Icon: PhoneIcon,
             implemented: true,
             description:
-                'Hver sikker på at dine kunder dukker op til deres aftaler, og her gider vi ikke at sende en regning på 80 øre hver gang du sender en SMS',
+                'Hver sikker på at dine kunder dukker op til deres aftaler, og undgå tabt omsætning.',
         },
     ]
 };
@@ -101,6 +101,7 @@ const Upgrade = ({ products, user }) => {
                                     handleProductSelect={handleProductSelect}
                                     product={products.premium}
                                     features={features.premium}
+                                    showFeatures={false}
                                 />
                             </CardDeck>
                         )}

@@ -156,7 +156,7 @@ export default function PaymentForm({
                       .finally(() => setLoading(false));
         }
     };
-
+    console.log(product)
     return (
         <Form
             onSubmit={handleSubmit}
@@ -165,7 +165,7 @@ export default function PaymentForm({
             <Row className="sm:divide-x-2 sm:h-80 sm:divide-primary">
                 <Col className="pr-0 h-full" md={8}>
                     <div className="w-full bg-gray-700 h-24 flex justify-center items-center">
-                        <h3 className="text-2xl text-gray-100 font-semibold">
+                        <h3 className="text-2xl text-gray-100 px-3 font-semibold">
                             {title}{' '}
                             <span className="font-normal underline">
                                 BOOKTID {product.name}
@@ -227,8 +227,19 @@ export default function PaymentForm({
                                     {product.unitAmount} &#215; {product.unitName}
                                 </div>
                             </FlexContainer>
-                            <FlexContainer justify="start" align="start" direction="column" >
-                                {product.salesPrice} per måned
+                            <FlexContainer className="text-sm" justify="start" align="start" direction="column" >
+                                {   new Intl.NumberFormat('da-DK', {
+                                        style: 'currency',
+                                        currency: 'DKK',
+                                    }).format(product.salesPriceNumber * 4/5)} kr. per måned
+                                <br />
+                                + { new Intl.NumberFormat('da-DK', {
+                                        style: 'currency',
+                                        currency: 'DKK',
+                                    }).format(product.salesPriceNumber/5)} kr. moms
+                                <br/>
+                                <br/>
+                                Total: {product.salesPrice} kr. per måned
                             </FlexContainer>
                     </FlexContainer>
                     <FlexContainer className="h-24" direction="row">

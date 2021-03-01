@@ -36,6 +36,7 @@ export default function SpecialHours({
         let schedules = newState.schedule.specialWeek.filter(
             (week) => week.week === date.week() && week.year === date.year()
         );
+        console.log(schedules)
         if (schedules.length !== 0) {
             newState.schedule.specialWeek = [
                 ...newState.schedule.specialWeek.filter(

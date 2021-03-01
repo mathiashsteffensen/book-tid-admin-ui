@@ -66,9 +66,6 @@ const ProductTemplate = ({
 
     return (
         <Card className="text-gray-900">
-            <Card.Header className="flex justify-center items-center">
-                <h3 className="text-xl font-medium">{salesPrice} per måned</h3>
-            </Card.Header>
             <Card.Body>
                 <Card.Title>
                     {name.toUpperCase()}{' '}
@@ -94,9 +91,9 @@ const ProductTemplate = ({
 
                 <div className="w-full mt-3 flex flex-col justify-center items-center">
                     {showFeatures && <FeatureList features={features} />}
-
-                    
                 </div>
+
+                <h3 className="text-xl font-medium w-full text-center pt-5">{salesPrice},- / mdr</h3>
             </Card.Body>
             <Card.Footer>
                 <div className="w-full flex justify-center items-center">
@@ -111,6 +108,7 @@ const ProductTemplate = ({
                                 unitAmount,
                                 unitName,
                                 priceId: price.id,
+                                salesPriceNumber: startPrice + unitAmount * pricePerTier
                             })
                         }
                     >

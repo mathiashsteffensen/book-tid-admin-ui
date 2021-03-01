@@ -26,6 +26,8 @@ export default function UpdateService({ closeForm, formProps }) {
 
     const initial = formProps.initial;
 
+    console.log(formProps.initial)
+
     const [name, setName] = useState(initial.name);
     const [description, setDescription] = useState(initial.description);
 
@@ -34,7 +36,7 @@ export default function UpdateService({ closeForm, formProps }) {
     const [price, setPrice] = useState(initial.cost);
 
     const [category, setCategory] = useState(
-        initial.categoryName === '' ? 'Uden Kategori' : initial.categoryName
+        (!initial.categoryName || initial.categoryName === '') ? 'Uden Kategori' : initial.categoryName
     );
     const [elgibleCalendars, setElgibleCalendars] = useState(
         initial.elgibleCalendars
@@ -49,7 +51,7 @@ export default function UpdateService({ closeForm, formProps }) {
 
     useEffect(() => {
         getAllCalendars(localStorage.getItem('apiKey'), abortController).then(
-            (res) =>
+            (res) => {
                 setCalendars(
                     res.map((calendar) => {
                         return {
@@ -58,6 +60,16 @@ export default function UpdateService({ closeForm, formProps }) {
                         };
                     })
                 )
+
+                if (initial.allCalendars) setElgibleCalendars(
+                    res.map((calendar) => {
+                        return {
+                            id: calendar._id,
+                            name: calendar.name,
+                        };
+                    })
+                )
+            }       
         );
     }, []);
 

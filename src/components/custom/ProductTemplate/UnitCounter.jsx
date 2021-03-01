@@ -19,7 +19,7 @@ export default function UnitCounter({
                 </Button>
             </div>
 
-            <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col justify-center px-4 items-center">
                 <div  style={{color: 'rgb(41, 88, 175)'}} className="text-2xl font-bold text-primary">
                     {value} &#215;
                 </div>
