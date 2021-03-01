@@ -3,10 +3,9 @@ import { useDispatch } from 'react-redux'
 
 import Main from '../../components/custom/Main.tsx';
 import Calendar from '../../components/custom/Calendar/Calendar';
-import { getAllCalendars, verifyApiKey } from '../../requests';
+import { verifyApiKey } from '../../requests';
 
 import { Button } from '../../components/agnostic/Button';
-import axios from 'axios';
 
 import { showForm } from '../../redux/slices/actions'
 
@@ -16,9 +15,7 @@ export default function Kalender({ user, apiKey }) {
     const handleAddAppointmentForm = () => {
         dispatch(showForm({
             type: 'appointment',
-            props: {
-                calendars: calendars,
-            }
+            props: {}
         }))
     };
 
@@ -56,8 +53,6 @@ export async function getServerSideProps({ req }) {
     const isValid = await verifyApiKey(apiKey).catch((err) => console.log(err));
 
     if (isValid) {
-        const abortController = axios.CancelToken.source();
-
         return {
             props: {
                 valid: Boolean(isValid),

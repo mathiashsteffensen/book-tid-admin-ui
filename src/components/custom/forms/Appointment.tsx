@@ -22,13 +22,14 @@ import {
     customerSearch,
     getCatsAndServices,
     createAppointment,
+    getAllCalendars
 } from '../../../requests';
 import { Button } from '../../agnostic/Button';
 import { Alert } from '../../agnostic/Alert';
 
+import { Calendar } from '../../../GlobalTypes'
 
 export interface AppointmentProps {
-    calendars: any,
     appointmentData: any
 }
 
@@ -36,18 +37,24 @@ export interface Appointment extends React.FC<AppointmentProps> {}
 
 const abortController = axios.CancelToken.source();
 
-export const Appointment: Appointment = ({ calendars, appointmentData }: AppointmentProps) => {
+export const Appointment: Appointment = ({ appointmentData }: AppointmentProps) => {
     const dispatch = useDispatch()
 
     const [searchTerm, setSearchTerm] = useState('')
 
     const { loading: servicesLoading, data: catsAndServices, error }: {loading: boolean, data: any, error: undefined | Error} = useAJAX(getCatsAndServices, [localStorage.getItem('apiKey'), abortController], {fakeTimeOut: 30})
 
-    const { data: customerList, loading, error: searchError } = useAJAX(customerSearch, [localStorage.getItem('apiKey'), searchTerm, 0, '+name', 20, abortController], {})
+    const { loading: calendarsLoading, data: calendars, error: calendarError }: {
+        loading: boolean,
+        data: Array<Calendar> | undefined,
+        error: undefined | Error
+    } = useAJAX(getAllCalendars, [localStorage.getItem("apiKey"), abortController], { fakeTimeOut: 0 })
+
+    const { data: customerList, loading, error: searchError } = useAJAX(customerSearch, [localStorage.getItem('apiKey'), searchTerm, 0, '+name', 20, abortController], { fakeTimeOut: 0 })
 
     const [selectedTime, setSelectedTime] = useState(dayjs.utc().set('hour', 9).set('minute', 0).toJSON().slice(0, 16))
     const [selectedService, setSelectedService] = useState('')
-    const [selectedCalendar, setSelectedCalendar] = useState(calendars[0].calendarID)
+    const [selectedCalendar, setSelectedCalendar] = useState('')
     const [selectedCustomer, setSelectedCustomer] = useState({_id: null})
 
     const [submitError, setSubmitError]: [string | false, any] = useState(false)
@@ -57,6 +64,7 @@ export const Appointment: Appointment = ({ calendars, appointmentData }: Appoint
         e.preventDefault()
         if (selectedCustomer._id === null) return setSubmitError('Vælg venligst en kunde')
         if (selectedService === '') return setSubmitError('Vælg venligst en service')
+        if (selectedCalendar === '') return setSubmitError('Vælg venligst en medarbejder')
         
         let service = catsAndServices.map((catAndServices) => catAndServices.services).flat().filter(
             (service) => service._id === selectedService
@@ -163,7 +171,8 @@ export const Appointment: Appointment = ({ calendars, appointmentData }: Appoint
                         value={selectedCalendar}
                         onChange={(e) => setSelectedCalendar(e.target.value)} 
                     >
-                        { calendars.map(calendar => <option key={calendar.calendarID} value={calendar.calendarID}>{calendar.name}</option>) }
+                        <option value="" >{`<-- Vælg en medarbejder -->`}</option>
+                        { calendars && calendars.map(calendar => <option key={calendar.calendarID} value={calendar.calendarID}>{calendar.name}</option>) }
                     </Form.Input>
                 </Form.Group>
 

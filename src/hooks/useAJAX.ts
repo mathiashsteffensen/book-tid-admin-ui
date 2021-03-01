@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react'
 
-export default function useAJAX(ajaxFunction, args, { fakeTimeOut = 0 }) {
+export interface useAJAXParams {
+
+}
+
+const useAJAX: (ajaxFunction: () => any, args: Array<any>, options:{ fakeTimeOut: number | undefined }) => {
+    loading: boolean,
+    data: any,
+    error: Error | undefined
+} = (ajaxFunction, args, { fakeTimeOut = 0 }) => {
     const [loading, setLoading] = useState(false)
 
     const [data, setData] = useState(undefined)
@@ -11,6 +19,7 @@ export default function useAJAX(ajaxFunction, args, { fakeTimeOut = 0 }) {
     {
         setLoading(true)
         setTimeout(() => {
+            // @ts-ignore
             ajaxFunction(...args).then(res => {
                     setError(undefined)
                     setData(res)
@@ -23,3 +32,5 @@ export default function useAJAX(ajaxFunction, args, { fakeTimeOut = 0 }) {
 
     return { loading, data, error }
 }
+
+export default useAJAX

@@ -419,22 +419,15 @@ const getAppointmentsByCalendarMonth = async (
     date,
     abortController
 ) => {
-    return await Promise.all([
-        // Gets appointments for the month itself
-        getAppointmentsByMonth(apiKey, date, abortController),
-        // Gets appointments for the 1 month before the month in view
-        getAppointmentsByMonth(
-            apiKey,
-            dayjs(date).subtract(1, 'month').toJSON(),
-            abortController
-        ),
-        // Gets appointments for the 1 month after the month in view
-        getAppointmentsByMonth(
-            apiKey,
-            dayjs(date).add(1, 'month').toJSON(),
-            abortController
-        ),
-    ]);
+    return axios.get(API_URI + `/admin/appointment/in-interval/${apiKey}/${dayjs(date).subtract(1, 'month').toJSON()}/${dayjs(date).add(1, 'month').toJSON()}`, {
+        cancelToken: abortController.token,
+    })
+    .then((res) => res.data)
+        .catch((err) => {
+            if (axios.isCancel(err)) {
+                throw new Error(err);
+            } else throw new Error(err.response.data.msg);
+        });
 };
 
 const createAppointment = async (

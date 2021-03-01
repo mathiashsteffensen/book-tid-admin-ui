@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios';
 import useSWR from 'swr';
 
@@ -36,19 +37,37 @@ import MyToolbar from './MyToolbar/MyToolbar';
 import { Alert } from '../../agnostic/Alert'
 import { Spinner } from '../../agnostic/Spinner'
 
+import { State } from '../../../redux/store'
+
+export interface MonthTableCellProps {
+    [x: string]: any,
+    onDoubleClick?: (e: any) => void,
+    startDate: Date
+}
+
+export interface WeekTableCellProps {
+    [x: string]: any,
+    onDoubleClick?: (e: any) => void,
+    startDate?: Date
+}
+
 export default function Calendar({
     handleAddAppointmentForm,
     apiKey,
 }) {
     // Calendar state --------------------------------------------------------------
-    const [date, setDate] = useState(dayjs.utc().format('YYYY-MM-DD'));
+    const [date, setDate]: [string | Date, any] = useState(dayjs.utc().format('YYYY-MM-DD'));
     const [viewType, setViewType] = useState('Month');
     const [showTooltip, setShowTooltip] = useState(false);
     const [openingHours, setOpeningHours] = useState({
         opening: 8,
         closing: 17,
     });
-    const [resources, setResources] = useState([
+    const [resources, setResources]:[[{
+        fieldName: string,
+        title: string,
+        instances: Array<any>
+    }], any] = useState([
         {
             fieldName: 'calendarID',
             title: 'Medarbejder',
@@ -56,16 +75,16 @@ export default function Calendar({
         },
     ]);
 
-    const [calendars, setCalendars] = useState(false)
+    const [calendars, setCalendars]: [false | Array<any>, any] = useState(false)
 
-    const [selectedCalendars, setSelectedCalendars] = useState([]);
+    const [selectedCalendars, setSelectedCalendars]: [Array<any>, any] = useState([]);
 
-    const [selectedCalendarIds, setSelectedCalendarIds] = useState([])
+    const [selectedCalendarIds, setSelectedCalendarIds]: [Array<any>, any] = useState([])
 
     useEffect(() => {
         const abortController = axios.CancelToken.source();
         getAllCalendars(apiKey, abortController)
-            .then((res) => {
+            .then((res: Array<any>) => {
                 setCalendars(res)
                 setResources([{
                     fieldName: 'calendarID',
@@ -110,8 +129,17 @@ export default function Calendar({
         getter.appointment,
     );
 
+    // Form state -----------------------------------------------------------
+    const formState: State["form"] = useSelector((state: State) => state.form)
+
+    useEffect(() => {
+        mutate()
+    }, [formState.isOpen])
+
     // Set opening hours
     useEffect(() => {
+        if (!calendars) return
+        // @ts-ignore
         if (calendars.length > 0) {
             if (viewType === 'Week')
                 setOpeningHours(getWeeklyOpeningHoursByDate(calendars, date));
@@ -120,7 +148,7 @@ export default function Calendar({
         }
     }, [calendars, viewType]);
 
-    const WeekViewTableCell = ({ onDoubleClick, startDate, ...restProps }) => {
+    const WeekViewTableCell = ({ onDoubleClick, startDate, ...restProps }: WeekTableCellProps) => {
         return (
             <WeekView.TimeTableCell
                 {...restProps}
@@ -133,7 +161,7 @@ export default function Calendar({
         );
     };
 
-    const MonthViewTableCell = ({ onDoubleClick, startDate, ...restProps }) => {
+    const MonthViewTableCell = ({ onDoubleClick, startDate, ...restProps }: MonthTableCellProps) => {
         const isInCurrentMonth = dayjs(startDate).month() === dayjs(date).month()
 
         const isToday = (dayjs(startDate).month() === dayjs().month() && dayjs(startDate).date() === dayjs().date())
@@ -149,8 +177,6 @@ export default function Calendar({
         else style = {
             color: 'rgba(0,0,0,0.9)'
         }
-
-
 
         return (
             <MonthView.TimeTableCell
@@ -173,9 +199,9 @@ export default function Calendar({
             <Spinner />
         </Alert>
     )
-
+        // @ts-nocheck
     return (
-        <Scheduler className="m-2" data={appointments} locale="da" height={720}>
+        <Scheduler data={appointments} locale="da" height={720}>
             <ViewState
                 currentDate={date}
                 onCurrentDateChange={(currentDate) => setDate(currentDate)}
