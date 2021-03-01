@@ -667,6 +667,17 @@ const updateAppSettings = async (appId, apiKey, data) => (
         })
 )
 
+const deleteAccount = async(password, apiKey) => (
+    await axios.delete(API_URI + "/admin/auth/my-account/" + apiKey, { data: { password } })
+        .then((response) => {
+            logout()
+            return response.data;
+        })
+        .catch((err) => {
+            throw new Error(err.response.data.msg);
+        })
+)
+
 export {
     login,
     signup,
@@ -719,5 +730,6 @@ export {
     activateApp,
     deactivateApp,
     getAppSettings,
-    updateAppSettings
+    updateAppSettings,
+    deleteAccount
 };

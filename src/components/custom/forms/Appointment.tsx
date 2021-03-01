@@ -45,7 +45,7 @@ export const Appointment: Appointment = ({ calendars, appointmentData }: Appoint
 
     const { data: customerList, loading, error: searchError } = useAJAX(customerSearch, [localStorage.getItem('apiKey'), searchTerm, 0, '+name', 20, abortController], {})
 
-    const [selectedTime, setSelectedTime] = useState(dayjs.utc().set('hour', 12).set('minute', 0).toJSON().slice(0, 16))
+    const [selectedTime, setSelectedTime] = useState(dayjs.utc().set('hour', 9).set('minute', 0).toJSON().slice(0, 16))
     const [selectedService, setSelectedService] = useState('')
     const [selectedCalendar, setSelectedCalendar] = useState(calendars[0].calendarID)
     const [selectedCustomer, setSelectedCustomer] = useState({_id: null})
@@ -149,8 +149,8 @@ export const Appointment: Appointment = ({ calendars, appointmentData }: Appoint
                 <Form.Group>
                     <Form.Label slider={false}>Service</Form.Label>
                     {(!servicesLoading && catsAndServices && !error) && <Form.Input style={selectedService === '' ? {color: 'rgba(0,0,0,0.6)'} : {}} onChange={e => e.target.value !== '' && setSelectedService(e.target.value)} value={selectedService} select>
-                        { catsAndServices.map((catAndServices) => catAndServices.services).flat().map((service) => <option style={{color: 'black'}} value={service._id} >{service.name}</option>) }
                         <option value="" >{`<-- Vælg en service -->`}</option>
+                        { catsAndServices.map((catAndServices) => catAndServices.services).flat().map((service) => <option style={{color: 'black'}} value={service._id} >{service.name}</option>) }
                     </Form.Input>}
 
                     { (servicesLoading && !error) && <Spinner variant="primary" /> }

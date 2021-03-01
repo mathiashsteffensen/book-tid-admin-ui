@@ -24,13 +24,14 @@ import {
     getProduct,
     getProductsAndPrices,
     cancelSubscription,
-    updateProfile
+    updateProfile,
+    deleteAccount
 } from '../../requests';
 
 import InlineUpgrade from '../../components/custom/InlineUpgrade/InlineUpgrade';
 
 export default function Profile({ initProfileSettings, currentProduct, user }) {
-    console.log(initProfileSettings);
+
     currentProduct.quantity = initProfileSettings.maxNumberOfCalendars;
     const [profileSettings, setProfileSettings]: [{
         name: {
@@ -68,6 +69,12 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
     const [saveInfo, setSaveInfo]: [boolean | string, any] = useState(false)
 
     const [saveError, setSaveError] = useState('')
+
+    const [deleteAccountFlow, setDeleteAccountFlow] = useState(false)
+
+    const [password, setPassword] = useState('')
+
+    const [deleteError, setDeleteError]: [boolean | string, any] = useState(false)
 
     useEffect(() => {
         getProductsAndPrices().then((res) => {
@@ -432,7 +439,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                             </Col>
                         </Row>
                     </Col>
-                    <Col sm={7}>
+                    <Col className="flex flex-col" sm={7}>
                         <Row>
                             <Col className="full-underline text-lg" md={12}>
                                 Abonnementsinformation
@@ -499,7 +506,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                                                                 )
                                                             }
                                                             size="sm"
-                                                            variant="outline-danger"
+                                                            variant="outline-primary"
                                                         >
                                                             Ændr din plan{' '}
                                                             {!changingSubscription ? (
@@ -627,7 +634,25 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                             </Col>
                         </Row>
 
-                        <Row></Row>
+                        <Row className="w-full flex-grow">
+                            <Col className="flex flex-col justify-center items-center" md={12}>
+                                <Button onClick={() => setDeleteAccountFlow(!deleteAccountFlow)} variant={!deleteAccountFlow ? "danger" : "primary"}>{ !deleteAccountFlow ? 'Slet bruger' : 'Fortryd' }</Button>
+
+                                { deleteAccountFlow && (
+                                    <Form.Group className="w-80 mt-6">
+                                        <Form.Label className="text-sm" slider={false}>Indtast venligst dit kodeord for at slette din bruger</Form.Label>
+                                        <Form.Input onChange={(e) => setPassword(e.target.value)} value={password} type="password" />
+                                        <Button onClick={() => deleteAccount(password, localStorage.getItem('apiKey')).catch(err => setDeleteError(err.message))} variant="danger">Slet Bruger</Button>
+
+                                        { deleteError && (
+                                            <Alert className="mt-4" variant="danger" >
+                                                {deleteError}
+                                            </Alert>
+                                        ) }
+                                    </Form.Group>
+                                ) }
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             </Container>
