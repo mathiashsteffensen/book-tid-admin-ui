@@ -199,7 +199,7 @@ export default function Calendar({
             <Spinner />
         </Alert>
     )
-        // @ts-nocheck
+        console.log(appointments)
     return (
         <Scheduler data={appointments} locale="da" height={720}>
             <ViewState

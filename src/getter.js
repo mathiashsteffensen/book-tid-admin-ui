@@ -63,6 +63,7 @@ async function appointmentGetter(
                                     .toJSON(),
                                 endDate: dayjs(appointment.endTime)
                                     .subtract(1, 'hour')
+                                    .add(appointment.breakAfter, 'minutes')
                                     .toJSON(),
                                 title: appointment.service,
                                 id: appointment._id,
@@ -108,8 +109,9 @@ async function appointmentGetter(
                                     .subtract(1, 'hour')
                                     .toJSON(),
                                 endDate: dayjs(appointment.endTime)
-                                    .subtract(1, 'hour')
-                                    .toJSON(),
+                                .subtract(1, 'hour')
+                                .add(appointment.breakAfter, 'minutes')
+                                .toJSON(),
                                 title: appointment.service,
                                 id: appointment._id,
                                 calendarID: appointment.bookedOnline
@@ -149,14 +151,15 @@ async function appointmentGetter(
                                     calendar.calendarID ===
                                     appointment.calendarID
                             )[0];
-
+                                console.log(appointment)
                             return {
                                 startDate: dayjs(appointment.startTime)
                                     .subtract(1, 'hour')
                                     .toJSON(),
                                 endDate: dayjs(appointment.endTime)
-                                    .subtract(1, 'hour')
-                                    .toJSON(),
+                                .subtract(1, 'hour')
+                                .add(appointment.breakAfter, 'minutes')
+                                .toJSON(),
                                 title: appointment.service,
                                 id: appointment._id,
                                 calendarID: appointment.bookedOnline
