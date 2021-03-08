@@ -436,7 +436,8 @@ const createAppointment = async (
     customerID,
     service,
     startTime,
-    endTime
+    endTime,
+    breakAfter
 ) =>
     await axios
         .post(API_URI + `/admin/appointment/create/${apiKey}/${calendarID}`, {
@@ -444,6 +445,7 @@ const createAppointment = async (
             service,
             startTime,
             endTime,
+            breakAfter
         })
         .catch((err) => {
             throw new Error(err.response.data.msg);

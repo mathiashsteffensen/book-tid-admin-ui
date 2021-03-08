@@ -71,7 +71,7 @@ export const Appointment: Appointment = ({ appointmentData }: AppointmentProps) 
         )[0];
         const startTime = dayjs.utc(selectedTime);
         const endTime = startTime.add(
-            service.minutesTaken + service.breakAfter,
+            service.minutesTaken,
             'minutes'
         );
 
@@ -83,14 +83,17 @@ export const Appointment: Appointment = ({ appointmentData }: AppointmentProps) 
             selectedCustomer._id,
             service.name,
             startTime,
-            endTime
+            endTime,
+            service.breakAfter
         )
+            .then(() => {
+                dispatch(hideForm())
+            })
             .catch((err) => {
                 setSubmitError(err.message);
             })
             .finally(() => {
                 setSubmitting(false)
-                dispatch(hideForm())
             })
     }
 
