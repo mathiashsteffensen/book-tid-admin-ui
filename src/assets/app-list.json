@@ -30,5 +30,41 @@
                 "otherProps": {}
             }
         ]
+    },
+    {
+        "name": "Bookingside Branding",
+        "description": "Upload dit logo og brug det og dit firmas farver på din bookingside for at forstærke dit brand.",
+        "icon": "branding.svg",
+        "id": "clientUiBranding",
+        "settings": [
+            {
+                "name": "Logo",
+                "description": "Upload dit logo til brug på din personlige bookingside.",
+                "type": "image",
+                "id": "logo",
+                "otherProps": {}
+            },
+            {
+                "name": "Primær farve",
+                "description": "Den primære brand farve, bruges til cirka 70% af layoutet",
+                "type": "color",
+                "id": "primaryColor",
+                "otherProps": {}
+            },
+            {
+                "name": "Sekundære farve",
+                "description": "Den sekundære brand farve, bruges til cirka 20% af layoutet",
+                "type": "color",
+                "id": "secondaryColor",
+                "otherProps": {}
+            },
+            {
+                "name": "Accent farve",
+                "description": "Den primære brand farve, bruges til cirka 70% af layoutet",
+                "type": "color",
+                "id": "accentColor",
+                "otherProps": {}
+            }
+        ]
     }
 ]

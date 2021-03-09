@@ -253,6 +253,27 @@ const uploadAvatar = async (apiKey, calendarID, file) => {
         });
 };
 
+const uploadLogo = async (apiKey, file) => {
+    let formData = new FormData()
+    formData.append('logo', file)
+    if (!file) throw new Error('Vælg venligst en fil')
+
+    return await axios
+        .patch(
+            API_URI + `/admin/app-store/app-settings/client-ui-branding/logo/${apiKey}`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        )
+        .then((res) => res.data)
+        .catch((err) => {
+            throw new Error(err.response.data.msg);
+        });
+}
+
 const getAvatars = async (apiKey, abortController) => {
     return await axios
         .get(API_URI + `/admin/calendar/avatars/${apiKey}`, {
@@ -726,5 +747,6 @@ export {
     deactivateApp,
     getAppSettings,
     updateAppSettings,
-    deleteAccount
+    deleteAccount,
+    uploadLogo
 };

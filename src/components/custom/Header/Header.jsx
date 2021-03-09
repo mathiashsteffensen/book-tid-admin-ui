@@ -67,7 +67,7 @@ export default function Header() {
 
                 <Nav className="md:float-right">
                     <Link href="/faq">
-                        <a className="nav-link flex justify-center items-center">
+                        <a className="nav-link flex justify-center items-center" title="Ofte stillede spørgsmål">
                             <HelpIcon />
                         </a>
                     </Link>

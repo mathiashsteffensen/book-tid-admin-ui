@@ -403,4 +403,49 @@
     }
 }
 
+pre {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+pre code {
+    background-color: #032846;
+    color: azure;
+    padding: 0.5rem;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+
+    .html-tag {
+        color: #77DBCA;
+        display: flex;
+        flex-wrap: wrap;
+
+        p {
+            color: #cef8f1;
+        }
+    }
+
+    .html-attribute {
+        display: flex;
+        flex-wrap: wrap;
+        .html-attribute-name {
+            color: #C5E472;
+        }
+
+        .html-attribute-value {
+            color: #ECC47B;
+        }
+    }
+
+    @media (max-width: 500px) {
+        font-size: 0.8rem;
+    }
+    @media (max-width: 400px) {
+        font-size: 0.7rem;
+    }
+}
+
 /* purgecss end ignore */

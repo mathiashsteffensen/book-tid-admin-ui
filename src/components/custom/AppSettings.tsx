@@ -19,8 +19,9 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 // @ts-ignore
 import { renderTextWithBreaks, generateTimeOfDayOptions } from '../../utils.tsx'
 
-import { getAppSettings, updateAppSettings } from '../../requests'
+import { getAppSettings, updateAppSettings, uploadLogo } from '../../requests'
 import { Alert } from '../agnostic/Alert'
+import { settings } from 'node:cluster'
 
 
 export const AppSettings = ({ app, back }: { app: App, back: () => void }) => {
@@ -28,16 +29,35 @@ export const AppSettings = ({ app, back }: { app: App, back: () => void }) => {
     const [revalidate, setRevalidate] = useState(true)
 
     const { data: serverData, error, mutate } = useSWR([app.id, localStorage.getItem('apiKey')], getAppSettings)
-
-    console.log(serverData, app);
+    console.log(serverData)
+    const update = () => {
+        setRevalidate(true)
+        mutate(null, true)
+    }
 
     const [editableData, setEditableData]: [undefined | typeof serverData, React.Dispatch<React.SetStateAction<undefined | typeof serverData>>] = useState(undefined)
 
-    const fileInputs: number = app.settings.filter(setting => setting.type === 'image').length
+    const fileInputs = app.settings.filter(setting => setting.type === 'image')
 
-    if (process.env.NODE_ENV === 'development' && fileInputs > 1) throw new Error('ERROR: Only one file input possible per app')
+    if (process.env.NODE_ENV === 'development' && fileInputs.length > 1) throw new Error('ERROR: Only one file input possible per app')
 
-    if (fileInputs === 0) var fileRef = useRef(null)
+    if (fileInputs.length !== 0) var fileRef = useRef(null)
+
+    if (fileInputs[0].id === 'logo') {
+        var [fileError, setFileError]: [false | string, any] = useState(false)
+
+        var uploadFile = () => {
+            if (!fileRef.current) return;
+            setFileError(false)
+            uploadLogo(
+                localStorage.getItem('apiKey'),
+                // @ts-ignore
+                fileRef.current.files[0]
+            )
+                .then(update)
+                .catch((err) => setFileError(err.message));
+        }
+    }
 
     useEffect(() => {
         if (serverData && revalidate) {
@@ -66,7 +86,7 @@ export const AppSettings = ({ app, back }: { app: App, back: () => void }) => {
     }
     
     return (
-        <Row className="w-full p-4 sm:w-10/12">
+        <Row className="w-full gap-y-2 p-4 sm:w-10/12">
             <Col sm={2} >
                 <Button onClick={back} className="flex justify-center items-center" variant="outline-dark">
                     <ArrowBackIcon className="mr-2"/>
@@ -92,18 +112,22 @@ export const AppSettings = ({ app, back }: { app: App, back: () => void }) => {
                                 )) }
                             </Input> }
                             
-                            { setting.type === 'image' && <div className="flex gap-x-2 justify-center items-center py-2">
+                            { setting.type === 'image' && <div className="flex flex-col sm:flex-row gap-2 justify-center items-center py-2">
                                 <input {...setting.otherProps} id={setting.id} className="input primary" ref={fileRef} type="file"/>
                                 
+                                <Button onClick={uploadFile} size="sm" variant="outline-primary">Upload</Button>
+
                                 <figure>
-                                    <img style={{maxWidth: 150, maxHeight: 100}} src={editableData[setting.id]} alt="img preview"/>
+                                    <img className="mx-auto" style={{maxWidth: 150, maxHeight: 100}} src={editableData[setting.id]} alt="img preview"/>
                                     <figcaption className="text-xs">Det nuværende logo på din bookingside</figcaption>
                                 </figure>
                             </div> }
 
+                            { setting.type === 'color' && <Input style={{height: 50, width: 100}} {...setting.otherProps} type={setting.type} onChange={(e) => handleChange(e.target.value, setting.id)} value={editableData[setting.id]} /> }
+
                             { setting.type === 'switch' && <Switch {...setting.otherProps}  onChange={(e) => handleChange(e.target.checked, setting.id)} checked={editableData[setting.id]} customSize="sm" /> }
                             
-                            { (setting.type !== 'select' && setting.type !== 'switch' && setting.type !== 'image') && <Input {...setting.otherProps} type={setting.type} onChange={(e) => handleChange(e.target.value, setting.id)} value={editableData[setting.id]} /> }
+                            { (setting.type !== 'select' && setting.type !== 'switch' && setting.type !== 'image' && setting.type !== 'color') && <Input {...setting.otherProps} type={setting.type} onChange={(e) => handleChange(e.target.value, setting.id)} value={editableData[setting.id]} /> }
                         </div>}
                         extraInfo=""
                     />
@@ -111,7 +135,9 @@ export const AppSettings = ({ app, back }: { app: App, back: () => void }) => {
 
                 { (!editableData && !error) && <Spinner variant="primary" /> }
 
-                { error && <Alert variant="danger">{error.message}</Alert> }
+                { error && <Alert className="mt-2" variant="danger">{error.message}</Alert> }
+
+                { fileError && <Alert className="mt-2" variant="danger">{fileError}</Alert> }
             </Col>
             <Col sm={11} />
             <Col sm={1} >

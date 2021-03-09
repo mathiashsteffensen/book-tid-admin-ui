@@ -315,15 +315,43 @@ function createBookingDomain(companyName) {
     );
 }
 
-const renderTextWithBreaks = (fullText: string) => {
+const renderTextWithBreaks = (fullText: string, unsafe: boolean = false) => {
+    if (unsafe) return fullText.split('\n').map((text: string, i: number) => (
+        <p dangerouslySetInnerHTML={{ __html: text }} style={{minHeight: 18, margin: 0}} key={i}></p>
+    ))
+
     return fullText.split('\n').map((text: string, i: number) => (
-        <p key={i}>{text}</p>
+        <p style={{minHeight: 18, margin: 0}} key={i}>{text}</p>
     ))
 }
 
 const generateTimeOfDayOptions = () => {
     return Array.apply(null, new Array(25)).map((e, i) => i > 9 ? `${i}:00` : `0${i}:00`)
 }
+
+// Frequently asked questions and their answers
+// TODO: Maybe consider moving to markdown format? Easier to write more content
+const FAQs: Array<{
+    q: string,
+    a: string
+}> = [
+    {
+        q: "Hvordan kan jeg integrere min bookingside på min egen hjemmeside?",
+        a: `Det er muligt at integrere det på jeres egen hjemmeside gennem det der hedder et iframe tag.
+            
+        Det kræver blot adgang til at ændre koden på jeres site, lidt viden om HTML vil hjælpe men er ikke påkrævet.
+        
+        Et iframe tag vil i praksis se sådan her ud:
+        
+        <pre><code><div class="html-tag">&lt;<p>iframe</p> <div class="html-attribute"><div class="html-attribute-name"> src</div>=<div class="html-attribute-value" >"https://eksempel.booktid.net"</div></div><div class="html-attribute"><div class="html-attribute-name"> width</div>=<div class="html-attribute-value">"100%"</div></div> <div class="html-attribute"><div class="html-attribute-name"> height</div>=<div class="html-attribute-value">"775"</div></div><div class="html-attribute"><div class="html-attribute-name"> frameborder</div>=<div class="html-attribute-value">"0"</div></div>&gt;</div>    <div class="html-tag">&lt;/<p>iframe</p>&gt;</div></code></pre>
+        
+        Læg specielt mærke til der hvor der står ' src="https://eksempel.booktid.net" '. Det er her vigtigt at ændre til linket til jeres egen bookingside.
+        
+        Efter linket er ændret til jeres egen hjemmeside kan i kopiere jeres iframe tag ind på jeres hjemmesides HTML kode hvor i vil vise bookingsiden.
+        
+        Du kan læse mere om iframe tagget og hvad der kan gøres med det <a target="_blank" rel="norefferer" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe" class="link">her</a>`
+    }
+]
 
 export {
     API_URI,
@@ -338,5 +366,6 @@ export {
     getDailyOpeningHoursByDate,
     createBookingDomain,
     renderTextWithBreaks,
-    generateTimeOfDayOptions
+    generateTimeOfDayOptions,
+    FAQs
 };

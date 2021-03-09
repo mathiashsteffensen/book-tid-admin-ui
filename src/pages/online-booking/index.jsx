@@ -68,7 +68,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
         setState(newState);
         update();
     }
-    console.log(state.bookingSettings.personalDataPolicy)
+
     return (
         <Main
             title={title}

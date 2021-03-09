@@ -8,7 +8,7 @@ export interface App {
         id: string,
         name: string,
         description: string,
-        type: 'select' | 'switch' | string,
+        type: 'select' | 'switch' | string | 'image',
         options?: Array<{
             value: string,
             name: string
