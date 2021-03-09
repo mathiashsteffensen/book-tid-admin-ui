@@ -16,7 +16,7 @@ import { Form } from '../../components/agnostic/Form/Form';
 
 import { Snackbar, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 
 export default function OnlineBooking({ bookingSettings, user, apiKey }) {
@@ -24,6 +24,31 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
         bookingSettings: bookingSettings,
         editDomain: false,
     });
+
+    const [editAgreementDeclaration, setEditAgreementDeclaration] = useState(false)
+    const [editPersonalDataPolicy, setEditPersonalDataPolicy] = useState(false)
+
+    const [title, setTitle] = useState("Online booking indstillinger")
+    const [subtitle, setSubtitle] = useState("Her kan du ændre i dine indstillinger for hvordan du modtager online bookings")
+
+    const back = () => {
+        editAgreementDeclaration && setEditAgreementDeclaration(false)
+        editPersonalDataPolicy && setEditPersonalDataPolicy(false)
+        setTitle("Online booking indstillinger")
+        setSubtitle("Her kan du ændre i dine indstillinger for hvordan du modtager online bookings")
+    }
+
+    const showAgreementDeclaration = () => {
+        setEditAgreementDeclaration(true)
+        setTitle("Rediger din samtykkeerklæring")
+        setSubtitle("")
+    }
+
+    const showPersonalDataPolicy = () => {
+        setEditPersonalDataPolicy(true)
+        setTitle("Rediger din persondatapolitik")
+        setSubtitle("")
+    }
 
     const [openSucces, setOpenSuccess] = useState(false);
 
@@ -36,14 +61,21 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
         setState(newState);
         update();
     };
-
+    
+    const handlePolicyChange = (key, value) => {
+        let newState = state;
+        state.bookingSettings.personalDataPolicy[key] = value;
+        setState(newState);
+        update();
+    }
+    console.log(state.bookingSettings.personalDataPolicy)
     return (
         <Main
-            title="Online booking indstillinger"
-            subtitle="Her kan du ændre i dine indstillinger for hvordan du modtager online bookings"
+            title={title}
+            subtitle={subtitle}
             CTAs={
                 <div>
-                    <Button
+                    {(!editAgreementDeclaration && !editPersonalDataPolicy) && <Button
                         onClick={() =>
                             updateBookingSettings(
                                 localStorage.getItem('apiKey'),
@@ -52,7 +84,12 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                         }
                     >
                         Gem
-                    </Button>
+                    </Button>}
+
+                    {(editAgreementDeclaration || editPersonalDataPolicy) && <Button onClick={back} className="flex justify-center items-center" variant="outline-dark" >
+                            <ArrowBackIcon className="mr-2"/>
+                            Tilbage
+                        </Button>}
                 </div>
             }
             subscriptionType={
@@ -62,7 +99,7 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
             }
             apiKey={apiKey}
         >
-            <div className="w-11/12 divide-y divide-gray-300">
+           { (!editAgreementDeclaration && !editPersonalDataPolicy) &&  <div className="w-11/12 divide-y divide-gray-300">
                 <FullPageInput
                     title={getSettingLabelFromKey('domainPrefix').title}
                     subtitle={getSettingLabelFromKey('domainPrefix').subtitle}
@@ -367,7 +404,70 @@ export default function OnlineBooking({ bookingSettings, user, apiKey }) {
                         </div>
                     }
                 />
-            </div>
+
+                <FullPageInput
+                    title={getSettingLabelFromKey('personalDataPolicy').title}
+                    subtitle={
+                        getSettingLabelFromKey('personalDataPolicy').subtitle
+                    }
+                    input={
+                        <div className="ml-4 flex flex-col sm:flex-row justify-center items-center gap-x-4 gap-y-2">
+                            <Button onClick={showAgreementDeclaration} variant="outline-primary">
+                                Ændr din samtykkeerklæring
+                            </Button>
+
+                            <Button onClick={showPersonalDataPolicy} variant="outline-secondary">
+                                Ændr din persondatapolitik
+                            </Button>
+                        </div>
+                    }
+                />
+            </div>}
+
+            { editAgreementDeclaration && (
+                <div className="w-full md:px-24">
+                    <Input style={{minHeight: 300}} onChange={({ target }) => {
+                        handlePolicyChange("agreementDeclaration", target.value)
+                    }} value={state.bookingSettings.personalDataPolicy.agreementDeclaration} textarea />
+
+                    <div className="w-full flex justify-between items-center mt-2">
+                        <div></div>
+                        <Button
+                            onClick={() =>
+                                updateBookingSettings(
+                                    localStorage.getItem('apiKey'),
+                                    state.bookingSettings
+                                ).then(() => setOpenSuccess(true))
+                            }
+                        >
+                            Gem
+                        </Button>
+                    </div>
+                </div>
+            ) }
+
+            { editPersonalDataPolicy && (
+                <div className="w-full md:px-24">
+                    <Input style={{minHeight: 300}} onChange={({ target }) => {
+                        handlePolicyChange("personalData", target.value)
+                    }} value={state.bookingSettings.personalDataPolicy.personalData} textarea />
+
+                    <div className="w-full flex justify-between items-center mt-2">
+                        <div></div>
+                        <Button
+                            onClick={() =>
+                                updateBookingSettings(
+                                    localStorage.getItem('apiKey'),
+                                    state.bookingSettings
+                                ).then(() => setOpenSuccess(true))
+                            }
+                        >
+                            Gem
+                        </Button>
+                    </div>
+                </div>
+            ) }
+
             <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',
