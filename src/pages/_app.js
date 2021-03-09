@@ -21,8 +21,14 @@ function MyApp({ Component, pageProps }) {
             props: {}
         }
     })
-    console.log(user);
 
+    if (typeof window !== 'undefined') {
+        window.$crisp=[];
+        window.CRISP_WEBSITE_ID=process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID
+        console.log(process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID)
+    }
+    console.log(user);
+    
     if (pageProps.valid) {
         return (
             <div>
@@ -74,6 +80,7 @@ function MyApp({ Component, pageProps }) {
                     <meta name="description" content={`
                         Administration for BOOKTID.NET brugere
                     `}></meta>
+                    <script src="https://client.crisp.chat/l.js" async defer></script>
                 </Head>
                 <Provider store={reduxStore} >
                     <FormProvider>
