@@ -79,6 +79,15 @@ function MyApp({ Component, pageProps }) {
                         Administration for BOOKTID.NET brugere
                     `}></meta>
                     <script src="https://client.crisp.chat/l.js" async defer></script>
+                    {`<!-- Global site tag (gtag.js) - Google Analytics`}
+                    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C9HFB5GCLJ"></script>
+                    <script>
+                        {`window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+
+                      gtag('config', 'G-C9HFB5GCLJ');`}
+                    </script>
                 </Head>
                 <Provider store={reduxStore} >
                     <FormProvider>
@@ -104,6 +113,15 @@ function MyApp({ Component, pageProps }) {
                 <meta name="description" content={`
                     Administration for BOOKTID.NET brugere
                 `}></meta>
+                {`<!-- Global site tag (gtag.js) - Google Analytics`}
+                    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C9HFB5GCLJ"></script>
+                    <script>
+                        {`window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+
+                      gtag('config', 'G-C9HFB5GCLJ');`}
+                    </script>
             </Head>
             <Component {...pageProps} />
         </div>
