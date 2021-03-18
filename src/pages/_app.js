@@ -25,9 +25,7 @@ function MyApp({ Component, pageProps }) {
     if (typeof window !== 'undefined') {
         window.$crisp=[];
         window.CRISP_WEBSITE_ID=process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID
-        console.log(process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID)
     }
-    console.log(user);
     
     if (pageProps.valid) {
         return (

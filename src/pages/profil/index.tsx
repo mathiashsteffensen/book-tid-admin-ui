@@ -642,7 +642,7 @@ export default function Profile({ initProfileSettings, currentProduct, user }) {
                                     <Form.Group className="w-80 mt-6">
                                         <Form.Label className="text-sm" slider={false}>Indtast venligst dit kodeord for at slette din bruger</Form.Label>
                                         <Form.Input onChange={(e) => setPassword(e.target.value)} value={password} type="password" />
-                                        <Button onClick={() => deleteAccount(password, localStorage.getItem('apiKey')).catch(err => setDeleteError(err.message))} variant="danger">Slet Bruger</Button>
+                                        <Button onClick={() => deleteAccount(password, localStorage.getItem('apiKey'), user).catch(err => setDeleteError(err.message))} variant="danger">Slet Bruger</Button>
 
                                         { deleteError && (
                                             <Alert className="mt-4" variant="danger" >

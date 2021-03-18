@@ -60,7 +60,7 @@
             },
             {
                 "name": "Accent farve",
-                "description": "Den primære brand farve, bruges til cirka 70% af layoutet",
+                "description": "Den primære brand farve, bruges til cirka 10% af layoutet",
                 "type": "color",
                 "id": "accentColor",
                 "otherProps": {}

@@ -1,4 +1,4 @@
-import React, { RefAttributes } from 'react'
+import React, { RefAttributes, HTMLAttributes } from 'react'
 
 import { Input } from './Input'
 import { Group } from './Group'
@@ -6,11 +6,15 @@ import { Label } from './Label'
 import { Switch } from './Switch'
 import { Row } from './Row'
 
-export interface FormProps extends React.FormHTMLAttributes<any> {
-    validated?: boolean
+export interface FormProps extends HTMLAttributes<HTMLFormElement> {
+    validated?: boolean,
+    className?: string,
+    action?: string,
+    method?: "POST" | "GET",
+    encType?: string
 }
 
-export interface Form extends React.FC<RefAttributes<FormProps>> {
+export interface Form extends React.ForwardRefExoticComponent<FormProps> {
     Group: Group,
     Input: Input,
     Control: Input,

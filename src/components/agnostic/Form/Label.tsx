@@ -2,6 +2,7 @@ import React from 'react'
 
 export interface LabelProps extends React.HTMLAttributes<HTMLLabelElement> {
     slider?: boolean,
+    htmlFor?: string
 }
 
 export interface Label extends React.FC<LabelProps> {}

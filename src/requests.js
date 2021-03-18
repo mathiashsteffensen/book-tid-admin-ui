@@ -683,11 +683,17 @@ const updateAppSettings = async (appId, apiKey, data) => (
         })
 )
 
-const deleteAccount = async(password, apiKey) => (
+const deleteAccount = async(password, apiKey, user) => (
     await axios.delete(API_URI + "/admin/auth/my-account/" + apiKey, { data: { password } })
-        .then((response) => {
-            logout()
-            return response.data;
+        .then(() => {
+            sessionStorage.setItem("user", JSON.stringify({
+                accountDeleted: true,
+                name: user.firstName,
+                email: user.email
+            }))
+            localStorage.removeItem('apiKey');
+            document.cookie = 'apiKey=; Max-Age=-99999999;';
+            location.href = "/feedback"
         })
         .catch((err) => {
             throw new Error(err.response.data.msg);
