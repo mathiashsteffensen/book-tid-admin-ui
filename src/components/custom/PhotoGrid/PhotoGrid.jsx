@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
-
-import { GridList } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-
-import PhotoTile from './PhotoTile';
+import PhotoTile from "./PhotoTile"
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        overflow: 'hidden',
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "space-around",
+        overflow: "hidden",
         backgroundColor: theme.palette.background.paper,
     },
     gridList: {
@@ -20,10 +15,10 @@ const useStyles = makeStyles((theme) => ({
     tileBar: {
         height: 28,
     },
-}));
+}))
 
 export default function PhotoGrid({ photos, usePhoto, deletePhoto }) {
-    const classes = useStyles();
+    const classes = useStyles()
 
     if (photos) {
         return (
@@ -44,7 +39,7 @@ export default function PhotoGrid({ photos, usePhoto, deletePhoto }) {
                     ))}
                 </GridList>
             </div>
-        );
+        )
     } else {
     }
 }

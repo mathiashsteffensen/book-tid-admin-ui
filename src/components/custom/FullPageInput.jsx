@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function FullPageInput({ title, subtitle, input, extraInfo }) {
     return (
         <label className="w-full mt-2 pt-2 grid grid-cols-5 divide-x divide-blue-500">
@@ -12,5 +10,5 @@ export default function FullPageInput({ title, subtitle, input, extraInfo }) {
                 {input}
             </div>
         </label>
-    );
+    )
 }

@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import useSWR from 'swr'
-import dayjs from 'dayjs';
+import { useState, useEffect } from "react"
+import useSWR from "swr"
+import dayjs from "dayjs"
 
-import { CardGroup } from '../../agnostic/CardGroup';
-import { Card } from '../../agnostic/Card/Card';
-import { Spinner } from '../../agnostic/Spinner';
-import { Button } from '../../agnostic/Button';
+import { CardGroup } from "../../agnostic/CardGroup"
+import { Card } from "../../agnostic/Card/Card"
+import { Spinner } from "../../agnostic/Spinner"
+import { Button } from "../../agnostic/buttons/Button"
 
-import ProductTemplate from '../ProductTemplate/ProductTemplate';
+import ProductTemplate from "../ProductTemplate/ProductTemplate"
 
 import {
     retrieveUpcomingInvoice,
     updateSubscription,
     onSubscriptionComplete,
-} from '../../../requests';
+} from "../../../requests"
 
 export default function InlineUpgrade({
     products,
@@ -23,58 +23,57 @@ export default function InlineUpgrade({
     periodEnd,
     hide,
 }) {
-
-    currentProduct.quantity = quantity;
+    currentProduct.quantity = quantity
 
     const [newProduct, setNewProduct] = useState({
         name: currentProduct.name,
-        isTiered: currentProduct.name === 'Premium',
+        isTiered: currentProduct.name === "Premium",
         salesPrice: salesPrice,
         unitAmount: quantity,
         unitName: currentProduct.metadata.unit_name,
         priceId: currentProduct.price.id,
-    });
+    })
 
-    const [dueToday, setDueToday] = useState(false);
-    const [dueAtPeriodEnd, setDueAtPeriodEnd] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(false);
+    const [dueToday, setDueToday] = useState(false)
+    const [dueAtPeriodEnd, setDueAtPeriodEnd] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState(false)
 
-    const [submitLoading, setSubmitLoading] = useState(false);
+    const [submitLoading, setSubmitLoading] = useState(false)
 
     useEffect(() => {
-        setIsLoading(true);
+        setIsLoading(true)
         retrieveUpcomingInvoice(
             newProduct.priceId,
             newProduct.unitAmount,
-            localStorage.getItem('apiKey')
+            localStorage.getItem("apiKey")
         )
             .then((res) => {
-                console.log(res);
-                setDueAtPeriodEnd(res.next_invoice_sum);
-                setDueToday(res.immediate_total);
-                setIsLoading(false);
+                console.log(res)
+                setDueAtPeriodEnd(res.next_invoice_sum)
+                setDueToday(res.immediate_total)
+                setIsLoading(false)
             })
             .catch((err) => {
-                console.log(err);
-                setError(true);
-            });
-    }, [newProduct]);
+                console.log(err)
+                setError(true)
+            })
+    }, [newProduct])
 
     const handleConfirmChange = () => {
-        setSubmitLoading(true);
-        const apiKey = localStorage.getItem('apiKey');
+        setSubmitLoading(true)
+        const apiKey = localStorage.getItem("apiKey")
         updateSubscription(newProduct.priceId, newProduct.unitAmount, apiKey)
             .then(() => {
                 onSubscriptionComplete(apiKey)
                     .then(() => {
-                        setSubmitLoading(false);
-                        location.reload();
+                        setSubmitLoading(false)
+                        location.reload()
                     })
-                    .catch((err) => console.log(err));
+                    .catch((err) => console.log(err))
             })
-            .catch((err) => console.log(err));
-    };
+            .catch((err) => console.log(err))
+    }
 
     return (
         <div className="w-full min-h-full my-4">
@@ -82,20 +81,20 @@ export default function InlineUpgrade({
                 <ProductTemplate
                     handleProductSelect={setNewProduct}
                     product={products.premium}
-                    isSelected={newProduct.name === 'Premium'}
+                    isSelected={newProduct.name === "Premium"}
                     showFeatures={false}
                     currentProduct={currentProduct}
                     selectedProduct={newProduct}
                 />
             </CardGroup>
-            {(currentProduct.quantity !== newProduct.unitAmount) && (
+            {currentProduct.quantity !== newProduct.unitAmount && (
                 <Card className="mt-2">
                     <Card.Body>
                         {error && (
                             <>Der skete en fejl, genindlæs venligst siden</>
                         )}
 
-                        {(isLoading && !error) && (
+                        {isLoading && !error && (
                             <div className="flex justify-center items-center">
                                 <Spinner variant="primary" />
                             </div>
@@ -103,124 +102,124 @@ export default function InlineUpgrade({
 
                         {!isLoading && (
                             <>
-                                {newProduct.name === 'Premium' && (
+                                {newProduct.name === "Premium" && (
                                     <>
                                         <p>
-                                            Ændring til <strong>Premium</strong>{' '}
-                                            planen med{' '}
+                                            Ændring til <strong>Premium</strong>{" "}
+                                            planen med{" "}
                                             <strong>
                                                 {newProduct.unitAmount}
-                                            </strong>{' '}
+                                            </strong>{" "}
                                             medarbejderkalendere
                                         </p>
                                         {dueToday > 0 && (
                                             <p>
-                                                Der vil blive trukket{' '}
+                                                Der vil blive trukket{" "}
                                                 <strong>
                                                     {new Intl.NumberFormat(
-                                                        'da-DK',
+                                                        "da-DK",
                                                         {
-                                                            style: 'currency',
-                                                            currency: 'DKK',
+                                                            style: "currency",
+                                                            currency: "DKK",
                                                         }
                                                     ).format(dueToday / 100)}
-                                                </strong>{' '}
+                                                </strong>{" "}
                                                 i dag
                                             </p>
                                         )}
                                         {dueToday < 0 && (
                                             <p>
-                                                Du vil blive refunderet{' '}
+                                                Du vil blive refunderet{" "}
                                                 <strong>
                                                     {new Intl.NumberFormat(
-                                                        'da-DK',
+                                                        "da-DK",
                                                         {
-                                                            style: 'currency',
-                                                            currency: 'DKK',
+                                                            style: "currency",
+                                                            currency: "DKK",
                                                         }
                                                     ).format(dueToday / -100)}
-                                                </strong>{' '}
+                                                </strong>{" "}
                                                 i dag
                                             </p>
                                         )}
 
                                         <p>
-                                            Næste betaling på{' '}
+                                            Næste betaling på{" "}
                                             <strong>
                                                 {new Intl.NumberFormat(
-                                                    'da-DK',
+                                                    "da-DK",
                                                     {
-                                                        style: 'currency',
-                                                        currency: 'DKK',
+                                                        style: "currency",
+                                                        currency: "DKK",
                                                     }
                                                 ).format(dueAtPeriodEnd / 100)}
-                                            </strong>{' '}
-                                            vil forfalde{' '}
+                                            </strong>{" "}
+                                            vil forfalde{" "}
                                             {dayjs(periodEnd).format(
-                                                'D/M/YYYY'
+                                                "D/M/YYYY"
                                             )}
                                         </p>
                                     </>
                                 )}
 
-                                {currentProduct.name === 'Premium' &&
-                                    newProduct.name === 'Basic' && (
+                                {currentProduct.name === "Premium" &&
+                                    newProduct.name === "Basic" && (
                                         <>
-                                            Ændring til <strong>Basic</strong>{' '}
-                                            planen med <strong>1</strong>{' '}
+                                            Ændring til <strong>Basic</strong>{" "}
+                                            planen med <strong>1</strong>{" "}
                                             medarbejderkalender
                                             {dueToday > 0 && (
                                                 <p>
-                                                    Der vil blive trukket{' '}
+                                                    Der vil blive trukket{" "}
                                                     <strong>
                                                         {new Intl.NumberFormat(
-                                                            'da-DK',
+                                                            "da-DK",
                                                             {
                                                                 style:
-                                                                    'currency',
-                                                                currency: 'DKK',
+                                                                    "currency",
+                                                                currency: "DKK",
                                                             }
                                                         ).format(
                                                             dueToday / 100
                                                         )}
-                                                    </strong>{' '}
+                                                    </strong>{" "}
                                                     i dag
                                                 </p>
                                             )}
                                             {dueToday < 0 && (
                                                 <p>
-                                                    Du vil blive refunderet{' '}
+                                                    Du vil blive refunderet{" "}
                                                     <strong>
                                                         {new Intl.NumberFormat(
-                                                            'da-DK',
+                                                            "da-DK",
                                                             {
                                                                 style:
-                                                                    'currency',
-                                                                currency: 'DKK',
+                                                                    "currency",
+                                                                currency: "DKK",
                                                             }
                                                         ).format(
                                                             dueToday / -100
                                                         )}
-                                                    </strong>{' '}
+                                                    </strong>{" "}
                                                     i dag
                                                 </p>
                                             )}
                                             <p>
-                                                Næste betaling på{' '}
+                                                Næste betaling på{" "}
                                                 <strong>
                                                     {new Intl.NumberFormat(
-                                                        'da-DK',
+                                                        "da-DK",
                                                         {
-                                                            style: 'currency',
-                                                            currency: 'DKK',
+                                                            style: "currency",
+                                                            currency: "DKK",
                                                         }
                                                     ).format(
                                                         dueAtPeriodEnd / 100
                                                     )}
-                                                </strong>{' '}
-                                                vil forfalde{' '}
+                                                </strong>{" "}
+                                                vil forfalde{" "}
                                                 {dayjs(periodEnd).format(
-                                                    'D/M/YYYY'
+                                                    "D/M/YYYY"
                                                 )}
                                             </p>
                                         </>
@@ -230,8 +229,8 @@ export default function InlineUpgrade({
                                         onClick={handleConfirmChange}
                                         variant={
                                             dueToday < 0
-                                                ? 'outline-primary'
-                                                : 'primary'
+                                                ? "outline-primary"
+                                                : "primary"
                                         }
                                         className="mr-2"
                                     >
@@ -241,15 +240,15 @@ export default function InlineUpgrade({
                                                 size="sm"
                                             />
                                         ) : (
-                                            'Bekræft Ændring'
+                                            "Bekræft Ændring"
                                         )}
                                     </Button>
                                     <Button
                                         onClick={hide}
                                         variant={
                                             dueToday > 0
-                                                ? 'outline-primary'
-                                                : 'primary'
+                                                ? "outline-primary"
+                                                : "primary"
                                         }
                                     >
                                         Aflys ændring
@@ -262,9 +261,13 @@ export default function InlineUpgrade({
             )}
             <Card className="mt-2">
                 <Card.Body className="flex justify-center">
-                    <img className="w-2/5" src="stripe-blurple.svg" alt="Powered By Stripe" />
+                    <img
+                        className="w-2/5"
+                        src="stripe-blurple.svg"
+                        alt="Powered By Stripe"
+                    />
                 </Card.Body>
             </Card>
         </div>
-    );
+    )
 }

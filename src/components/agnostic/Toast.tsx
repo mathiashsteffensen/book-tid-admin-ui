@@ -1,36 +1,42 @@
-import React, { useState, useEffect } from 'react'
-import { useTimeout } from 'react-use';
+import { AlertColor, AlertPropsColorOverrides } from "@mui/material/Alert/Alert"
+import MUISnackbar, {
+    SnackbarProps as MUISnackbarProps,
+} from "@mui/material/Snackbar"
+import { OverridableStringUnion } from "@mui/types"
+import { FC } from "react"
 
-import { Card } from './Card/Card'
+import { Alert } from "./Alert"
 
-export interface Toast extends React.HTMLAttributes<any> {
-    show: boolean,
-    delay?: number
+export type AlertSnackbarProps = {
+    severity: OverridableStringUnion<AlertColor, AlertPropsColorOverrides>
+    onClose?: () => void
 }
 
-export const Toast = ({ show, delay = 300, onClose, className, children, ...otherProps }) => {
-    if (show) {
-
-        const [isReady] = useTimeout(delay);
-
-        if (isReady()) onClose()
-        else return (
-            <Card
-                role="alert"
-                aria-live="assertive"
-                aria-atomic="true" 
-                className={`toast ${className}`}
-            >
-                {children}
-            </Card>
-        )
-    }
-
-    return null;
+export type RegularSnackbarProps = {
+    severity?: never
+    onClose?: MUISnackbarProps["onClose"]
 }
 
-Toast.Header = Card.Header
-Toast.Body = Card.Body
-Toast.Title = Card.Title
-Toast.Text = Card.Text
-Toast.Footer = Card.Footer
+export type ToastProps = Omit<MUISnackbarProps, "onClose"> &
+    (AlertSnackbarProps | RegularSnackbarProps)
+
+export const Toast: FC<ToastProps> = ({ children, ...props }) => {
+    return (
+        <MUISnackbar message={!props.severity && children} {...props}>
+            <div>
+                {props.severity ? (
+                    <Alert
+                        onClose={props.onClose}
+                        variant="filled"
+                        sx={{ width: "100%" }}
+                        severity={props.severity}
+                    >
+                        {children}
+                    </Alert>
+                ) : (
+                    children
+                )}
+            </div>
+        </MUISnackbar>
+    )
+}

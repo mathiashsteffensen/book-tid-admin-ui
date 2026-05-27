@@ -1,47 +1,47 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      docker: 19
-  pre_build:
-    commands:
-      - echo "Logging in to Amazon ECR..."
-      - aws --version
-      - $(aws ecr get-login --region eu-central-1 --no-include-email)
-      - REPOSITORY_URI=759605992417.dkr.ecr.eu-central-1.amazonaws.com/book-tid-admin-ui
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${COMMIT_HASH:=latest}
-  build:
-    commands:
-      - echo "Building the Docker image..."
-      - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
-  post_build:
-    commands:
-      - echo "Pushing the Docker images..."
-      - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo "Writing image definitions file..."
-      - printf '[{"name":"book-tid-admin-ui","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+    install:
+        runtime-versions:
+            docker: 19
+    pre_build:
+        commands:
+            - echo "Logging in to Amazon ECR..."
+            - aws --version
+            - $(aws ecr get-login --region eu-central-1 --no-include-email)
+            - REPOSITORY_URI=759605992417.dkr.ecr.eu-central-1.amazonaws.com/book-tid-admin-ui
+            - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+            - IMAGE_TAG=${COMMIT_HASH:=latest}
+    build:
+        commands:
+            - echo "Building the Docker image..."
+            - docker build -t $REPOSITORY_URI:latest .
+            - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+    post_build:
+        commands:
+            - echo "Pushing the Docker images..."
+            - docker push $REPOSITORY_URI:latest
+            - docker push $REPOSITORY_URI:$IMAGE_TAG
+            - echo "Writing image definitions file..."
+            - printf '[{"name":"book-tid-admin-ui","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
-  files:
-    - build/**/*
-    - yarn.lock
-    - package.json
-    - Dockerfile
-    - imagedefinitions.json
-  secondary-artifacts:
-    BuildArtifact:
-      files:
-        - '**/*'
-      name: BuildArtifact
-    BuildArtif:
-      files:
-        - '**/*'
-      name: BuildArtif
+    files:
+        - build/**/*
+        - yarn.lock
+        - package.json
+        - Dockerfile
+        - imagedefinitions.json
+    secondary-artifacts:
+        BuildArtifact:
+            files:
+                - "**/*"
+            name: BuildArtifact
+        BuildArtif:
+            files:
+                - "**/*"
+            name: BuildArtif
 cache:
-  paths:
-    - 'node_modules/**/*' # Cache `node_modules` for faster `yarn` or `npm i`
-    - '.next/cache/**/*' # Cache Next.js for faster application rebuilds
+    paths:
+        - "node_modules/**/*" # Cache `node_modules` for faster `yarn` or `npm i`
+        - ".next/cache/**/*" # Cache Next.js for faster application rebuilds

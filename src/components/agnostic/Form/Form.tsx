@@ -1,39 +1,26 @@
-import React, { RefAttributes, HTMLAttributes } from 'react'
+import { FormEvent, forwardRef, ReactNode } from "react"
 
-import { Input } from './Input'
-import { Group } from './Group'
-import { Label } from './Label'
-import { Switch } from './Switch'
-import { Row } from './Row'
+import { Spacer } from "src/components/agnostic/Spacer"
+import { Stack } from "src/components/agnostic/Stack"
 
-export interface FormProps extends HTMLAttributes<HTMLFormElement> {
-    validated?: boolean,
-    className?: string,
-    action?: string,
-    method?: "POST" | "GET",
-    encType?: string
+export interface FormProps {
+    children: ReactNode
+    action?: string
+    method?: "POST" | "GET"
+    onSubmit: (e: FormEvent<HTMLFormElement>) => void
 }
 
-export interface Form extends React.ForwardRefExoticComponent<FormProps> {
-    Group: Group,
-    Input: Input,
-    Control: Input,
-    Label: Label,
-    Switch: Switch,
-    Row: React.FC<any>
-}
-//@ts-ignore
-export const Form: Form = React.forwardRef<FormProps>(( { children, className, validated = false, ...otherProps }: FormProps, ref: React.ForwardedRef<any> ) => {
-    return (
-        <form ref={ref} className={`form ${className} ${validated && 'was-validated'}`} {...otherProps} >
-            {children}
-        </form>
-    )
-})
-
-Form.Input = Input
-Form.Control = Input
-Form.Group = Group
-Form.Label = Label
-Form.Switch = Switch
-Form.Row = Row
+// eslint-disable-next-line react/display-name
+export const Form = forwardRef<HTMLFormElement, FormProps>(
+    ({ children, ...otherProps }, ref) => {
+        return (
+            <form ref={ref} className="form" {...otherProps}>
+                <Spacer top={7}>
+                    <Stack direction="column" spacing={4}>
+                        {children}
+                    </Stack>
+                </Spacer>
+            </form>
+        )
+    }
+)

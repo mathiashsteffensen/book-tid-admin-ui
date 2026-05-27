@@ -1,0 +1,22 @@
+.weekHeaderCell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+}
+
+.weekHeaderCell > p {
+    transform: rotate(-90deg);
+}
+
+.outMonthCell {
+    opacity: 0.4;
+}
+
+.inMonthCell {
+    overflow-y: auto !important;
+}
+
+.weekNumberCell {
+    display: flex;
+}

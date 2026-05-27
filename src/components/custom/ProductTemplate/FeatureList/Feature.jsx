@@ -1,12 +1,11 @@
-import React from 'react';
-import { ListGroup } from '../../../agnostic/ListGroup/ListGroup';
+import { ListGroup } from "../../../agnostic/ListGroup/ListGroup"
 
 export default function Feature({ length, FeatureInstance, i, implemented }) {
     return (
         <ListGroup.Item
             style={
                 i !== length - 1
-                    ? { borderBottom: '1px solid rgba(0, 123, 255, 0.25)' }
+                    ? { borderBottom: "1px solid rgba(0, 123, 255, 0.25)" }
                     : {}
             }
             className="flex items-center"
@@ -16,7 +15,7 @@ export default function Feature({ length, FeatureInstance, i, implemented }) {
             <div className="flex flex-col">
                 <span
                     className={
-                        implemented ? ' text-base' : 'line-through text-base'
+                        implemented ? " text-base" : "line-through text-base"
                     }
                 >
                     {FeatureInstance.title}
@@ -24,7 +23,7 @@ export default function Feature({ length, FeatureInstance, i, implemented }) {
 
                 <span
                     className={
-                        implemented ? ' text-sm' : 'line-through text-sm'
+                        implemented ? " text-sm" : "line-through text-sm"
                     }
                     dangerouslySetInnerHTML={{
                         __html: FeatureInstance.description,
@@ -36,5 +35,5 @@ export default function Feature({ length, FeatureInstance, i, implemented }) {
                 <span className="ml-4 text-primary">Kommer snart!</span>
             )}
         </ListGroup.Item>
-    );
+    )
 }

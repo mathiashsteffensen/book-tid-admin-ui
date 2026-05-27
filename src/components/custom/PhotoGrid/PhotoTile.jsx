@@ -1,13 +1,4 @@
-import React, { useState } from 'react';
-
-import {
-    GridListTile,
-    GridListTileBar,
-    IconButton,
-    Menu,
-    MenuItem,
-} from '@material-ui/core';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import { useState } from "react"
 
 export default function PhotoTile({
     photo,
@@ -15,15 +6,15 @@ export default function PhotoTile({
     deletePhoto,
     tileBarClass,
 }) {
-    const [menuAnchor, setMenuAnchor] = useState(null);
+    const [menuAnchor, setMenuAnchor] = useState(null)
 
     const openMenu = (e) => {
-        setMenuAnchor(e.currentTarget);
-    };
+        setMenuAnchor(e.currentTarget)
+    }
 
     const closeMenu = () => {
-        setMenuAnchor(null);
-    };
+        setMenuAnchor(null)
+    }
     return (
         <GridListTile
             style={{
@@ -48,9 +39,9 @@ export default function PhotoTile({
             >
                 <MenuItem
                     onClick={() => {
-                        usePhoto(localStorage.getItem('apiKey'), photo).then(
+                        usePhoto(localStorage.getItem("apiKey"), photo).then(
                             closeMenu
-                        );
+                        )
                     }}
                 >
                     Brug Billede
@@ -58,13 +49,13 @@ export default function PhotoTile({
 
                 <MenuItem
                     onClick={() => {
-                        deletePhoto(localStorage.getItem('apiKey'), photo);
-                        closeMenu();
+                        deletePhoto(localStorage.getItem("apiKey"), photo)
+                        closeMenu()
                     }}
                 >
                     Slet Billede
                 </MenuItem>
             </Menu>
         </GridListTile>
-    );
+    )
 }

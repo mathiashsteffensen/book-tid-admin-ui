@@ -1,9 +1,4 @@
-import React from 'react';
-
-import { Button } from '../../agnostic/Button';
-
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import { Button } from "../../agnostic/buttons/Button"
 
 export default function UnitCounter({
     value,
@@ -20,7 +15,10 @@ export default function UnitCounter({
             </div>
 
             <div className="flex flex-col justify-center px-4 items-center">
-                <div  style={{color: 'rgb(41, 88, 175)'}} className="text-2xl font-bold text-primary">
+                <div
+                    style={{ color: "rgb(41, 88, 175)" }}
+                    className="text-2xl font-bold text-primary"
+                >
                     {value} &#215;
                 </div>
                 <div className="text-sm">{unitName}</div>
@@ -32,5 +30,5 @@ export default function UnitCounter({
                 </Button>
             </div>
         </div>
-    );
+    )
 }

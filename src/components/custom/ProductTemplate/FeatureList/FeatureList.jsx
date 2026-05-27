@@ -1,9 +1,7 @@
-import React from 'react';
+import { Card } from "../../../agnostic/Card/Card"
+import { ListGroup } from "../../../agnostic/ListGroup/ListGroup"
 
-import { Card } from '../../../agnostic/Card/Card';
-import { ListGroup } from '../../../agnostic/ListGroup/ListGroup';
-
-import Feature from './Feature';
+import Feature from "./Feature"
 
 export default function FeatureList({ features }) {
     return (
@@ -21,5 +19,5 @@ export default function FeatureList({ features }) {
                 ))}
             </ListGroup>
         </Card>
-    );
+    )
 }

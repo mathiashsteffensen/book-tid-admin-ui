@@ -1,0 +1,28 @@
+.dayHeaderCell {
+    display: flex;
+    position: relative;
+    background-color: rgb(25, 25, 27);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.051), rgba(255, 255, 255, 0.051));
+}
+
+.topRight {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.cell {
+    padding: 0 !important;
+}
+
+.row {
+    height: auto !important;
+    --height: unset !important;
+    max-height: unset !important;
+}
+
+.grid {
+    height: auto !important;
+    --height: unset !important;
+    max-height: unset !important;
+}

@@ -1,4 +1,5 @@
-import Loader from '../../public/loader.svg';
+import Loader from "../../public/loader.svg"
+import { PathHelper } from "../helpers"
 
 export default function IndexPage() {
     return (
@@ -8,14 +9,14 @@ export default function IndexPage() {
                 Loading ..<span className="animate-ping">.</span>
             </h2>
         </main>
-    );
+    )
 }
 
 export async function getServerSideProps({ req }) {
     return {
         redirect: {
             permanent: true,
-            destination: '/kalender',
+            destination: PathHelper.calendarPath,
         },
-    };
+    }
 }
